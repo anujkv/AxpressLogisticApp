@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">AxpressLogisticApp</string>
+    <string name="registrationPage">Registration</string>
+    <string name="loginPage">Login</string>
+    <string name="redirectOnRegistration_text_btn">No account yet? Create one</string>
+    <string name="password">Password</string>
+    <string name="employee_id">Employee ID</string>
+    <string name="employee_name">Name</string>
+    <string name="gender">Gender</string>
+    <string name="branch">Branch</string>
+    <string name="designation">Designation</string>
+    <string name="email_id">Email ID.</string>
+    <string name="contact_no">Contact No.</string>
+    <string name="submit_btn">Submit</string>
+    <string name="login_btn">Login</string>
+    <string name="confirm_password">Confrim Password</string>
+    <string name="signup">Sign Up</string>
+</resources>
