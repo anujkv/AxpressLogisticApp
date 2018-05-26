@@ -1,4 +1,4 @@
-package com.example.it2.axpresslogisticapp;
+package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.it2.axpresslogisticapp.R;
 
 public class RegistrationActivity extends AppCompatActivity {
     EditText employee_code, name, gender, branch, designation, emailId, contactNo, password, confirmPassword;

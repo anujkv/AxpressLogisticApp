@@ -1,9 +1,9 @@
-package com.example.it2.axpresslogisticapp;
+package com.example.it2.axpresslogisticapp.acitvities;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,26 +12,53 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
+
+import com.example.it2.axpresslogisticapp.R;
+
+import java.util.ArrayList;
 
 public class MainHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    CoordinatorLayout coordinatorLayout;
+    GridView gridView;
+    Toolbar toolbar;
+    Context context;
+    ArrayList arrayList;
+
+    public static  String[] gridViewStrings = {
+        "Operations",
+        "HRMS",
+        "CRM",
+        "Activities",
+        "Financial",
+        "My Tickets",
+    };
+
+    public static  int[] gridViewIcons = {
+        R.mipmap.icon_operation,
+        R.mipmap.icon_hrms,
+        R.mipmap.icon_crm,
+        R.mipmap.icon_activities,
+        R.mipmap.icon_financial,
+        R.mipmap.icon_tickets,
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        gridView = findViewById(R.id.grid);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        gridView.setAdapter(new GridViewAdaptor(this, gridViewStrings, gridViewIcons));
+        initInstances();
 
+
+        //Drawerlayout functionality*************
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -40,6 +67,12 @@ public class MainHomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initInstances() {
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_android_layoutId);
+        coordinatorLayout = findViewById(R.id.android_coordinator_layoutId);
+        collapsingToolbarLayout.setTitle("Logistic Functions");
     }
 
     @Override

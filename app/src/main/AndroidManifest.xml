@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.it2.axpresslogisticapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher24s"
@@ -10,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".acitvities.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".acitvities.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,18 +24,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".acitvities.RegistrationActivity"
             android:label="@string/signup" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".acitvities.LoginActivity"
             android:label="@string/loginPage" />
-        <activity android:name=".HomeActivity">
+        <activity
+            android:name=".acitvities.OperationActivity"
+            android:label="@string/operations">
 
         </activity>
-
         <activity
-            android:name=".MainHomeActivity"
+            android:name=".acitvities.MainHomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".acitvities.DocketEnquiry"
+            android:label="@string/docket_enquiry">
 
         </activity>
     </application>
