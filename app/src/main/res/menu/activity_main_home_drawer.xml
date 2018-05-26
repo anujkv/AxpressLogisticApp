@@ -3,36 +3,36 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_camera"
             android:title="My Profile" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_operations"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Operations" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/nav_hrms"
+            android:icon="@drawable/ic_hrms"
             android:title="HRMS" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/nav_crm"
+            android:icon="@drawable/ic_lcrm"
             android:title="CRM" />
         <item
             android:id="@+id/nav_activities"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_activities_24dp"
             android:title="Activities" />
         <item
             android:id="@+id/nav_financial"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_financial_black_24dp"
             android:title="Financial" />
         <item
             android:id="@+id/nav_mytickets"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_theaters_black_24dp"
             android:title="My Tickets" />
         <item
             android:id="@+id/nav_Logout"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_logout_new_black_24dp"
             android:title="Logout" />
     </group>
 
