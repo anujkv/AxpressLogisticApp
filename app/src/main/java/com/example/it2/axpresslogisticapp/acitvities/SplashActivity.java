@@ -1,9 +1,11 @@
-package com.example.it2.axpresslogisticapp;
+package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.it2.axpresslogisticapp.R;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -20,7 +20,7 @@
             android:id="@+id/grid_item_iconId"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/engman"
+            android:src="@drawable/userlogo"
             android:layout_marginTop="10dp"/>
 
         <TextView

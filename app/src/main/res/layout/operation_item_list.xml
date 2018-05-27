@@ -6,29 +6,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/opt_itemCardView"
-    android:layout_marginBottom="5dp"
-    app:cardCornerRadius="5dp"
+    android:layout_marginBottom="0.5dp"
+    app:cardCornerRadius="1dp"
     android:background="@color/cardview_dark_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
+        android:padding="5dp"
         android:background="@color/colorPrimaryDark">
         <ImageView
             android:id="@+id/iconId"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/engman"/>
+            android:src="@drawable/userlogo"/>
         <TextView
-            android:id="@+id/textviewId"
+            android:id="@+id/opt_row_name_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Docket Tracker"
-            android:textSize="20dp"
-            android:textStyle="bold"
+            android:textSize="18dp"
             android:fontFamily="sans-serif"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"

@@ -1,4 +1,4 @@
-package com.example.it2.axpresslogisticapp;
+package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.it2.axpresslogisticapp.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplication(), "Login Successfully!!!", Toast.LENGTH_SHORT).show();
 
-                    startActivity(new Intent(LoginActivity.this, MainHomeActivity.class));
+                    startActivity(new Intent(LoginActivity.this, OperationActivity.class));
                     finish();
                 }
             }

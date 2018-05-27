@@ -1,4 +1,4 @@
-package com.example.it2.axpresslogisticapp;
+package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.it2.axpresslogisticapp.R;
 
 /**
  * Created by IT2 on 5/25/2018.

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AxpressLogisticApp</string>
+    <string name="app_name">Axpress Logistic App</string>
     <string name="registrationPage">Registration</string>
     <string name="loginPage">Login</string>
     <string name="redirectOnRegistration_text_btn">No account yet? Create one</string>
@@ -22,4 +22,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="operations">Operations</string>
+    <string name="searchbytype">Search by Type</string>
+    <string name="searchbtn">Search</string>
+    <string name="docket_enquiry">Docket/Invoice Enquiry</string>
 </resources>

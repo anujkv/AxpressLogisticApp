@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.it2.axpresslogisticapp.SplashActivity">
+    tools:context="com.example.it2.axpresslogisticapp.acitvities.SplashActivity">
 
     <ImageView
         android:id="@+id/splashicon"
@@ -20,7 +20,7 @@
         android:layout_below="@+id/splashicon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="Axpress logistic App"
+        android:text="@string/app_name"
         android:textColor="@color/text_iconColor"
         android:textSize="18sp"
         android:textStyle="italic" />
