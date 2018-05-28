@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplication(), "Login Successfully!!!", Toast.LENGTH_SHORT).show();
 
-                    startActivity(new Intent(LoginActivity.this, OperationActivity.class));
+                    startActivity(new Intent(LoginActivity.this, MainHomeActivity.class));
                     finish();
                 }
             }

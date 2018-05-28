@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
         login = findViewById(R.id.btn_login);
         signup = findViewById(R.id.btn_signup);
+        signup.setText(getString(R.string.signup));
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

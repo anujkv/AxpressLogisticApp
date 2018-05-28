@@ -1,17 +1,21 @@
 package com.example.it2.axpresslogisticapp.adaptor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.acitvities.DocketEnquiry;
 import com.example.it2.axpresslogisticapp.model.OperationModel;
 
 import java.util.List;
@@ -43,9 +47,18 @@ public class OperationAdaptor extends RecyclerView.Adapter<OperationAdaptor.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         Glide.with(context).load(operationModels.get(i).getOpt_icon()).apply(requestOptions).into(viewHolder.user_icon);
         viewHolder.tv_name.setText(operationModels.get(i).getOpt_name());
+        viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, DocketEnquiry.class);
+                intent.putExtra("name",operationModels.get(i).getOpt_name().toString());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -57,12 +70,14 @@ public class OperationAdaptor extends RecyclerView.Adapter<OperationAdaptor.View
 
         TextView tv_name;
         ImageView user_icon;
+        LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tv_name = itemView.findViewById(R.id.opt_row_name_id);
             user_icon = itemView.findViewById(R.id.iconId);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
         }
     }
 }

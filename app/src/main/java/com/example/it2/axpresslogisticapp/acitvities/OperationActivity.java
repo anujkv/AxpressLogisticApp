@@ -1,9 +1,12 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
+import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,10 +36,19 @@ public class OperationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
 
+        Intent i = getIntent();
+
+        // Selected image id
+        int position = i.getExtras().getInt("id");
+      //  Toast.makeText(OperationActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+
         recyclerView = findViewById(R.id.operation_recyclerViewId);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         functionJsonCall();
+
+
+
     }
 
     private void functionJsonCall() {

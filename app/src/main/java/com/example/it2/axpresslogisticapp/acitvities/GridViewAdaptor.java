@@ -40,16 +40,14 @@ class GridViewAdaptor extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        Toast.makeText(mContext,"clicked getItemId "+ i,Toast.LENGTH_SHORT).show();
+
         return i;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View grid;
-        LayoutInflater inflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (view == null) {
             grid = new View(mContext);
             grid = inflater.inflate(R.layout.homepage_grid_item, null);
@@ -62,4 +60,10 @@ class GridViewAdaptor extends BaseAdapter {
         }
         return grid;
     }
+
+   public interface onClick{
+        public void Click(int position);
+   }
+
+
 }

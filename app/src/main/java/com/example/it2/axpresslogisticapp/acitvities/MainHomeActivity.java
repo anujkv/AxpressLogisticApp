@@ -1,6 +1,7 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -12,7 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
 
@@ -21,30 +25,28 @@ import java.util.ArrayList;
 public class MainHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static String[] gridViewStrings = {
+            "Operations",
+            "HRMS",
+            "CRM",
+            "Activities",
+            "Financial",
+            "My Tickets",
+    };
+    public static int[] gridViewIcons = {
+            R.mipmap.icon_operation,
+            R.mipmap.icon_hrms,
+            R.mipmap.icon_crm,
+            R.mipmap.icon_activities,
+            R.mipmap.icon_financial,
+            R.mipmap.icon_tickets,
+    };
     CollapsingToolbarLayout collapsingToolbarLayout;
     CoordinatorLayout coordinatorLayout;
     GridView gridView;
     Toolbar toolbar;
     Context context;
     ArrayList arrayList;
-
-    public static  String[] gridViewStrings = {
-        "Operations",
-        "HRMS",
-        "CRM",
-        "Activities",
-        "Financial",
-        "My Tickets",
-    };
-
-    public static  int[] gridViewIcons = {
-        R.mipmap.icon_operation,
-        R.mipmap.icon_hrms,
-        R.mipmap.icon_crm,
-        R.mipmap.icon_activities,
-        R.mipmap.icon_financial,
-        R.mipmap.icon_tickets,
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,40 @@ public class MainHomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         gridView = findViewById(R.id.grid);
 
-        gridView.setAdapter(new GridViewAdaptor(this, gridViewStrings, gridViewIcons));
+
+        GridViewAdaptor gridViewAdaptor = new GridViewAdaptor(MainHomeActivity.this, gridViewStrings, gridViewIcons);
+        gridView.setAdapter(gridViewAdaptor);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                // Sending image id to FullScreenActivity
+                switch (position) {
+
+                    case 0:
+                        Intent i = new Intent(MainHomeActivity.this, OperationActivity.class);
+                        // passing array index
+                        i.putExtra("id", position);
+                        startActivity(i);
+                        break;
+                    case 1:
+                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        break;
+
+                }
+
+            }
+        });
+
+
+        //  gridView.setAdapter(new GridViewAdaptor(this, gridViewStrings, gridViewIcons));
         initInstances();
 
 
@@ -68,6 +103,7 @@ public class MainHomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     private void initInstances() {
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_android_layoutId);
@@ -113,13 +149,21 @@ public class MainHomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_profile) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_operations) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_hrms) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_crm) {
+
+        } else if (id == R.id.nav_activities) {
+
+        } else if (id == R.id.nav_financial) {
+
+        } else if (id == R.id.nav_mytickets) {
+
+        } else if (id == R.id.nav_Logout) {
 
         } else if (id == R.id.nav_share) {
 
@@ -131,4 +175,6 @@ public class MainHomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
