@@ -34,26 +34,34 @@ public class LoginActivity extends AppCompatActivity {
 
                 employeeCodeValue = employee_code.getText().toString().trim();
                 passwordValue = password.getText().toString().trim();
-
-                if (employeeCodeValue.isEmpty()) {
-                    Toast.makeText(getApplication(), "Enter the employee code", Toast.LENGTH_SHORT).show();
-                } else if (passwordValue.isEmpty()) {
-                    Toast.makeText(getApplication(), "Enter the password", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplication(), "Login Successfully!!!", Toast.LENGTH_SHORT).show();
-
-                    startActivity(new Intent(LoginActivity.this, MainHomeActivity.class));
-                    finish();
-                }
+                userLogin();
             }
         });
 
         redirectToRegistrationActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
-                finish();
+                userRegistration();
+
             }
         });
+    }
+
+    private void userRegistration() {
+        startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
+        finish();
+    }
+
+    private void userLogin() {
+        if (employeeCodeValue.isEmpty() && employeeCodeValue.length() == 7) {
+            Toast.makeText(getApplication(), "Enter the employee code", Toast.LENGTH_SHORT).show();
+        } else if (passwordValue.isEmpty()) {
+            Toast.makeText(getApplication(), "Enter the password", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplication(), "Login Successfully!!!", Toast.LENGTH_SHORT).show();
+
+            startActivity(new Intent(LoginActivity.this, MainHomeActivity.class));
+            finish();
+        }
     }
 }

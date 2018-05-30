@@ -25,4 +25,6 @@
     <string name="searchbytype">Search by Type</string>
     <string name="searchbtn">Search</string>
     <string name="docket_enquiry">Docket/Invoice Enquiry</string>
+    <string name="hrms">HRMS</string>
+    <string name="attendence_record">Attendence Record</string>
 </resources>

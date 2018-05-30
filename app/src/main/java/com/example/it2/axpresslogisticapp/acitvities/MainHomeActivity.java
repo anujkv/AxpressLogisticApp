@@ -34,12 +34,12 @@ public class MainHomeActivity extends AppCompatActivity
             "My Tickets",
     };
     public static int[] gridViewIcons = {
-            R.mipmap.icon_operation,
-            R.mipmap.icon_hrms,
-            R.mipmap.icon_crm,
-            R.mipmap.icon_activities,
-            R.mipmap.icon_financial,
-            R.mipmap.icon_tickets,
+            R.drawable.icon_operation,
+            R.drawable.icon_hrms,
+            R.drawable.icon_crm,
+            R.drawable.icon_activities,
+            R.drawable.icon_financial,
+            R.drawable.icon_tickets,
     };
     CollapsingToolbarLayout collapsingToolbarLayout;
     CoordinatorLayout coordinatorLayout;
@@ -68,13 +68,16 @@ public class MainHomeActivity extends AppCompatActivity
                 switch (position) {
 
                     case 0:
-                        Intent i = new Intent(MainHomeActivity.this, OperationActivity.class);
+                        Intent intent_opt = new Intent(MainHomeActivity.this, OperationActivity.class);
                         // passing array index
-                        i.putExtra("id", position);
-                        startActivity(i);
+                        intent_opt.putExtra("id", position);
+                        startActivity(intent_opt);
                         break;
                     case 1:
-                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Intent intent_hrms = new Intent(MainHomeActivity.this, HrmsActivity.class);
+                        // passing array index
+                        intent_hrms.putExtra("id", position);
+                        startActivity(intent_hrms);
                         break;
                     case 2:
                         Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();

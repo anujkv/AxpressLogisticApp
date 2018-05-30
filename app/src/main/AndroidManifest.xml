@@ -31,19 +31,19 @@
             android:label="@string/loginPage" />
         <activity
             android:name=".acitvities.OperationActivity"
-            android:label="@string/operations">
-
-        </activity>
+            android:label="@string/operations" />
         <activity
             android:name=".acitvities.MainHomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.DocketEnquiry"
-            android:label="@string/docket_enquiry">
-
+            android:label="@string/docket_enquiry" />
+        <activity
+            android:name=".acitvities.HrmsActivity"
+            android:label="@string/hrms">
+            >
         </activity>
+        <activity android:name=".acitvities.MarkAttendanceActivity"></activity>
     </application>
 
 </manifest>
