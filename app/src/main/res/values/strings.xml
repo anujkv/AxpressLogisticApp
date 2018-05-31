@@ -27,4 +27,6 @@
     <string name="docket_enquiry">Docket/Invoice Enquiry</string>
     <string name="hrms">HRMS</string>
     <string name="attendence_record">Attendence Record</string>
+    <string name="google_api_key">AIzaSyBAaJY8heYegZKk32GFYHw9rc-CiyxUr-A</string>
+    <string name="date_time">Date :</string>
 </resources>

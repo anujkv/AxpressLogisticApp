@@ -70,7 +70,7 @@ public class HrmsActivity extends AppCompatActivity {
                 switch (position) {
 
                     case 0:
-                        Intent intent_opt = new Intent(HrmsActivity.this, OperationActivity.class);
+                        Intent intent_opt = new Intent(HrmsActivity.this, MarkAttendanceActivity.class);
                         // passing array index
                         intent_opt.putExtra("id", position);
                         startActivity(intent_opt);
