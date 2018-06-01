@@ -91,11 +91,6 @@ public class MainHomeActivity extends AppCompatActivity
             }
         });
 
-
-        //  gridView.setAdapter(new GridViewAdaptor(this, gridViewStrings, gridViewIcons));
-        initInstances();
-
-
         //Drawerlayout functionality*************
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -108,11 +103,6 @@ public class MainHomeActivity extends AppCompatActivity
     }
 
 
-    private void initInstances() {
-        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_android_layoutId);
-        coordinatorLayout = findViewById(R.id.android_coordinator_layoutId);
-        collapsingToolbarLayout.setTitle("Logistic Functions");
-    }
 
     @Override
     public void onBackPressed() {

@@ -42,9 +42,9 @@ public class GridViewHrms extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (view == null) {
             grid = new View(mContext);
-            grid = inflater.inflate(R.layout.homepage_grid_item, null);
-            TextView textView = grid.findViewById(R.id.grid_item_textviewId);
-            ImageView imageView = grid.findViewById(R.id.grid_item_iconId);
+            grid = inflater.inflate(R.layout.hrms_grid_item, null);
+            TextView textView = grid.findViewById(R.id.gridhrms_item_textviewId);
+            ImageView imageView = grid.findViewById(R.id.gridhrms_item_iconId);
             textView.setText(string[i]);
             imageView.setImageResource(Iconid[i]);
         } else {

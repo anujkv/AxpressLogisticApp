@@ -4,13 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,19 +13,14 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
-import com.example.it2.axpresslogisticapp.adaptor.HRMSAdaptor;
-import com.example.it2.axpresslogisticapp.adaptor.OperationAdaptor;
-import com.example.it2.axpresslogisticapp.model.HRMSModel;
-import com.example.it2.axpresslogisticapp.model.OperationModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HrmsActivity extends AppCompatActivity {
 
     public static String[] gridViewStrings = {
             "Mark Attendance",
-            "Leave Info.",
+            "Leave Information",
             "Apply Leave",
             "Attendence Summary",
             "Pay Slip",
@@ -55,11 +45,11 @@ public class HrmsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hrms);
-        gridView = findViewById(R.id.grid);
-        gridView = findViewById(R.id.grid);
+        gridView = findViewById(R.id.gridhrms);
+        gridView = findViewById(R.id.gridhrms);
 
 
-        GridViewHrms gridViewHrms  = new GridViewHrms(HrmsActivity.this, gridViewStrings, gridViewIcons);
+        GridViewHrms gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewHrms);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,12 +72,14 @@ public class HrmsActivity extends AppCompatActivity {
                         startActivity(intent_hrms);
                         break;
                     case 2:
-                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Apply Leave " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
-                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Attendance Summary " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
-
+                    case 4:
+                        Toast.makeText(getApplicationContext(), "Document Scanning " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        break;
                 }
 
             }
