@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="5"
+    android:orientation="vertical">
+
+    <include layout="@layout/search_formate"/>
+
+    <TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="5">
+
+    <TableRow
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:padding="3dip"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="@string/table_layout_4_dates" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:gravity="center"
+            android:padding="3dip"
+            android:textStyle="bold"
+            android:text="@string/table_layout_4_open_in" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:padding="3dip"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="@string/table_layout_4_out" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:padding="3dip"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="@string/table_layout_4_status" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:gravity="center"
+            android:padding="3dip"
+            android:text="@string/table_layout_4_save_remark" />
+    </TableRow>
+    <TableRow android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/dates"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:padding="3dip"
+            android:gravity="center"
+            android:text="1st June,2018" />
+
+        <TextView
+            android:id="@+id/in_timing"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:gravity="center"
+            android:padding="3dip"
+            android:text="8:53" />
+
+        <TextView
+            android:id="@+id/out_timing"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:padding="3dip"
+            android:gravity="center"
+            android:text="19:01"/>
+
+        <TextView
+            android:id="@+id/attendance_status"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:padding="3dip"
+            android:gravity="center"
+            android:text="Present" />
+
+        <TextView
+            android:id="@+id/attendance_remark"
+            android:layout_width="0dp"
+            android:layout_weight=".2"
+            android:gravity="center"
+            android:padding="3dip"
+            android:text="" />
+    </TableRow>
+    </TableLayout>
+
+</LinearLayout>

@@ -66,7 +66,7 @@ public class HrmsActivity extends AppCompatActivity {
                         startActivity(intent_opt);
                         break;
                     case 1:
-                        Intent intent_hrms = new Intent(HrmsActivity.this, OperationActivity.class);
+                        Intent intent_hrms = new Intent(HrmsActivity.this, LeaveInfoActivity.class);
                         // passing array index
                         intent_hrms.putExtra("id", position);
                         startActivity(intent_hrms);
@@ -75,7 +75,7 @@ public class HrmsActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Apply Leave " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
-                        Toast.makeText(getApplicationContext(), "Attendance Summary " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(HrmsActivity.this,AttendanceSummaryActivity.class));
                         break;
                     case 4:
                         Toast.makeText(getApplicationContext(), "Document Scanning " + String.valueOf(position), Toast.LENGTH_SHORT).show();

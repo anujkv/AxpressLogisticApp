@@ -34,8 +34,7 @@
             android:layout_marginTop="3dp"
             android:text="@string/operations"
             android:layout_below="@+id/grid_item_iconId"
-            android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/primaryTextColor"
             android:textAlignment="center"/>
 

@@ -7,7 +7,7 @@
     <string name="employee_id">Employee ID</string>
     <string name="employee_name">Name</string>
     <string name="gender">Gender</string>
-    <string name="branch">Branch</string>
+    <string name="branch">Branch :</string>
     <string name="designation">Designation</string>
     <string name="email_id">Email ID.</string>
     <string name="contact_no">Contact No.</string>
@@ -29,4 +29,17 @@
     <string name="attendence_record">Attendence Record</string>
     <string name="google_api_key">AIzaSyBAaJY8heYegZKk32GFYHw9rc-CiyxUr-A</string>
     <string name="date_time">Date :</string>
+    <string name="mark_attendance">Mark Attendance</string>
+    <string name="table_layout_4_dates">Dates</string>
+    <string name="table_layout_4_open_in">In</string>
+    <string name="table_layout_4_out">Out</string>
+    <string name="table_layout_4_save_remark">Remark</string>
+    <string name="table_layout_4_status">Status</string>
+    <string name="attendance_summary">Attendance Summary</string>
+    <string name="searchbyname_id">Search By Name / Emp. ID</string>
+    <string name="name_id">Name / Employee ID</string>
+    <string name="employee_not_found">Employee not found</string>
+    <string name="department">Development : </string>
+    <string name="branch_location">Gurgaon</string>
+    <string name="leave_info">Leave Info.</string>
 </resources>

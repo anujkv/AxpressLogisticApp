@@ -20,7 +20,7 @@ import com.example.it2.axpresslogisticapp.R;
 public class MarkAttendanceActivity extends AppCompatActivity {
     static final int REQUEST_LOCATION = 1;
 
-    TextView username,userid,date_time;
+    TextView username, userid, date_time;
     ImageView userImage;
     Button attendance_btn;
     Location location;
@@ -28,18 +28,19 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
     double company_lat = 28.4996670;
     double company_long = 77.0739650;
-    double nearbycompany_min_lat = 28.4995000;
-    double nearbycompany_max_lat = 28.4997500;
-    double nearbycompany_min_long = 28.4996670;
-    double nearbycompany_max_long = 77.0741000;
+    double nearbycompany_min_lat = 28.4995150;
+    double nearbycompany_max_lat = 28.4997370;
+    double nearbycompany_min_long = 77.0740500;
+    double nearbycompany_max_long = 77.0739430;
 
     double lat, lon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_attendance);
 
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
 
         username = findViewById(R.id.user_nameId);
@@ -54,35 +55,32 @@ public class MarkAttendanceActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
-                    Toast.makeText(getApplicationContext(),"Attendance Submitted Successfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Attendance Submitted Successfully", Toast.LENGTH_SHORT).show();
                     attendance_btn.setClickable(false);
                     attendance_btn.setText("Attendance Submitted");
                     attendance_btn.setBackgroundColor(R.drawable.grayshade);
                 } else {
-                    String lat_long = "Latitude = "+ lat +" Longitude = "+ lon;
-                    Toast.makeText(getApplicationContext(),lat_long,Toast.LENGTH_SHORT).show();
+                    String lat_long = "Latitude = " + lat + " Longitude = " + lon;
+                    Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_SHORT).show();
                 }
-
-
+                String lat_long = "Latitude = " + lat + " Longitude = " + lon;
+                Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-        }
+    }
 
     private void getLocation() {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.
                 ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.
-                checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+                checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-            if(location != null) {
+            if (location != null) {
                 lat = location.getLatitude();
-                lon =  location.getLongitude();
+                lon = location.getLongitude();
             }
         }
     }
