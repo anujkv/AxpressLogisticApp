@@ -26,11 +26,11 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     Location location;
     LocationManager locationManager;
 
-    double company_lat = 28.4996670;
-    double company_long = 77.0739650;
+    double company_lat = 28.4995993;
+    double company_long = 77.0738609;
     double nearbycompany_min_lat = 28.4995150;
-    double nearbycompany_max_lat = 28.4997370;
-    double nearbycompany_min_long = 77.0740500;
+    double nearbycompany_max_lat = 28.4997600;
+    double nearbycompany_min_long = 77.0740750;
     double nearbycompany_max_long = 77.0739430;
 
     double lat, lon;

@@ -112,7 +112,7 @@
                         android:layout_marginLeft="10dp"
                         android:textSize="15dp"
                         android:layout_weight="1"
-                        android:text="@string/department" />
+                        android:text="Android Developer" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -246,8 +246,5 @@
             </TableRow>
         </TableLayout>-->
     <!--</ScrollView>-->
-
-
-
 
 </LinearLayout>
