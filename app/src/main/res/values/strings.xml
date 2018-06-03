@@ -38,8 +38,9 @@
     <string name="attendance_summary">Attendance Summary</string>
     <string name="searchbyname_id">Search By Name / Emp. ID</string>
     <string name="name_id">Name / Employee ID</string>
-    <string name="employee_not_found">Employee not found</string>
+    <string name="employee_not_found">Employee not found!!</string>
     <string name="department">Development : </string>
     <string name="branch_location">Gurgaon</string>
     <string name="leave_info">Leave Info.</string>
+    <string name="blank_field_error">Enter the correct input!!</string>
 </resources>
