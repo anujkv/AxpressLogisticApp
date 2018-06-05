@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,15 +14,14 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
     Button login, signup;
-    //google auth...
     FirebaseAuth auth;
     FirebaseAuth.AuthStateListener authStateListener;
 
-    /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authStateListener);
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +32,18 @@ public class MainActivity extends AppCompatActivity {
         signup = findViewById(R.id.btn_signup);
         signup.setText(getString(R.string.signup));
 
-//        auth = FirebaseAuth.getInstance();
-//        //google logged In condition checking , its is already logged In or not...
-//        authStateListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                if(firebaseAuth.getCurrentUser() != null){
-//                    startActivity(new Intent(MainActivity.this,MainHomeActivity.class));
-//                }
-//            }
-//        };
+        auth = FirebaseAuth.getInstance();
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null)  {
+
+                    startActivity(new Intent(MainActivity.this,MainHomeActivity.class));
+                    finish();
+                }
+            }
+        };
 
 
         login.setOnClickListener(new View.OnClickListener() {

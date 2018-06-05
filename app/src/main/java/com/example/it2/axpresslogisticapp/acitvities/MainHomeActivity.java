@@ -53,11 +53,14 @@ public class MainHomeActivity extends AppCompatActivity
     Context context;
     ArrayList arrayList;
 
-    //google auth...
     FirebaseAuth auth;
-    FirebaseAuth.AuthStateListener stateListener;
-    GoogleApiClient googleApiClient;
+    FirebaseAuth.AuthStateListener authStateListener;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +72,12 @@ public class MainHomeActivity extends AppCompatActivity
 
         auth = FirebaseAuth.getInstance();
 
-        stateListener = new FirebaseAuth.AuthStateListener() {
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() == null){
                     startActivity(new Intent(MainHomeActivity.this,MainActivity.class));
-                    Toast.makeText(getApplicationContext(),"Condition check",
-                            Toast.LENGTH_SHORT).show();
-
+                    finish();
                 }
             }
         };
@@ -111,10 +112,8 @@ public class MainHomeActivity extends AppCompatActivity
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
-                        auth.signOut();
                         Toast.makeText(getApplicationContext(), "No Activity " +
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
-                        finish();
                         break;
 
                 }
@@ -206,8 +205,7 @@ public class MainHomeActivity extends AppCompatActivity
     }
 
     private void logout() {
-        Toast.makeText(getApplicationContext(),"EXIT",Toast.LENGTH_SHORT).show();
-        auth.signOut();
+        FirebaseAuth.getInstance().signOut();
         finish();
     }
 
