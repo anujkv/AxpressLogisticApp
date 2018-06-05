@@ -27,7 +27,6 @@
     <string name="docket_enquiry">Docket/Invoice Enquiry</string>
     <string name="hrms">HRMS</string>
     <string name="attendence_record">Attendence Record</string>
-    <string name="google_api_key">AIzaSyBAaJY8heYegZKk32GFYHw9rc-CiyxUr-A</string>
     <string name="date_time">Date :</string>
     <string name="mark_attendance">Mark Attendance</string>
     <string name="table_layout_4_dates">Dates</string>
@@ -43,4 +42,5 @@
     <string name="branch_location">Gurgaon</string>
     <string name="leave_info">Leave Info.</string>
     <string name="blank_field_error">Enter the correct input!!</string>
+    <string name="or">or</string>
 </resources>

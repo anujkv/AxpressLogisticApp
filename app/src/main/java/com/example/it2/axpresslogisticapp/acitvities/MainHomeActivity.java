@@ -3,6 +3,7 @@ package com.example.it2.axpresslogisticapp.acitvities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,10 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -48,6 +53,12 @@ public class MainHomeActivity extends AppCompatActivity
     Context context;
     ArrayList arrayList;
 
+    //google auth...
+    FirebaseAuth auth;
+    FirebaseAuth.AuthStateListener stateListener;
+    GoogleApiClient googleApiClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +67,22 @@ public class MainHomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         gridView = findViewById(R.id.grid);
 
+        auth = FirebaseAuth.getInstance();
 
-        GridViewAdaptor gridViewAdaptor = new GridViewAdaptor(MainHomeActivity.this, gridViewStrings, gridViewIcons);
+        stateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() == null){
+                    startActivity(new Intent(MainHomeActivity.this,MainActivity.class));
+                    Toast.makeText(getApplicationContext(),"Condition check",
+                            Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        };
+
+        GridViewAdaptor gridViewAdaptor = new GridViewAdaptor(MainHomeActivity.this,
+                gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewAdaptor);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,22 +93,28 @@ public class MainHomeActivity extends AppCompatActivity
                 switch (position) {
 
                     case 0:
-                        Intent intent_opt = new Intent(MainHomeActivity.this, OperationActivity.class);
+                        Intent intent_opt = new Intent(MainHomeActivity.this,
+                                OperationActivity.class);
                         // passing array index
                         intent_opt.putExtra("id", position);
                         startActivity(intent_opt);
                         break;
                     case 1:
-                        Intent intent_hrms = new Intent(MainHomeActivity.this, HrmsActivity.class);
+                        Intent intent_hrms = new Intent(MainHomeActivity.this,
+                                HrmsActivity.class);
                         // passing array index
                         intent_hrms.putExtra("id", position);
                         startActivity(intent_hrms);
                         break;
                     case 2:
-                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "No Activity " +
+                                String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
-                        Toast.makeText(getApplicationContext(), "No Activity " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        auth.signOut();
+                        Toast.makeText(getApplicationContext(), "No Activity " +
+                                String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        finish();
                         break;
 
                 }
@@ -110,7 +141,10 @@ public class MainHomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
         }
     }
 
@@ -130,6 +164,7 @@ public class MainHomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            logout();
             return true;
         }
 
@@ -157,6 +192,7 @@ public class MainHomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_mytickets) {
 
         } else if (id == R.id.nav_Logout) {
+            logout();
 
         } else if (id == R.id.nav_share) {
 
@@ -167,6 +203,12 @@ public class MainHomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        Toast.makeText(getApplicationContext(),"EXIT",Toast.LENGTH_SHORT).show();
+        auth.signOut();
+        finish();
     }
 
 

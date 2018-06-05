@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "750023793523",
+    "firebase_url": "https://model-myth-205704.firebaseio.com",
+    "project_id": "model-myth-205704",
+    "storage_bucket": "model-myth-205704.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750023793523:android:1fde648492c04c49",
+        "android_client_info": {
+          "package_name": "com.example.it2.axpresslogisticapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750023793523-p2pn58k6td8i3gig23fiuj64g18a7db1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.it2.axpresslogisticapp",
+            "certificate_hash": "48e8e8aec5d97d2c26f11c42e5e342c5ddf64ad1"
+          }
+        },
+        {
+          "client_id": "750023793523-d5cmaasg1isn9ui0jifsevn39htoohv9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "750023793523-tcqr81uqm582ch9mnk0j6i1tnd61vup9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "750023793523-d5cmaasg1isn9ui0jifsevn39htoohv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7x5XMZXg6oAuX1qSWD4DHQA6-o3N_btY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750023793523-d5cmaasg1isn9ui0jifsevn39htoohv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
