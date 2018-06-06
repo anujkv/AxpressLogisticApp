@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
     Button login, signup;
+    String empId,pass;
     FirebaseAuth auth;
     FirebaseAuth.AuthStateListener authStateListener;
 

@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
@@ -52,9 +54,14 @@ public class MainHomeActivity extends AppCompatActivity
     Toolbar toolbar;
     Context context;
     ArrayList arrayList;
+    TextView empEmailId,empName;
+    ImageView empImage;
+    String employeeID,employeeNAME;
 
     FirebaseAuth auth;
     FirebaseAuth.AuthStateListener authStateListener;
+
+    public Bundle getBundle = null;
 
     @Override
     protected void onStart() {
@@ -70,6 +77,7 @@ public class MainHomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         gridView = findViewById(R.id.grid);
 
+
         auth = FirebaseAuth.getInstance();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -78,10 +86,24 @@ public class MainHomeActivity extends AppCompatActivity
                 if(firebaseAuth.getCurrentUser() == null){
                     startActivity(new Intent(MainHomeActivity.this,MainActivity.class));
                     finish();
+                } else {
+                    Toast.makeText(getApplicationContext(),"Hey "+ firebaseAuth.
+                            getCurrentUser().getDisplayName(),Toast.LENGTH_SHORT).show();
+//                    empEmailId.setText(firebaseAuth.getCurrentUser().getEmail());
+                    employeeID = firebaseAuth.getCurrentUser().getEmail();
+                    employeeNAME = firebaseAuth.getCurrentUser().getDisplayName();
+//                    empName.setText(firebaseAuth.getCurrentUser().getDisplayName());
+//                    empImage.setImageBitmap(firebaseAuth.getCurrentUser().getPhotoUrl());
                 }
             }
         };
 
+//        if(employeeID.isEmpty()){
+//
+//        }else{
+//            empEmailId.setText(employeeID);
+//            empName.setText(employeeNAME);
+//        }
         GridViewAdaptor gridViewAdaptor = new GridViewAdaptor(MainHomeActivity.this,
                 gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewAdaptor);
@@ -128,8 +150,20 @@ public class MainHomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View navView =  navigationView.getHeaderView(0);
+        //reference to views
+
+        empEmailId = navView.findViewById(R.id.user_email);
+        empName = navView.findViewById(R.id.user_name);
+        empImage = navView.findViewById(R.id.user_imageView);
+        //set views
+//        empImage.setImageResource(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl());
+        empName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        empEmailId.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
 
@@ -179,12 +213,15 @@ public class MainHomeActivity extends AppCompatActivity
         if (id == R.id.nav_profile) {
             // Handle the camera action
         } else if (id == R.id.nav_operations) {
+//            startActivity(new Intent(getApplicationContext(),OperationActivity.class));
 
         } else if (id == R.id.nav_hrms) {
+//            startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
 
         } else if (id == R.id.nav_crm) {
 
         } else if (id == R.id.nav_activities) {
+//            startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
 
         } else if (id == R.id.nav_financial) {
 

@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     Button login_button;
     TextView redirectToRegistrationActivity;
     String employeeCodeValue, passwordValue;
+    Bundle bundle;
 
     //google signIn button..
     SignInButton signInButton;
@@ -177,14 +178,20 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     private void userLogin(String employeeCodeValue, String passwordValue) {
         this.employeeCodeValue = employeeCodeValue;
         this.passwordValue = passwordValue;
-        if (employeeCodeValue.isEmpty() && employeeCodeValue.length() == 7) {
+        if (this.employeeCodeValue.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Enter the employee code", LENGTH_SHORT).show();
         } else if (this.passwordValue.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Enter the password", LENGTH_SHORT).show();
         } else {
+            bundle = new Bundle();
+            bundle.putString("empcode",employeeCodeValue);
+            bundle.putString("empPassword",passwordValue);
             Toast.makeText(getApplicationContext(), "Login Successfully!!!", LENGTH_SHORT).show();
+            Intent i = new Intent(getApplicationContext(), MainHomeActivity.class);
+            i.putExtras(bundle);
+            startActivity(i);
 
-            startActivity(new Intent(LoginActivity.this, MainHomeActivity.class));
+//            startActivity(new Intent(LoginActivity.this, MainHomeActivity.class));
             finish();
         }
     }
