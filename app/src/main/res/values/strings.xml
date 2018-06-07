@@ -43,4 +43,7 @@
     <string name="leave_info">Leave Info.</string>
     <string name="blank_field_error">Enter the correct input!!</string>
     <string name="or">or</string>
+    <string name="vehical_enquiry">Vehicale Tracking</string>
+    <string name="add_customer">Add Customer</string>
+    <string name="qrcode">QR Code Scanning</string>
 </resources>

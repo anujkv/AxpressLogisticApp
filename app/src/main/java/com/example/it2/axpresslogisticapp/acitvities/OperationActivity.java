@@ -1,108 +1,97 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Path;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.it2.axpresslogisticapp.adaptor.OperationAdaptor;
-import com.example.it2.axpresslogisticapp.model.OperationModel;
 import com.example.it2.axpresslogisticapp.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class OperationActivity extends AppCompatActivity {
-//    private String URL_JSON = "https://gist.githubusercontent.com/aws1994/f583d54e5af8e56173492d3f60dd5ebf/raw/c7796ba51d5a0d37fc756cf0fd14e54434c547bc/anime.json";
-//    private JsonArrayRequest ArrayRequest ;
-//    private RequestQueue requestQueue ;
-    private RecyclerView recyclerView;
-    private List<OperationModel> operationModels = new ArrayList<>();
+    public static String[] gridViewStrings = {
+            "Docket / Invoice Enquiry",
+            "Vehical Enquiry",
+            "New Customer",
+            "QR Code Scanner",
+            "Document Scanning",
+    };
+    public static int[] gridViewIcons = {
+            R.drawable.icon_operation,
+            R.drawable.icon_vehical,
+            R.drawable.icon_add_customer,
+            R.drawable.icon_qrcode,
+            R.drawable.icon_scanning,
+    };
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    CoordinatorLayout coordinatorLayout;
+    GridView gridView;
+    Toolbar toolbar;
+    Context context;
+    ArrayList arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
+        gridView = findViewById(R.id.gridhrms);
+        gridView = findViewById(R.id.gridhrms);
 
-        Intent i = getIntent();
 
-        // Selected image id
-        int position = i.getExtras().getInt("id");
-      //  Toast.makeText(OperationActivity.this,String.valueOf(position),Toast.LENGTH_SHORT).show();
+        GridViewHrms gridViewHrms = new GridViewHrms(OperationActivity.this, gridViewStrings, gridViewIcons);
+        gridView.setAdapter(gridViewHrms);
 
-        recyclerView = findViewById(R.id.operation_recyclerViewId);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-        operationModels = new ArrayList<>();
-        dataload();
-//        functionJsonCall();
-    }
+                // Sending image id to FullScreenActivity
+                switch (position) {
 
-    private void dataload() {
-        OperationModel opt = new OperationModel("Docket/ Invoice Enquiry","R.mipmap.icon_operation");
-        operationModels.add(opt);
-        setOptadapter(operationModels);
-    }
-
-//    private void functionJsonCall() {
-//
-//        ArrayRequest = new JsonArrayRequest(URL_JSON, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//
-//                JSONObject jsonObject = null;
-//
-//
-//                for (int i = 0 ; i<response.length();i++) {
-//
-//                    //Toast.makeText(getApplicationContext(),String.valueOf(i),Toast.LENGTH_SHORT).show();
-//
-//                    try {
-//
-//                        jsonObject = response.getJSONObject(i);
-//                        OperationModel optactivity = new OperationModel();
-//
-//                        optactivity.setOpt_name(jsonObject.getString("name"));
-//                        optactivity.setOpt_icon(jsonObject.getString("img"));
-////                        Toast.makeText(OperationActivity.this,optactivity.toString(),Toast.LENGTH_SHORT).show();
-//                        operationModels.add(optactivity);
-//                    }
-//                    catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                setOptadapter(operationModels);
-//            }
-//
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//
-//
-//        requestQueue = Volley.newRequestQueue(OperationActivity.this);
-//        requestQueue.add(ArrayRequest);
-//    }
-//
-    private void setOptadapter(List<OperationModel> operationModels) {
-        OperationAdaptor myAdapter = new OperationAdaptor(this, operationModels) ;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(myAdapter);
+                    case 0:
+                        Intent intent_docket = new Intent(OperationActivity.this,
+                                DocketEnquiry.class);
+                        // passing array index
+                        intent_docket.putExtra("id", position);
+                        startActivity(intent_docket);
+                        break;
+                    case 1:
+                        Intent intent_vea = new Intent(OperationActivity.this,
+                                VehicalEnquiryActivity.class);
+                        // passing array index
+                        intent_vea.putExtra("id", position);
+                        startActivity(intent_vea);
+                        break;
+                    case 2:
+                        Intent intent_addC = new Intent(OperationActivity.this,
+                                AddCustomerActivity.class);
+                        // passing array index
+                        intent_addC.putExtra("id", position);
+                        startActivity(intent_addC);
+                        break;
+                    case 3:
+                        Intent intent_qrcode = new Intent(OperationActivity.this,
+                                QRCodeScanningActivity.class);
+                        // passing array index
+                        intent_qrcode.putExtra("id", position);
+                        startActivity(intent_qrcode);
+                        break;
+                    case 4:
+                        Intent intent_ds = new Intent(OperationActivity.this,
+                                DocketEnquiry.class);
+                        // passing array index
+                        intent_ds.putExtra("id", position);
+                        startActivity(intent_ds);
+                        break;
+                }
+            }
+        });
     }
 }

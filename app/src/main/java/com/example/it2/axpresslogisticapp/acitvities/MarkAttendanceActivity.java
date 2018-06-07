@@ -9,18 +9,32 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.it2.axpresslogisticapp.FetchData;
 import com.example.it2.axpresslogisticapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class MarkAttendanceActivity extends AppCompatActivity {
     static final int REQUEST_LOCATION = 1;
+    private JsonArrayRequest ArrayRequest ;
+    private RequestQueue requestQueue ;
+    private JSONArray jsonArray;
+    private JSONObject jsonObject;
 
-    TextView username, userid, date_time;
+
+    public static TextView username, userid, date_time;
     ImageView userImage;
     Button attendance_btn;
     Location location;
@@ -48,12 +62,25 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         date_time = findViewById(R.id.current_date_id);
         userImage = findViewById(R.id.user_imageId);
 
+        username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+//        Time today = new Time(Time.getCurrentTimezone());
+//        today.setToNow();
+
+
+
+
+
+
+
         attendance_btn = findViewById(R.id.attendance_btnId);
 
         attendance_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //json data fetch test case..
+//                FetchData process = new FetchData();
+//                process.execute();
+                ////////////////
                 if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
                     Toast.makeText(getApplicationContext(), "Attendance Submitted Successfully", Toast.LENGTH_SHORT).show();
                     attendance_btn.setClickable(false);

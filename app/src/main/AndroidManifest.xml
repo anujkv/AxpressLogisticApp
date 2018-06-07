@@ -42,7 +42,7 @@
             android:label="@string/docket_enquiry" />
         <activity
             android:name=".acitvities.HrmsActivity"
-            android:label="@string/hrms"></activity>
+            android:label="@string/hrms" />
         <activity
             android:name=".acitvities.MarkAttendanceActivity"
             android:label="@string/mark_attendance" />
@@ -51,7 +51,16 @@
             android:label="@string/attendance_summary" />
         <activity
             android:name=".acitvities.LeaveInfoActivity"
-            android:label="@string/leave_info"></activity>
+            android:label="@string/leave_info" />
+        <activity
+            android:name=".acitvities.VehicalEnquiryActivity"
+            android:label="@string/vehical_enquiry" />
+        <activity
+            android:name=".acitvities.AddCustomerActivity"
+            android:label="@string/add_customer" />
+        <activity
+            android:name=".acitvities.QRCodeScanningActivity"
+            android:label="@string/qrcode"></activity>
     </application>
 
 </manifest>
