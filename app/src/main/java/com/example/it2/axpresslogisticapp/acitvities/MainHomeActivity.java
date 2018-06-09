@@ -21,17 +21,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.it2.axpresslogisticapp.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class MainHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     public static String[] gridViewStrings = {
             "Operations",
             "HRMS",
@@ -56,54 +59,40 @@ public class MainHomeActivity extends AppCompatActivity
     ArrayList arrayList;
     TextView empEmailId,empName;
     ImageView empImage;
-    String employeeID,employeeNAME;
-
-    FirebaseAuth auth;
-    FirebaseAuth.AuthStateListener authStateListener;
+    String employeeID,employeeNAME,empEmail;
+    Intent intent;
+    String jsonString;
+    JSONObject jObj;
 
     public Bundle getBundle = null;
 
     @Override
     protected void onStart() {
         super.onStart();
-        auth.addAuthStateListener(authStateListener);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
+
+
+        try {
+            intent = getIntent();
+            jsonString = intent.getStringExtra("response");
+            jObj = new JSONObject(jsonString);
+            employeeNAME = jObj.optString("Employee_Name");
+            empEmail = jObj.optString("Employee_Email");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gridView = findViewById(R.id.grid);
-
-
-        auth = FirebaseAuth.getInstance();
-
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() == null){
-                    startActivity(new Intent(MainHomeActivity.this,MainActivity.class));
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(),"Hey "+ firebaseAuth.
-                            getCurrentUser().getDisplayName(),Toast.LENGTH_SHORT).show();
-//                    empEmailId.setText(firebaseAuth.getCurrentUser().getEmail());
-                    employeeID = firebaseAuth.getCurrentUser().getEmail();
-                    employeeNAME = firebaseAuth.getCurrentUser().getDisplayName();
-//                    empName.setText(firebaseAuth.getCurrentUser().getDisplayName());
-//                    empImage.setImageBitmap(firebaseAuth.getCurrentUser().getPhotoUrl());
-                }
-            }
-        };
-
-//        if(employeeID.isEmpty()){
-//
-//        }else{
-//            empEmailId.setText(employeeID);
-//            empName.setText(employeeNAME);
-//        }
+//        Toast.makeText(getApplicationContext(),"I M IN MAIN: "+jsonString,Toast.LENGTH_SHORT).show();
         GridViewAdaptor gridViewAdaptor = new GridViewAdaptor(MainHomeActivity.this,
                 gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewAdaptor);
@@ -159,9 +148,9 @@ public class MainHomeActivity extends AppCompatActivity
         empName = navView.findViewById(R.id.user_name);
         empImage = navView.findViewById(R.id.user_imageView);
         //set views
-//        empImage.setImageResource(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl());
-        empName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        empEmailId.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        empName.setText(employeeNAME);
+        empEmailId.setText(empEmail);
+
         navigationView.setNavigationItemSelectedListener(this);
 
     }
@@ -210,7 +199,10 @@ public class MainHomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            // Handle the camera action
+            Intent profiledataIntent = new Intent(getApplicationContext(),EmpProfileActivity.class);
+            profiledataIntent.putExtra("response", jObj.toString());
+            startActivity(profiledataIntent);
+//            startActivity(new Intent(getApplicationContext(),EmpProfileActivity.class));
         } else if (id == R.id.nav_operations) {
 //            startActivity(new Intent(getApplicationContext(),OperationActivity.class));
 
@@ -241,7 +233,6 @@ public class MainHomeActivity extends AppCompatActivity
     }
 
     private void logout() {
-        FirebaseAuth.getInstance().signOut();
         finish();
     }
 

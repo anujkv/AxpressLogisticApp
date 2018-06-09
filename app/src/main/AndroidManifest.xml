@@ -14,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".acitvities.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
             android:name=".acitvities.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -25,9 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".acitvities.RegistrationActivity"
-            android:label="@string/signup" />
         <activity
             android:name=".acitvities.LoginActivity"
             android:label="@string/loginPage" />
@@ -60,7 +54,13 @@
             android:label="@string/add_customer" />
         <activity
             android:name=".acitvities.QRCodeScanningActivity"
-            android:label="@string/qrcode"></activity>
+            android:label="@string/qrcode" />
+        <activity android:name=".acitvities.EmpProfileActivity">
+
+        </activity>
+        <activity android:name=".ForgetPasswordActivity">
+
+        </activity>
     </application>
 
 </manifest>

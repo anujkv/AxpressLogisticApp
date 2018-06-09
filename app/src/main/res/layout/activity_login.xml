@@ -32,8 +32,7 @@
                 android:id="@+id/input_employee_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/employee_id"
-                android:inputType="number" />
+                android:hint="@string/employee_id" />
         </android.support.design.widget.TextInputLayout>
 
         //Employee Password.
@@ -66,7 +65,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/logo_text"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:layout_marginTop="20dp"
@@ -79,25 +77,13 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/redirectRegistrationPage_btnId"
+            android:id="@+id/forget_password_linkId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/colorPrimary"
-            android:text="@string/redirectOnRegistration_text_btn" />
+            android:text="@string/forget_password_text_btn" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/or"
-            android:layout_marginTop="10dp"/>
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/google_signIn_btn"
-            android:layout_gravity="center"
-            android:layout_height="match_parent"
-            android:layout_width="250dp" />
     </LinearLayout>
 
 </ScrollView>

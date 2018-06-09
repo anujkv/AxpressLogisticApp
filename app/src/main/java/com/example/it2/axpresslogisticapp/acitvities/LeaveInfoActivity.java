@@ -1,8 +1,10 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
+import android.app.VoiceInteractor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -12,6 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
 
 import org.json.JSONArray;
@@ -31,8 +39,12 @@ public class LeaveInfoActivity extends AppCompatActivity {
     String input_text = "";
     LinearLayout info;
 
-    TextView empName, empId, branch, department, designation, contact,error_msg;
+    TextView empName, empId, branch, department, designation, contact, error_msg;
+    String name,empid,branchname,dept,desig,contactno,errormsg;
     ImageView empImg;
+
+    String url = "https://api.myjson.com/bins/9sp2i";
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,20 +64,66 @@ public class LeaveInfoActivity extends AppCompatActivity {
         designation = findViewById(R.id.designation_id);
         contact = findViewById(R.id.contact_id);
 
+        requestQueue = Volley.newRequestQueue(this);
+
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (input_editText.getText().toString().trim().toLowerCase().isEmpty() ) {
+                if (input_editText.getText().toString().trim().toLowerCase().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Enter the input!", Toast.LENGTH_SHORT).show();
                     error_msg.setVisibility(View.INVISIBLE);
                     info.setVisibility(View.INVISIBLE);
                 } else {
                     input_text = input_editText.getText().toString().toLowerCase().trim();
-                        get_data(input_text);
-                        input_editText.setText("");
+                    //jsonfunction calling...
+                    sendJsonRequest(input_text);
+
+//                    get_data(input_text);
+                    input_editText.setText("");
                 }
-                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+        });
+    }
+
+    public void sendJsonRequest(String input_text) {
+
+
+        boolean VISIABLE_FLAG = false;
+        boolean VISIABLITY_ERROR_FLAG  = false;
+        this.input_text = input_text;
+        info.setVisibility(View.VISIBLE);
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    System.out.println(response);
+
+                    name = response.getString("name");
+                    empid = response.getString("empid");
+                    branchname = response.getString("branch");
+                    dept = response.getString("department");
+                    desig = response.getString("designation");
+                    contactno = response.getString("contact");
+
+
+                    empName.setText(name);
+                    empId.setText(empid);
+                    branch.setText(branchname);
+                    department.setText(dept);
+                    designation.setText(desig);
+                    contact.setText(contactno);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
         });
     }
@@ -76,6 +134,7 @@ public class LeaveInfoActivity extends AppCompatActivity {
         this.input_text = input_text;
         String json = null;
         JSONObject jsonObject = null;
+
         try {
             InputStream inputStream = getAssets().open("employeedetails.json");
             byte[] buffer = new byte[inputStream.available()];
@@ -128,7 +187,4 @@ public class LeaveInfoActivity extends AppCompatActivity {
         }
     }
 
-    private void call() {
-
-    }
 }

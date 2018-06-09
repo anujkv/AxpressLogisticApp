@@ -1,17 +1,29 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.it2.axpresslogisticapp.ForgetPasswordActivity;
 import com.example.it2.axpresslogisticapp.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,166 +45,134 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class LoginActivity extends AppCompatActivity implements  View.OnClickListener {
-
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private String url = "http://webapi.axpresslogistics.com/api/webapi/Get_Login";
     EditText employee_code, password;
     Button login_button;
-    TextView redirectToRegistrationActivity;
-    String employeeCodeValue, passwordValue;
+    TextView forgetPassword;
+    String employeeCodeValue, passwordValue, username;
     Bundle bundle;
-
-    //google signIn button..
-    SignInButton signInButton;
-    FirebaseAuth auth;
-    private final static int RC_SIGN_IN = 2;
-    GoogleSignInClient mGoogleSignInClient;
-    GoogleApiClient googleApiClient;
-    FirebaseAuth.AuthStateListener authStateListener;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authStateListener);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        //find the value from xml files..
         employee_code = findViewById(R.id.input_employee_id);
         password = findViewById(R.id.input_password_id);
-        redirectToRegistrationActivity = findViewById(R.id.redirectRegistrationPage_btnId);
+        forgetPassword = findViewById(R.id.forget_password_linkId);
         login_button = findViewById(R.id.btn_login);
-        signInButton = findViewById(R.id.google_signIn_btn);
-
+        //clickable events...
         login_button.setOnClickListener(this);
-        signInButton.setOnClickListener(this);
-        redirectToRegistrationActivity.setOnClickListener(this);
+        forgetPassword.setOnClickListener(this);
 
-        auth = FirebaseAuth.getInstance();
-
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(LoginActivity.this,MainHomeActivity.class));
-                    finish();
-                }
-            }
-        };
-
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getApplicationContext(),
-                                "User not logged In, Something went wrong", LENGTH_SHORT)
-                                .show();
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso).build();
-
-
-//        // Build a GoogleSignInClient with the options specified by gso.
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if(result.isSuccess()){
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            } else {
-                Toast.makeText(getApplicationContext(),
-                        "Authentication Failed!!", LENGTH_SHORT)
-                        .show();
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = auth.getCurrentUser();
-                            Toast.makeText(getApplicationContext(),"User logged In successfully!!", LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(),"Authentication failed....", LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private  void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            //set click event on login button, check condition abd redirect it...
-            case R.id.btn_login :
-                employeeCodeValue = employee_code.getText().toString().trim();
-                passwordValue = password.getText().toString().trim();
-                userLogin(employeeCodeValue,passwordValue);
+        switch (v.getId()) {
+            //set click event on login button, check condition and redirect it...
+            case R.id.btn_login:
+                hide_keyboard();
+                if (employee_code.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Enter the Employee ID.", Toast.LENGTH_LONG).show();
+                } else if (password.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Enter the Password", Toast.LENGTH_LONG).show();
+                } else {
+                    login();
+                }
                 break;
-
-            //google signIn btn for google signIn....
-            case R.id.google_signIn_btn:
-                signIn();
-                break;
-
-            //set click event on signUp link for redirection on registration page activity...
-            case R.id.redirectRegistrationPage_btnId:
-                userRegistration();
+            //set click event on forget link for redirection on forget page activity...
+            case R.id.forget_password_linkId:
+                forgetPassword();
                 break;
         }
     }
 
-    //Function of userRegistration....
-    private void userRegistration() {
-        startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
-        finish();
-    }
-    //function of userLogin.....
-    private void userLogin(String employeeCodeValue, String passwordValue) {
-        this.employeeCodeValue = employeeCodeValue;
-        this.passwordValue = passwordValue;
-        if (this.employeeCodeValue.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Enter the employee code", LENGTH_SHORT).show();
-        } else if (this.passwordValue.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Enter the password", LENGTH_SHORT).show();
-        } else {
-            bundle = new Bundle();
-            bundle.putString("empcode",employeeCodeValue);
-            bundle.putString("empPassword",passwordValue);
-            Toast.makeText(getApplicationContext(), "Login Successfully!!!", LENGTH_SHORT).show();
-            Intent i = new Intent(getApplicationContext(), MainHomeActivity.class);
-            i.putExtras(bundle);
-            startActivity(i);
+    private void login() {
+        final String method = "login";
+        final String apikey = saltStr();
+        Log.d("apikey : ",apikey);
 
-//            startActivity(new Intent(LoginActivity.this, MainHomeActivity.class));
-            finish();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response.toString());
+                    String status = object.optString("Status");
+                    String apiKEYresponse = object.optString("key");
+
+                    if (status.equals("true")&& apikey.equals(apiKEYresponse)) {
+                        username = object.optString("Employee_Name");
+                        Toast.makeText(getApplicationContext(), "Welcome " + username, LENGTH_SHORT).show();
+                        Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
+                        logindataIntent.putExtra("response", response.toString());
+                        startActivity(logindataIntent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "wrong credential.. ", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Log.d("response",""+error.toString());
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "@string/something_went_wrong", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("username", employee_code.getText().toString().trim());
+                params.put("pwd", password.getText().toString().trim());
+                params.put("method", method);
+                params.put("key", apikey.trim());
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private String saltStr() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
         }
+        String saltStr = salt.toString();
+        return saltStr;
+    }
+
+    //hide softkeyboard from screen..
+    private void hide_keyboard() {
+
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
+    //Function of forgetPassword....
+    private void forgetPassword() {
+        startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
     }
 }

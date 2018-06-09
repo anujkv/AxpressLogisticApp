@@ -11,5 +11,6 @@
 
 
     <dimen name="primary_button_width">250dp</dimen>
+    <dimen name="profilesize">150dp</dimen>
 
 </resources>
