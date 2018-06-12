@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,34 +18,47 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.it2.axpresslogisticapp.FetchData;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import static android.widget.Toast.LENGTH_SHORT;
+
 public class MarkAttendanceActivity extends AppCompatActivity {
+    private String url = "http://webapi.axpresslogistics.com/api/webapi/Attendance";
     static final int REQUEST_LOCATION = 1;
-    private JsonArrayRequest ArrayRequest ;
-    private RequestQueue requestQueue ;
-    private JSONArray jsonArray;
-    private JSONObject jsonObject;
-
-
-    public static TextView username, userid, date_time;
+    public static TextView txtUsername, txtUserId, txtDateTime, txtDept, txtBranch, txtDesignation;
+    String strUsername, strUserId, strDateTime, strDept, strBranch, strDesignation,formattedDate;
     ImageView userImage;
     Button attendance_btn;
     Location location;
     LocationManager locationManager;
+    String jsonString;
+    JSONObject jObj;
+    Intent intent;
+    Boolean FLAG = true;
 
+    //Longitude and latitude Information...
     double company_lat = 28.4995993;
     double company_long = 77.0738609;
-    double nearbycompany_min_lat = 28.4995150;
+    double nearbycompany_min_lat = 28.4991650;
     double nearbycompany_max_lat = 28.4997600;
-    double nearbycompany_min_long = 77.0740750;
+    double nearbycompany_min_long = 77.0753330;
     double nearbycompany_max_long = 77.0739430;
 
     double lat, lon;
@@ -53,47 +67,136 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_attendance);
+        set_and_bind();
+
+        try {
+            intent = getIntent();
+            jsonString = intent.getStringExtra("response");
+            jObj = new JSONObject(jsonString);
+            getValuesFromAPI();
+            setValuesInFields();
+            date_time();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
 
-        username = findViewById(R.id.user_nameId);
-        userid = findViewById(R.id.user_id);
-        date_time = findViewById(R.id.current_date_id);
-        userImage = findViewById(R.id.user_imageId);
-
-        username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-//        Time today = new Time(Time.getCurrentTimezone());
-//        today.setToNow();
-
-
-
-
-
-
-
-        attendance_btn = findViewById(R.id.attendance_btnId);
-
-        attendance_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //json data fetch test case..
-//                FetchData process = new FetchData();
-//                process.execute();
-                ////////////////
-                if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
-                    Toast.makeText(getApplicationContext(), "Attendance Submitted Successfully", Toast.LENGTH_SHORT).show();
-                    attendance_btn.setClickable(false);
-                    attendance_btn.setText("Attendance Submitted");
-                    attendance_btn.setBackgroundColor(R.drawable.grayshade);
-                } else {
-                    String lat_long = "Latitude = " + lat + " Longitude = " + lon;
-                    Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_SHORT).show();
+        if(FLAG.equals(true)){
+            attendance_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    markAttendance();
+                    FLAG = false;
                 }
-                String lat_long = "Latitude = " + lat + " Longitude = " + lon;
-                Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_LONG).show();
-            }
-        });
+            });
+        }
+    }
+
+    private void date_time() {
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time =&gt; "+c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formattedDate = df.format(c.getTime());
+// Now formattedDate have current date/time
+        Toast.makeText(this, formattedDate, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setValuesInFields() {
+        txtUsername.setText(strUsername.trim());
+        txtUserId.setText(strUserId.trim());
+        txtBranch.setText(strBranch.trim());
+        txtDesignation.setText(strDesignation.trim());
+        txtDept.setText(strDept.trim());
+    }
+
+    private void markAttendance() {
+        if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
+
+            final String method = "Attendance";
+            final String apikey = saltStr();
+            Log.d("apikey : ",apikey);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject object = new JSONObject(response.toString());
+                        String status = object.optString("response");
+                        String apiKEYresponse = object.optString("key");
+
+                        if (status.equals("Marked")&& apikey.equals(apiKEYresponse)) {
+                            Toast.makeText(getApplicationContext(), "Attendance Marked!" , LENGTH_SHORT).show();
+                        }else if(status.equals("Already Marked")){
+                            Toast.makeText(getApplicationContext(), "Attendance Already Marked!" , LENGTH_SHORT).show();
+                        } else if(status.equals("failed")) {
+                            Toast.makeText(getApplicationContext(), "Something went wrong, Kindly contact HR Dept.", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("employee_id", jObj.optString("Emplid"));
+                    params.put("date_time",formattedDate);
+                    params.put("method", method);
+                    params.put("key", apikey.trim());
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+            attendance_btn.setClickable(false);
+            attendance_btn.setText("Attendance Submitted");
+            attendance_btn.setBackgroundColor(R.drawable.grayshade);
+        } else {
+            String lat_long = "Latitude = " + lat + " Longitude = " + lon;
+            Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_SHORT).show();
+        }
+//        String lat_long = "LOGLatitude = " + lat + " LOGLongitude = " + lon;
+//        Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_LONG).show();
+    }
+
+    private String saltStr() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+    }
+
+    private void getValuesFromAPI() {
+        strUsername = jObj.optString("Employee_Name");
+        strUserId = jObj.optString("Emplid");
+        strDesignation = jObj.optString("Employee_Designation");
+        strDept = jObj.optString("Employee_Department");
+        strBranch = jObj.optString("Employee_Branch");
+    }
+
+    private void set_and_bind() {
+        txtUsername = findViewById(R.id.user_nameId);
+        txtUserId = findViewById(R.id.user_id);
+        txtDesignation = findViewById(R.id.txtDesignationId);
+        txtBranch = findViewById(R.id.txtBranchId);
+        txtDept = findViewById(R.id.txtDeptID);
+        userImage = findViewById(R.id.user_imageId);
+        attendance_btn = findViewById(R.id.attendance_btnId);
     }
 
     private void getLocation() {
@@ -103,6 +206,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
+            
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             if (location != null) {

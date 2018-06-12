@@ -112,10 +112,8 @@ public class MainHomeActivity extends AppCompatActivity
                         startActivity(intent_opt);
                         break;
                     case 1:
-                        Intent intent_hrms = new Intent(MainHomeActivity.this,
-                                HrmsActivity.class);
-                        // passing array index
-                        intent_hrms.putExtra("id", position);
+                        Intent intent_hrms = new Intent(MainHomeActivity.this,HrmsActivity.class);
+                        intent_hrms.putExtra("response", jObj.toString());
                         startActivity(intent_hrms);
                         break;
                     case 2:

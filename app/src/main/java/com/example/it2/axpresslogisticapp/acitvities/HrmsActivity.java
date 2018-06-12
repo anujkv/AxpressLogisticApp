@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class HrmsActivity extends AppCompatActivity {
@@ -40,6 +43,9 @@ public class HrmsActivity extends AppCompatActivity {
     Toolbar toolbar;
     Context context;
     ArrayList arrayList;
+    String jsonString;
+    JSONObject jObj;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,16 @@ public class HrmsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hrms);
         gridView = findViewById(R.id.gridhrms);
         gridView = findViewById(R.id.gridhrms);
+
+        try {
+            intent = getIntent();
+            jsonString = intent.getStringExtra("response");
+            jObj = new JSONObject(jsonString);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         GridViewHrms gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewStrings, gridViewIcons);
@@ -60,10 +76,9 @@ public class HrmsActivity extends AppCompatActivity {
                 switch (position) {
 
                     case 0:
-                        Intent intent_opt = new Intent(HrmsActivity.this, MarkAttendanceActivity.class);
-                        // passing array index
-                        intent_opt.putExtra("id", position);
-                        startActivity(intent_opt);
+                        Intent intent_mark = new Intent(HrmsActivity.this,MarkAttendanceActivity.class);
+                        intent_mark.putExtra("response", jObj.toString());
+                        startActivity(intent_mark);
                         break;
                     case 1:
                         Intent intent_hrms = new Intent(HrmsActivity.this, LeaveInfoActivity.class);

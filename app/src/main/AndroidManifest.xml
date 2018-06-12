@@ -55,11 +55,16 @@
         <activity
             android:name=".acitvities.QRCodeScanningActivity"
             android:label="@string/qrcode" />
-        <activity android:name=".acitvities.EmpProfileActivity">
-
-        </activity>
-        <activity android:name=".ForgetPasswordActivity">
-
+        <activity
+            android:name=".acitvities.EmpProfileActivity"
+            android:label="@string/editprofile" />
+        <activity
+            android:name=".acitvities.ForgetPasswordActivity"
+            android:label="@string/forgetpassword" />
+        <activity android:name=".acitvities.ResetPasswordActivity" />
+        <activity
+            android:name=".acitvities.DocketTracking"
+            android:label="@string/docket_tracking">
         </activity>
     </application>
 

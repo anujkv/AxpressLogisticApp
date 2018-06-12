@@ -30,8 +30,9 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight=".7"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -41,19 +42,26 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
                             android:layout_height="wrap_content"
                             android:textSize="15dp"
-                            android:text="Employee Name :"
+                            android:text="@string/employee_name"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"
+                            android:text=":"
+                            android:textSize="15dp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/user_nameId"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:text="Anuj Kr. Vaish" />
+                            android:textSize="15dp"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -63,21 +71,27 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
                             android:layout_height="wrap_content"
-                            android:text="Employee Id :"
+                            android:text="@string/employee_id"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"
+                            android:text=":"
                             android:textSize="15dp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/user_id"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:text="emp1234567" />
+                            android:textSize="15dp" />
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -85,21 +99,55 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtHeadDesignationId"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
                             android:layout_height="match_parent"
-                            android:gravity="center"
+                            android:text="@string/designation"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"
+                            android:text=":"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtDesignationId"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
+                            android:layout_height="match_parent"
                             android:text="@string/branch"
                             android:textSize="15dp"
                             android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"
+                            android:text=":"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/current_date_id"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtBranchId"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:layout_weight="1"
-                            android:text="@string/branch_location" />
+                            android:textSize="15dp"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -108,50 +156,41 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_weight=".4"
                             android:layout_height="match_parent"
-                            android:gravity="center"
                             android:text="@string/department"
                             android:textSize="15dp"
                             android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent"
+                            android:text=":"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/department_id"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtDeptID"
+                            android:layout_width="0dp"
+                            android:layout_weight=".6"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:layout_weight="1"
-                            android:text="@string/department" />
+                            android:textSize="15dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="@string/contact_no"
-                            android:textSize="15dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/input_contact_id"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="15dp"
-                            android:layout_weight="1"
-                            android:text="9876543210" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight=".3"
                     android:gravity="right">
 
                     <ImageView
@@ -159,7 +198,7 @@
                         android:layout_width="95dp"
                         android:layout_height="95dp"
                         android:layout_gravity="right"
-                        android:src="@drawable/moon"/>
+                        android:src="@drawable/moon" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -47,7 +47,7 @@ public class FetchData extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
 
-        MarkAttendanceActivity.username.setText(this.data);
+//        MarkAttendanceActivity.username.setText(this.data);
         super.onPostExecute(aVoid);
     }
 }

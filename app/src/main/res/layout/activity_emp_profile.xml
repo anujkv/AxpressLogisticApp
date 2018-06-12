@@ -595,9 +595,9 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
+                            android:editable="false"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="1563 3654 8521 7896"
-                            android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                         <ImageButton
                             android:id="@+id/edtImageButtonBankAccount"
