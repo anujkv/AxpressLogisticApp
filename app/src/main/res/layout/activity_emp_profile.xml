@@ -154,6 +154,30 @@
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/altContactLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="16dp" />
+
+                        <EditText
+                            android:id="@+id/edtContactAltNo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:text="9876543210"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

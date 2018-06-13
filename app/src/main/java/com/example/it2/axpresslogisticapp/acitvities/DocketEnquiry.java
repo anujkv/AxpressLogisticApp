@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import java.util.Random;
 
 public class DocketEnquiry extends AppCompatActivity {
-    private String url = "http://webapi.axpresslogistics.com/api/webapi/Get_Login";
+    private String url = "http://webapi.axpresslogistics.com/api/Operations/Docket_Invoice";
     Boolean FLAG = false;
     RadioGroup radio_group_id;
     RadioButton radio_btn_id;
@@ -63,7 +63,7 @@ public class DocketEnquiry extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Enter the Docket/Invoice No.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), method, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), strInput_editSearch_text, Toast.LENtGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), strInput_editSearch_text, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(DocketEnquiry.this,DocketTracking.class));
                 }
             }

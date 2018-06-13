@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,10 +41,10 @@ import java.util.Random;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class MarkAttendanceActivity extends AppCompatActivity {
-    private String url = "http://webapi.axpresslogistics.com/api/webapi/Attendance";
+    private String url = "http://webapi.axpresslogistics.com/api/HRMS/Attendance";
     static final int REQUEST_LOCATION = 1;
     public static TextView txtUsername, txtUserId, txtDateTime, txtDept, txtBranch, txtDesignation;
-    String strUsername, strUserId, strDateTime, strDept, strBranch, strDesignation,formattedDate;
+    String strUsername, strUserId, strDateTime, strDept, strBranch, strDesignation, formattedDate;
     ImageView userImage;
     Button attendance_btn;
     Location location;
@@ -52,6 +53,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     JSONObject jObj;
     Intent intent;
     Boolean FLAG = true;
+    ProgressBar progressBar;
 
     //Longitude and latitude Information...
     double company_lat = 28.4995993;
@@ -84,7 +86,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         getLocation();
 
-        if(FLAG.equals(true)){
+        if (FLAG.equals(true)) {
             attendance_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -97,7 +99,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
     private void date_time() {
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time =&gt; "+c.getTime());
+        System.out.println("Current time =&gt; " + c.getTime());
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         formattedDate = df.format(c.getTime());
@@ -114,11 +116,12 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     }
 
     private void markAttendance() {
-        if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
+        progressBar.setVisibility(View.VISIBLE);
 
+        if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
             final String method = "Attendance";
             final String apikey = saltStr();
-            Log.d("apikey : ",apikey);
+            Log.d("apikey : ", apikey);
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -128,11 +131,11 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                         String status = object.optString("response");
                         String apiKEYresponse = object.optString("key");
 
-                        if (status.equals("Marked")&& apikey.equals(apiKEYresponse)) {
-                            Toast.makeText(getApplicationContext(), "Attendance Marked!" , LENGTH_SHORT).show();
-                        }else if(status.equals("Already Marked")){
-                            Toast.makeText(getApplicationContext(), "Attendance Already Marked!" , LENGTH_SHORT).show();
-                        } else if(status.equals("failed")) {
+                        if (status.equals("Marked") && apikey.equals(apiKEYresponse)) {
+                            Toast.makeText(getApplicationContext(), "Attendance Marked!", LENGTH_SHORT).show();
+                        } else if (status.equals("Already Marked")) {
+                            Toast.makeText(getApplicationContext(), "Attendance Already Marked!", LENGTH_SHORT).show();
+                        } else if (status.equals("failed")) {
                             Toast.makeText(getApplicationContext(), "Something went wrong, Kindly contact HR Dept.", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
@@ -150,7 +153,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
                     params.put("employee_id", jObj.optString("Emplid"));
-                    params.put("date_time",formattedDate);
+                    params.put("date_time", formattedDate);
                     params.put("method", method);
                     params.put("key", apikey.trim());
                     return params;
@@ -158,15 +161,20 @@ public class MarkAttendanceActivity extends AppCompatActivity {
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
-            attendance_btn.setClickable(false);
-            attendance_btn.setText("Attendance Submitted");
-            attendance_btn.setBackgroundColor(R.drawable.grayshade);
+            disable_button();
+
         } else {
             String lat_long = "Latitude = " + lat + " Longitude = " + lon;
             Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_SHORT).show();
         }
 //        String lat_long = "LOGLatitude = " + lat + " LOGLongitude = " + lon;
 //        Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void disable_button() {
+        attendance_btn.setTextColor(getColor(R.color.white));
+        attendance_btn.setClickable(false);
     }
 
     private String saltStr() {
@@ -197,6 +205,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         txtDept = findViewById(R.id.txtDeptID);
         userImage = findViewById(R.id.user_imageId);
         attendance_btn = findViewById(R.id.attendance_btnId);
+        progressBar = findViewById(R.id.attendance_progressbarId);
     }
 
     private void getLocation() {
@@ -206,12 +215,22 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
-            
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-            if (location != null) {
-                lat = location.getLatitude();
-                lon = location.getLongitude();
+            try {
+                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location != null) {
+                    lat = location.getLatitude();
+                    lon = location.getLongitude();
+                    Toast.makeText(getApplicationContext(),"GPS "+lat+" " +lon,LENGTH_SHORT).show();
+                } else {
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    if (location != null) {
+                        lat = location.getLatitude();
+                        lon = location.getLongitude();
+//                        Toast.makeText(getApplicationContext(),"NETWORK "+lat+" " +lon,LENGTH_SHORT).show();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

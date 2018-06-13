@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,19 +18,22 @@ import com.google.android.gms.flags.Flag;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener{
     Boolean FLAG = false;
-    EditText edtName,edtEmpCode,edtContactNo,edtDesignation,edtDept,edtBranch,edtBranchCode,
+    EditText edtName,edtEmpCode,edtContactNo,edtContactAltNo,edtDesignation,edtDept,edtBranch,edtBranchCode,
                 edtEmail,edtFatherName,edtDOB,edtBOP,edtDOJ,edtQulification,edtAdharCard,
                 edtAddress,edtPAN,edtUAN,edtESI,edtBankAccount,edtBankName,edtBankIFSC;
     TextView txtName,txtEmpId;
-    String strName,strEmpCode,strContactNo,strDesignation,strDept,strBranch,strBranchCode,
+    String strName,strEmpCode,strContactNo,strContactAltNo,strDesignation,strDept,strBranch,strBranchCode,
             strEmail,strFatherName,strDOB,strBOP,strDOJ,strQulification,strAdharCard,
             strAddress,strPAN,strUAN,strESI,strBankAccount,strBankName,strBankIFSC;
     ImageButton edtAddressBtn,edtBankAccountBtn,edtBankNameBtn,edtIFSCBtn;
     Intent intent;
     String jsonString;
     JSONObject jObj;
+    LinearLayout contactAltLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         edtName.setText(strName.trim());
         edtEmpCode.setText(strEmpCode.trim());
         edtContactNo.setText(strContactNo.trim());
+        edtContactAltNo.setText(strContactAltNo.trim());
         edtDesignation.setText(strDesignation.trim());
         edtDept.setText(strDept.trim());
         edtBranch.setText(strBranch.trim());
@@ -83,7 +88,10 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     private void getValuesFromAPI() {
         strName = jObj.optString("Employee_Name");
         strEmpCode = jObj.optString("Emplid");
+
         strContactNo = jObj.optString("Employee_Contact");
+        strContactAltNo = jObj.optString("Employee_Contact1");
+
         strDesignation = jObj.optString("Employee_Designation");
         strDept = jObj.optString("Employee_Department");
         strBranch = jObj.optString("Employee_Branch");

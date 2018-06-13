@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,21 +33,24 @@ import java.util.Random;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private String url = "http://webapi.axpresslogistics.com/api/webapi/Get_Login";
+    private String url = "http://webapi.axpresslogistics.com/api/HRMS/Get_Login";
     EditText employee_code, password;
     Button login_button;
     TextView forgetPassword;
     String employeeCodeValue, passwordValue, username;
     Bundle bundle;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //find the value from xml files..
         employee_code = findViewById(R.id.input_employee_id);
         password = findViewById(R.id.input_password_id);
         forgetPassword = findViewById(R.id.forget_password_linkId);
+        progressBar = findViewById(R.id.progressBarId);
         login_button = findViewById(R.id.btn_login);
         //clickable events...
         login_button.setOnClickListener(this);
@@ -75,10 +80,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void login() {
+        progressBar.setVisibility(View.VISIBLE);
+        login_button.setClickable(false);
         final String method = "login";
         final String apikey = saltStr();
         Log.d("apikey : ",apikey);
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -93,8 +99,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
                         logindataIntent.putExtra("response", response.toString());
                         startActivity(logindataIntent);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "wrong credential.. ", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -104,9 +114,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.d("response",""+error.toString());
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "@string/something_went_wrong", Toast.LENGTH_LONG).show();
+                Log.d("response======",""+error.toString());
+                if(error.toString().equals("com.android.volley.ServerError")){
+                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
+                } else{
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                }
             }
         }) {
             @Override
@@ -121,6 +134,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+        login_button.setClickable(true);
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     private String saltStr() {

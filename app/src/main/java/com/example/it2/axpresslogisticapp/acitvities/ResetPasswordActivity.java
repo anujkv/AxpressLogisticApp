@@ -13,6 +13,7 @@ import com.example.it2.axpresslogisticapp.acitvities.ForgetPasswordActivity;
 import com.example.it2.axpresslogisticapp.acitvities.LoginActivity;
 
 public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener{
+    String url = "http://webapi.axpresslogistics.com/api/HRMS/Reset_Pass";
 //    EditText editTextResetEmail,editTextResetID;
 //    TextView textViewBackLinkId,textViewSubmitLinkId;
 //    String strEmail,strEmpId;
