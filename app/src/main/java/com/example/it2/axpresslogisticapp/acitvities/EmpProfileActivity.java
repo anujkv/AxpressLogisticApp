@@ -63,7 +63,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         edtName.setText(strName.trim());
         edtEmpCode.setText(strEmpCode.trim());
         edtContactNo.setText(strContactNo.trim());
-        edtContactAltNo.setText(strContactAltNo.trim());
+//        edtContactAltNo.setText(strContactAltNo.trim());
         edtDesignation.setText(strDesignation.trim());
         edtDept.setText(strDept.trim());
         edtBranch.setText(strBranch.trim());
@@ -90,7 +90,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         strEmpCode = jObj.optString("Emplid");
 
         strContactNo = jObj.optString("Employee_Contact");
-        strContactAltNo = jObj.optString("Employee_Contact1");
+//        strContactAltNo = jObj.optString("Employee_Contact1");
 
         strDesignation = jObj.optString("Employee_Designation");
         strDept = jObj.optString("Employee_Department");

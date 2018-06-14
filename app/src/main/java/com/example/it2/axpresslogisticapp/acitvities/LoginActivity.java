@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final String method = "login";
         final String apikey = saltStr();
         Log.d("apikey : ",apikey);
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -99,12 +100,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
                         logindataIntent.putExtra("response", response.toString());
                         startActivity(logindataIntent);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        progressBar.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "wrong credential.. ", Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.INVISIBLE);
-                        progressBar.setVisibility(View.GONE);
+                        invisibleProgressbar();
                     }
 
                 } catch (JSONException e) {
@@ -134,9 +132,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-        login_button.setClickable(true);
-        progressBar.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.GONE);
     }
 
     private String saltStr() {
@@ -164,6 +159,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //Function of forgetPassword....
     private void forgetPassword() {
-        startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
+        startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        invisibleProgressbar();
+
+    }
+
+    private void invisibleProgressbar() {
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
+        employee_code.setText("");
+        password.setText("");
+        login_button.setClickable(true);
+    }
+
+
 }

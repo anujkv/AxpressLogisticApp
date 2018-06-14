@@ -11,15 +11,21 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class DocketEnquiry extends AppCompatActivity {
@@ -59,15 +65,74 @@ public class DocketEnquiry extends AppCompatActivity {
                     }
                 });
 
-                if (strInput_editSearch_text.isEmpty() || strInput_editSearch_text == null) {
+                if (radio_btn_id==null) {
+                    Toast.makeText(getApplicationContext(), "Choose the search type.", Toast.LENGTH_SHORT).show();
+
+                } else if (strInput_editSearch_text.isEmpty() || strInput_editSearch_text == null) {
                     Toast.makeText(getApplicationContext(), "Enter the Docket/Invoice No.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), method, Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), strInput_editSearch_text, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(DocketEnquiry.this,DocketTracking.class));
+                    dataJsonFunction();
                 }
             }
         });
+    }
+
+    private void dataJsonFunction() {
+        submit_docket_btn.setClickable(false);
+//        final String method;
+        final String method = "docket";
+        final String apikey = saltStr();
+        Log.d("apikey : ", apikey);
+        Log.d("method : ", method);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("responseStart : ", response.toString());
+                try {
+                    JSONObject object = new JSONObject(response.toString());
+                    Log.d("response=====HHHHHHH",response.toString());
+                    String status = object.optString("status");
+
+                    String apkKeyResponse = object.optString("key");
+                    if (status.equals("true") && apikey.equals(jObj.optString(apkKeyResponse))) {
+                        Intent intent = new Intent(getApplicationContext(), DocketTracking.class);
+                        intent.putExtra("response", response.toString());
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),method + " not found!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("response======",""+error.toString());
+                if(error.toString().equals("com.android.volley.ServerError")){
+                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
+                } else{
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("docket_no", strInput_editSearch_text);
+                Log.d("docketRequet",strInput_editSearch_text);
+//                params.put("method",radio_btn_id.toString().trim());
+                params.put("method", method);
+                params.put("key", apikey);
+                return super.getParams();
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     private String saltStr() {

@@ -58,9 +58,6 @@
         <activity
             android:name=".acitvities.EmpProfileActivity"
             android:label="@string/editprofile" />
-        <activity
-            android:name=".acitvities.ForgetPasswordActivity"
-            android:label="@string/forgetpassword" />
         <activity android:name=".acitvities.ResetPasswordActivity" />
         <activity
             android:name=".acitvities.DocketTracking"

@@ -84,7 +84,6 @@ public class MainHomeActivity extends AppCompatActivity
             employeeNAME = jObj.optString("Employee_Name");
             empEmail = jObj.optString("Employee_Email");
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -218,6 +217,7 @@ public class MainHomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_Logout) {
             logout();
+
 
         } else if (id == R.id.nav_share) {
 
