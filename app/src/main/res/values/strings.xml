@@ -2,7 +2,7 @@
     <string name="app_name">Axpress Logistic App</string>
     <string name="registrationPage">Registration</string>
     <string name="loginPage">Login</string>
-    <string name="forget_password_text_btn">forget password ?</string>
+    <string name="forget_password_text_btn">Forget Password ?</string>
     <string name="password">Password</string>
     <string name="employee_id">Employee ID</string>
     <string name="employee_name">Name</string>

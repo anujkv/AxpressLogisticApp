@@ -36,9 +36,8 @@ public class DocketEnquiry extends AppCompatActivity {
     EditText input_editSearch_text_id;
     Button submit_docket_btn;
     String method, strInput_editSearch_text;
+    int intInput_editSearch_text;
     Intent intent;
-    String jsonString;
-    JSONObject jObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +92,21 @@ public class DocketEnquiry extends AppCompatActivity {
                 Log.d("responseStart : ", response.toString());
                 try {
                     JSONObject object = new JSONObject(response.toString());
-                    Log.d("response=====HHHHHHH",response.toString());
                     String status = object.optString("status");
-
                     String apkKeyResponse = object.optString("key");
-                    if (status.equals("true") && apikey.equals(jObj.optString(apkKeyResponse))) {
+                    Log.d("Status : ",status);
+                    Log.d("key : ",apkKeyResponse);
+
+                    if (status.equals("true")) {
+                        Log.d("======================",status);
                         Intent intent = new Intent(getApplicationContext(), DocketTracking.class);
                         intent.putExtra("response", response.toString());
                         startActivity(intent);
+                    } else if (status.equals("false")){
+                        Toast.makeText(getApplicationContext(),method + " not found!", Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Toast.makeText(getApplicationContext(),method + " not found!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,7 +115,7 @@ public class DocketEnquiry extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("response======",""+error.toString());
+                Log.d("response",""+error.toString());
                 if(error.toString().equals("com.android.volley.ServerError")){
                     Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
                 } else{
@@ -124,11 +127,12 @@ public class DocketEnquiry extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("docket_no", strInput_editSearch_text);
-                Log.d("docketRequet",strInput_editSearch_text);
-//                params.put("method",radio_btn_id.toString().trim());
                 params.put("method", method);
                 params.put("key", apikey);
-                return super.getParams();
+//                params.put("docket_no","4422791");
+//                params.put("method","docket");
+//                params.put("key","BGOOLTRECUOUQS1NJA");
+                return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -153,4 +157,9 @@ public class DocketEnquiry extends AppCompatActivity {
         submit_docket_btn = findViewById(R.id.btn_search);
     }
 
+    @Override
+    protected void onPostResume() {
+        submit_docket_btn.setClickable(true);
+        super.onPostResume();
+    }
 }

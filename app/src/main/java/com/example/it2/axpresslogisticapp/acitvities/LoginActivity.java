@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //set click event on forget link for redirection on forget page activity...
             case R.id.forget_password_linkId:
                 forgetPassword();
+                finish();
                 break;
         }
     }

@@ -39,14 +39,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
-//        setgetValues();
         editTextResetEmail = findViewById(R.id.editTextResetEmail);
         editTextResetID = findViewById(R.id.editTextResetID);
         textViewBackLinkId = findViewById(R.id.textViewBackLinkId);
         textViewSubmitLinkId = findViewById(R.id.textViewSubmitLinkId);
-
-        strEmail = editTextResetEmail.getText().toString().trim();
-        strEmpId = editTextResetID.getText().toString().trim();
 
         textViewBackLinkId.setOnClickListener(this);
         textViewSubmitLinkId.setOnClickListener(this);
@@ -60,87 +56,49 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("response>>>>>>>",response.toString());
+                try {
 
+                    JSONObject object = new JSONObject(response.toString());
+                    String status = object.optString("Status");
+                    String apiKEYresponse = object.optString("key");
+                    Log.d("Response>>>",status);
+
+                    if (status.equals("true")) {
+                        Toast.makeText(getApplicationContext(),"Password is default, same as Employee ID!.",Toast.LENGTH_SHORT).show();
+//                        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "credential not match", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
-
+                Log.d("response======",""+error.toString());
+                if(error.toString().equals("com.android.volley.ServerError")){
+                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
+                } else{
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                }
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("employee_id",strEmpId.trim());
-                params.put("employee_email",strEmail.trim());
-                params.put("method",method.trim());
-                params.put("key",apikey.trim());
-                Log.d("employee_id===",strEmpId);
-                Log.d("strEmail===",strEmail);
-
-                return super.getParams();
+                params.put("employee_id", strEmpId);
+                params.put("employee_email", strEmail);
+                params.put("method", method);
+                params.put("key", apikey.trim());
+                Log.d("employee_id", strEmpId);
+                Log.d("employee_email", strEmail);
+                return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                try {
-//
-//                    JSONObject object = new JSONObject(response.toString());
-//                    String status = object.optString("Status");
-//                    String apiKEYresponse = object.optString("key");
-//                    Log.d("Response>>>",status);
-//
-//                    if (status.equals("true")) {
-//                        Toast.makeText(getApplicationContext(),"Password is default, same as Employee ID!.",Toast.LENGTH_SHORT).show();
-//                        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-//
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "credential not match", Toast.LENGTH_LONG).show();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("response======",""+error.toString());
-//                if(error.toString().equals("com.android.volley.ServerError")){
-//                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
-//                } else{
-//                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("employee_id",strEmpId);
-//                params.put("employee_email",strEmail);
-//                params.put("method",method);
-//                params.put("key",apikey);
-//                return super.getParams();
-//            }
-//        };
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
-    }
-
-    private void setgetValues() {
-        editTextResetEmail = findViewById(R.id.editTextResetEmail);
-        editTextResetID = findViewById(R.id.editTextResetID);
-        textViewBackLinkId = findViewById(R.id.textViewBackLinkId);
-        textViewSubmitLinkId = findViewById(R.id.textViewSubmitLinkId);
-
-        strEmail = editTextResetEmail.getText().toString().trim();
-        strEmpId = editTextResetID.getText().toString().trim();
     }
 
     @Override
@@ -151,6 +109,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 finish();
                 break;
             case R.id.textViewSubmitLinkId:
+                strEmail = editTextResetEmail.getText().toString().trim();
+                strEmpId = editTextResetID.getText().toString().trim();
                 resetPassword();
                 finish();
                 break;
@@ -167,5 +127,10 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         }
         String saltStr = salt.toString();
         return saltStr;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
     }
 }

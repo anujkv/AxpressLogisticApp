@@ -35,6 +35,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/dwd_details"
                     android:textAlignment="center"
+                    android:layout_marginBottom="10dp"
                     android:textStyle="bold"/>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -95,25 +96,32 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".4"
                         android:text="@string/from" />
 
                     <TextView
                         android:id="@+id/txt_fromID"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".3"/>
+                        android:layout_weight=".6"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".15"
+                        android:layout_weight=".4"
                         android:text="@string/to" />
 
                     <TextView
                         android:id="@+id/txt_toID"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".3" />
+                        android:layout_weight=".6" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -140,9 +148,7 @@
             android:id="@+id/challanRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:scrollbars="vertical"
-            android:layout_marginTop="5dp">
+            android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

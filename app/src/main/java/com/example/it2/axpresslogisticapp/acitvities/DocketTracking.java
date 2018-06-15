@@ -1,29 +1,15 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.adaptor.DocketTrackingAdaptor;
 
@@ -40,16 +26,16 @@ public class DocketTracking extends AppCompatActivity {
     TextView txtDocket_no,txtDocket_date,txtDocket_from,txtDocket_to,txtDocketConsignee,txtDocket_status;
     String strDocket_no,strDocket_date,strDocket_from,strDocket_to,strDocketConsignee,strDocket_status;
 
-    private RecyclerView mList;
-    private LinearLayoutManager linearLayoutManager;
-    private DividerItemDecoration dividerItemDecoration;
-    private List<com.example.it2.axpresslogisticapp.model.DocketTracking> challanList;
+    private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private List<com.example.it2.axpresslogisticapp.model.DocketTracking> challanList;
     String jsonString;
     JSONObject jObj;
     Intent intent;
+    int no_of_challan;
     Boolean FLAG = true;
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,19 +59,15 @@ public class DocketTracking extends AppCompatActivity {
         txtDocket_from = findViewById(R.id.txt_fromID);
         txtDocket_to = findViewById(R.id.txt_toID);
         txtDocket_status = findViewById(R.id.txt_statusID);
-        mList = findViewById(R.id.challanRecyclerView);
+        recyclerView = findViewById(R.id.challanRecyclerView);
 
-        challanList = new ArrayList<>();
-        adapter = new DocketTrackingAdaptor(getApplicationContext(),challanList);
+        recyclerView = findViewById(R.id.challanRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(adapter);
+        challanList = new ArrayList<com.example.it2.axpresslogisticapp.model.DocketTracking>();
 
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
-        mList.setHasFixedSize(true);
-        mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
-        mList.setAdapter(adapter);
     }
     private void getData() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -93,40 +75,31 @@ public class DocketTracking extends AppCompatActivity {
         progressDialog.show();
 
         setJsonDataOnDocketCardView();
-//
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                for (int i = 0; i < response.length(); i++) {
-//                    try {
-//                        JSONObject jsonObject = response.getJSONObject(i);
-//
-//                        com.example.it2.axpresslogisticapp.model.DocketTracking docketTracking = new com.example.it2.axpresslogisticapp.model.DocketTracking();
-//                        docketTracking.setChallan_no(jsonObject.getString("challan_no"));
-//                        docketTracking.setChallan_date(jsonObject.getString("challan_date"));
-//                        docketTracking.setChallan_from(jsonObject.getString("challan_from"));
-//                        docketTracking.setChallan_to(jsonObject.getString("challan_to"));
-//                        docketTracking.setVehicle_no(jsonObject.getString("vehicle_no"));
-//                        docketTracking.setChallan_status(jsonObject.getString("status"));
-//
-//                        challanList.add(docketTracking);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                        progressDialog.dismiss();
-//                    }
-//                }
-//                adapter.notifyDataSetChanged();
-//                progressDialog.dismiss();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("Volley", error.toString());
-//                progressDialog.dismiss();
-//            }
-//        });
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(jsonArrayRequest);
+        setChallanJsonDataCardView();
+    }
+
+    private void setChallanJsonDataCardView() {
+        Log.d("response>>>> : ",jObj.toString());
+        try {
+            JSONArray jsonArray = jObj.getJSONArray("Challan");
+            no_of_challan = jsonArray.length();
+            for (int i =0;i<no_of_challan;i++){
+                JSONObject object = jsonArray.getJSONObject(i);
+                com.example.it2.axpresslogisticapp.model.DocketTracking docketTracking = new
+                        com.example.it2.axpresslogisticapp.model.DocketTracking(
+                        object.getString("challan_no"),
+                        object.getString("challan_date"),
+                        object.getString("challan_from"),
+                        object.getString("challan_to"),
+                        object.getString("vehicle_no"),
+                        object.getString("status"));
+                challanList.add(docketTracking);
+            }
+            adapter = new DocketTrackingAdaptor(getApplicationContext(),challanList);
+            recyclerView.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
