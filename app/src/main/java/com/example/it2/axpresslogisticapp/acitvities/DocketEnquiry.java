@@ -47,22 +47,22 @@ public class DocketEnquiry extends AppCompatActivity {
         //initialize_data_types..
         initialize_dataType();
         radio_group_id.clearCheck();
+        radio_group_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                radio_btn_id = group.findViewById(checkedId);
+                if (radio_btn_id != null) {
+                    method = radio_btn_id.toString();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Choose the search type.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         submit_docket_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 strInput_editSearch_text = input_editSearch_text_id.getText().toString().trim();
-                radio_group_id.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        radio_btn_id = group.findViewById(checkedId);
-                        if (radio_btn_id != null) {
-                            method = radio_btn_id.toString();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Choose the search type.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
 
                 if (radio_btn_id==null) {
                     Toast.makeText(getApplicationContext(), "Choose the search type.", Toast.LENGTH_SHORT).show();
@@ -70,7 +70,6 @@ public class DocketEnquiry extends AppCompatActivity {
                 } else if (strInput_editSearch_text.isEmpty() || strInput_editSearch_text == null) {
                     Toast.makeText(getApplicationContext(), "Enter the Docket/Invoice No.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), strInput_editSearch_text, Toast.LENGTH_SHORT).show();
                     dataJsonFunction();
                 }
             }
@@ -82,31 +81,27 @@ public class DocketEnquiry extends AppCompatActivity {
 //        final String method;
         final String method = "docket";
         final String apikey = saltStr();
-        Log.d("apikey : ", apikey);
-        Log.d("method : ", method);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                Log.d("responseStart : ", response.toString());
                 try {
                     JSONObject object = new JSONObject(response.toString());
                     String status = object.optString("status");
                     String apkKeyResponse = object.optString("key");
-                    Log.d("Status : ",status);
-                    Log.d("key : ",apkKeyResponse);
 
                     if (status.equals("true")) {
-                        Log.d("======================",status);
                         Intent intent = new Intent(getApplicationContext(), DocketTracking.class);
                         intent.putExtra("response", response.toString());
                         startActivity(intent);
                     } else if (status.equals("false")){
                         Toast.makeText(getApplicationContext(),method + " not found!", Toast.LENGTH_SHORT).show();
+                        submit_docket_btn.setClickable(true);
                     }
                     else{
                         Toast.makeText(getApplicationContext(),"something went wrong!", Toast.LENGTH_SHORT).show();
+                        submit_docket_btn.setClickable(true);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -118,8 +113,10 @@ public class DocketEnquiry extends AppCompatActivity {
                 Log.d("response",""+error.toString());
                 if(error.toString().equals("com.android.volley.ServerError")){
                     Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
+                    submit_docket_btn.setClickable(true);
                 } else{
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    submit_docket_btn.setClickable(true);
                 }
             }
         }) {
@@ -129,9 +126,6 @@ public class DocketEnquiry extends AppCompatActivity {
                 params.put("docket_no", strInput_editSearch_text);
                 params.put("method", method);
                 params.put("key", apikey);
-//                params.put("docket_no","4422791");
-//                params.put("method","docket");
-//                params.put("key","BGOOLTRECUOUQS1NJA");
                 return params;
             }
         };

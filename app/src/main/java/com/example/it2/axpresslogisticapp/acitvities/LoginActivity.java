@@ -65,9 +65,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 hide_keyboard();
                 if (employee_code.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Enter the Employee ID.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Enter the Employee ID.",
+                            Toast.LENGTH_LONG).show();
                 } else if (password.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Enter the Password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Enter the Password",
+                            Toast.LENGTH_LONG).show();
                 } else {
                     login();
                 }
@@ -75,7 +77,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //set click event on forget link for redirection on forget page activity...
             case R.id.forget_password_linkId:
                 forgetPassword();
-                finish();
                 break;
         }
     }
@@ -116,8 +117,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.d("response======",""+error.toString());
                 if(error.toString().equals("com.android.volley.ServerError")){
                     Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
+                    invisibleProgressbar();
                 } else{
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    invisibleProgressbar();
                 }
             }
         }) {
@@ -134,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
 
     private String saltStr() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -167,15 +171,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onPostResume() {
         super.onPostResume();
         invisibleProgressbar();
+        clearText();
 
     }
 
     private void invisibleProgressbar() {
         progressBar.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.GONE);
+        login_button.setClickable(true);
+    }
+
+    private  void clearText(){
         employee_code.setText("");
         password.setText("");
-        login_button.setClickable(true);
     }
 
 

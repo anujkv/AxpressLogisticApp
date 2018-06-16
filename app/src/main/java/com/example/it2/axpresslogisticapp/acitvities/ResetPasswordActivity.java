@@ -65,8 +65,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
                     if (status.equals("true")) {
                         Toast.makeText(getApplicationContext(),"Password is default, same as Employee ID!.",Toast.LENGTH_SHORT).show();
-//                        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-
                     } else {
                         Toast.makeText(getApplicationContext(), "credential not match", Toast.LENGTH_LONG).show();
                     }
@@ -104,14 +102,21 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.textViewBackLinkId:
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                finish();
-                break;
             case R.id.textViewSubmitLinkId:
                 strEmail = editTextResetEmail.getText().toString().trim();
                 strEmpId = editTextResetID.getText().toString().trim();
-                resetPassword();
+                if(strEmail.isEmpty() && strEmail.equals(null)){
+                    Toast.makeText(getApplicationContext(),"Enter the email Id!",LENGTH_SHORT).show();
+                }
+                 else if (strEmpId.isEmpty() && strEmail.equals(null)) {
+                    Toast.makeText(getApplicationContext(), "Enter the employee Id!", LENGTH_SHORT).show();
+                } else {
+                    resetPassword();
+                    finish();
+                }
+                break;
+
+            case R.id.textViewBackLinkId:
                 finish();
                 break;
         }
@@ -127,10 +132,5 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         }
         String saltStr = salt.toString();
         return saltStr;
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
     }
 }

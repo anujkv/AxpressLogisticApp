@@ -13,7 +13,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:numColumns="3"
-                    android:divider="@color/colorPrimaryDark"
+                    android:divider="@color/black"
                     android:dividerHeight="1dip" />
 
 </LinearLayout>

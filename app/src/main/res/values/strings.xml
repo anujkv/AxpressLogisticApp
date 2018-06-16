@@ -61,8 +61,15 @@
     <string name="challen_date">Challen Date</string>
     <string name="vehical_no">Vehicle No</string>
     <string name="challan_details">Challan/TCS Details</string>
-    <string name="dwd_details">DWD Details</string>
+    <string name="dwb_details">DWB Details</string>
     <string name="docket_tracking">Docket Tracking</string>
     <string name="docket">Docket</string>
     <string name="invoice">Invoice</string>
+    <string name="from_to">From / To</string>
+    <string name="drs_details">Delivery Information</string>
+    <string name="drs_challan_noID">DRS/ Challan No</string>
+    <string name="date">Date</string>
+    <string name="receving">Receiving Date</string>
+    <string name="received_byId">Received By</string>
+    <string name="show_more">Show More</string>
 </resources>

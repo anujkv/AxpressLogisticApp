@@ -66,6 +66,8 @@ public class HrmsActivity extends AppCompatActivity {
 
 
         GridViewHrms gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewStrings, gridViewIcons);
+        gridView.getColumnWidth();
+        gridView.getVerticalSpacing();
         gridView.setAdapter(gridViewHrms);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
