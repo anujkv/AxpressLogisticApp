@@ -29,11 +29,11 @@ import java.util.Random;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
-public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener{
+public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
     String url = "http://webapi.axpresslogistics.com/api/HRMS/Reset_Pass";
-    EditText editTextResetEmail,editTextResetID,editTextDOBID;
-    TextView textViewBackLinkId,textViewSubmitLinkId;
-    String strEmail,strEmpId,strDOBID;
+    EditText editTextResetEmail, editTextResetID, editTextDOBID;
+    TextView textViewBackLinkId, textViewSubmitLinkId;
+    String strEmail, strEmpId, strDOBID;
     Intent intent;
 
     @Override
@@ -63,10 +63,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                     JSONObject object = new JSONObject(response.toString());
                     String status = object.optString("Status");
                     String apiKEYresponse = object.optString("key");
-                    Log.d("Response>>>",status);
+                    Log.d("Response>>>", status);
 
                     if (status.equals("true")) {
-                        Toast.makeText(getApplicationContext(),"Password is default, same as Employee ID!.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Password is default, same as Employee ID!.", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "credential not match", Toast.LENGTH_LONG).show();
                     }
@@ -77,14 +78,14 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("response======",""+error.toString());
-                if(error.toString().equals("com.android.volley.ServerError")){
+                Log.d("response======", "" + error.toString());
+                if (error.toString().equals("com.android.volley.ServerError")) {
                     Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
-                } else{
+                } else {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
                 }
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -104,25 +105,52 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.textViewSubmitLinkId:
-                strEmail = editTextResetEmail.getText().toString().trim();
-                strEmpId = editTextResetID.getText().toString().trim();
-                strDOBID = editTextDOBID.getText().toString().replace("/","-").trim();
-                if(strEmail.isEmpty() && strEmail.equals(null) || strDOBID.isEmpty() && strDOBID.equals(null)){
-                    Toast.makeText(getApplicationContext(),"Enter the email Id! or DOB!",LENGTH_SHORT).show();
-                }
-                 else if (strEmpId.isEmpty() && strEmail.equals(null))  {
+                editTextResetEmail.setFocusable(false);
+                editTextDOBID.setFocusable(false);
+                if (editTextResetID.getText().toString().trim().isEmpty() &&
+                        editTextResetID.getText().toString().trim().equals("")) {
                     Toast.makeText(getApplicationContext(), "Enter the employee Id!", LENGTH_SHORT).show();
                 } else {
+                    strEmpId = editTextResetID.getText().toString().trim();
+                    editTextResetEmail.setFocusable(true);
+                    editTextDOBID.setFocusable(true);
+                    if (strEmail.isEmpty() && strDOBID.equals("") || strEmail.isEmpty() && strDOBID.equals("")) {
+                        Toast.makeText(getApplicationContext(), "Enter the email Id! or DOB!", LENGTH_SHORT).show();
+                    }else{
+                        if(editTextResetEmail.getText().toString().trim().isEmpty() &&
+                                editTextResetEmail.getText().toString().trim().equals("")){
+//                            Toast.makeText(getApplicationContext(), "Enter the email Id!", LENGTH_SHORT).show();
+                        }else if (){
+
+                        }
+                        strEmail = editTextResetEmail.getText().toString().trim();
+                        strDOBID = editTextDOBID.getText().toString().replace("/", "-").trim();
+                        callback();
+                    }
+
+
+
+
                     resetPassword();
-                    finish();
                 }
                 break;
 
             case R.id.textViewBackLinkId:
                 finish();
                 break;
+        }
+    }
+
+    private void callback() {
+
+        if (editTextDOBID.getText().toString().trim().length() == 10) {
+            callback();
+        } else if (editTextDOBID.getText().toString().trim().contains("/")) {
+            strDOBID = editTextDOBID.getText().toString().trim();
+        } else {
+            Toast.makeText(getApplicationContext(), "Enter the correct DOB!", LENGTH_SHORT).show();
         }
     }
 
