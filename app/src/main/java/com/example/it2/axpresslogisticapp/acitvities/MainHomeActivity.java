@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.it2.axpresslogisticapp.CardScanner;
 import com.example.it2.axpresslogisticapp.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,6 +43,7 @@ public class MainHomeActivity extends AppCompatActivity
             "Activities",
             "Financial",
             "My Tickets",
+            "Card Scanner"
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_operation,
@@ -50,6 +52,7 @@ public class MainHomeActivity extends AppCompatActivity
             R.drawable.icon_activities,
             R.drawable.icon_financial,
             R.drawable.icon_tickets,
+            R.drawable.icon_card_scanner
     };
     CollapsingToolbarLayout collapsingToolbarLayout;
     CoordinatorLayout coordinatorLayout;
@@ -123,7 +126,17 @@ public class MainHomeActivity extends AppCompatActivity
                         Toast.makeText(getApplicationContext(), "No Activity " +
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
-
+                    case 4:
+                        Toast.makeText(getApplicationContext(), "No Activity " +
+                                String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        break;
+                    case 5:
+                        Toast.makeText(getApplicationContext(), "No Activity " +
+                                String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        break;
+                    case 6:
+                        startActivity(new Intent(getApplicationContext(),CardScanner.class));
+                        break;
                 }
 
             }

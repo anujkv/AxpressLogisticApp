@@ -27,12 +27,13 @@ import java.util.Map;
 import java.util.Random;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
 
 public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener{
     String url = "http://webapi.axpresslogistics.com/api/HRMS/Reset_Pass";
-    EditText editTextResetEmail,editTextResetID;
+    EditText editTextResetEmail,editTextResetID,editTextDOBID;
     TextView textViewBackLinkId,textViewSubmitLinkId;
-    String strEmail,strEmpId;
+    String strEmail,strEmpId,strDOBID;
     Intent intent;
 
     @Override
@@ -41,6 +42,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_reset_password);
         editTextResetEmail = findViewById(R.id.editTextResetEmail);
         editTextResetID = findViewById(R.id.editTextResetID);
+        editTextDOBID = findViewById(R.id.editTextDOBID);
         textViewBackLinkId = findViewById(R.id.textViewBackLinkId);
         textViewSubmitLinkId = findViewById(R.id.textViewSubmitLinkId);
 
@@ -88,6 +90,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 Map<String, String> params = new HashMap<>();
                 params.put("employee_id", strEmpId);
                 params.put("employee_email", strEmail);
+                params.put("employee_dob", strDOBID);
                 params.put("method", method);
                 params.put("key", apikey.trim());
                 Log.d("employee_id", strEmpId);
@@ -105,10 +108,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
             case R.id.textViewSubmitLinkId:
                 strEmail = editTextResetEmail.getText().toString().trim();
                 strEmpId = editTextResetID.getText().toString().trim();
-                if(strEmail.isEmpty() && strEmail.equals(null)){
-                    Toast.makeText(getApplicationContext(),"Enter the email Id!",LENGTH_SHORT).show();
+                strDOBID = editTextDOBID.getText().toString().replace("/","-").trim();
+                if(strEmail.isEmpty() && strEmail.equals(null) || strDOBID.isEmpty() && strDOBID.equals(null)){
+                    Toast.makeText(getApplicationContext(),"Enter the email Id! or DOB!",LENGTH_SHORT).show();
                 }
-                 else if (strEmpId.isEmpty() && strEmail.equals(null)) {
+                 else if (strEmpId.isEmpty() && strEmail.equals(null))  {
                     Toast.makeText(getApplicationContext(), "Enter the employee Id!", LENGTH_SHORT).show();
                 } else {
                     resetPassword();

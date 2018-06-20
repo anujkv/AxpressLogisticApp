@@ -112,6 +112,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         txtUserId.setText(strUserId.trim());
         txtBranch.setText(strBranch.trim());
         txtDesignation.setText(strDesignation.trim());
+        attendance_btn.setText("Submit Attendance");
         txtDept.setText(strDept.trim());
     }
 
@@ -204,7 +205,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         txtBranch = findViewById(R.id.txtBranchId);
         txtDept = findViewById(R.id.txtDeptID);
         userImage = findViewById(R.id.user_imageId);
-        attendance_btn = findViewById(R.id.attendance_btnId);
+        attendance_btn = findViewById(R.id.btn_login);
         progressBar = findViewById(R.id.attendance_progressbarId);
     }
 

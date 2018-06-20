@@ -2,11 +2,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/docketscrollview_Id"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/docketscrollview_Id"
     android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
     tools:context=".acitvities.DocketTracking">
 
     <LinearLayout
@@ -18,29 +18,33 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="2dp"
             android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
+            android:layout_marginTop="5dp"
+            android:elevation="10dp"
             android:padding="24dp"
             app:cardCornerRadius="5dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="24dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="@string/dwb_details"
                     android:textAlignment="center"
-                    android:layout_marginBottom="10dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -53,6 +57,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".6" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,6 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".6" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -104,21 +110,24 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".15"
-                        android:text="MNS"/>
+                        android:text="MNS" />
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight=".05"
-                        android:text="/"/>
+                        android:text="/" />
+
                     <TextView
                         android:id="@+id/txt_toID"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".4"
-                        android:textAlignment="textStart"
-                        android:text="CKN" />
+                        android:text="CKN"
+                        android:textAlignment="textStart" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -139,56 +148,184 @@
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
+            android:elevation="10dp"
+            android:layout_marginTop="2dp"
             android:padding="24dp"
             app:cardCornerRadius="5dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/challan_details"/>
+                    android:layout_marginTop="10dp"
+                    android:text="@string/challan_details"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/challanRecyclerView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                    android:scrollbars="vertical">
 
-                </android.support.v7.widget.RecyclerView>
+                    <LinearLayout
+                        android:id="@+id/challan_details_itemListOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".4"
+                                android:text="@string/challen_noID" />
+
+                            <TextView
+                                android:id="@+id/txt_challenFirst_no_ID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".4"
+                                android:text="@string/challen_date" />
+
+                            <TextView
+                                android:id="@+id/txt_challenFirst_dateID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".4"
+                                android:text="@string/from_to" />
+
+                            <TextView
+                                android:id="@+id/txt_challanFirst_fromID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".15" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".05"
+                                android:text="/" />
+
+                            <TextView
+                                android:id="@+id/txt_challanFirst_toID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".4"
+                                android:textAlignment="textStart" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".4"
+                                android:text="@string/vehical_no" />
+
+                            <TextView
+                                android:id="@+id/txt_vehicalFirst_noID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".4"
+                                android:text="@string/status" />
+
+                            <TextView
+                                android:id="@+id/txt_vehicalFirst_statusID"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
                 <TextView
+                    android:id="@+id/show_more_click_link"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:paddingRight="10dp"
                     android:text="@string/show_more"
                     android:textAlignment="textEnd"
-                    android:paddingRight="10dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:textColor="@color/colorAccent" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/challanRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:visibility="gone">
+
+        </android.support.v7.widget.RecyclerView>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="2dp"
             android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
+            android:layout_marginTop="5dp"
+            android:elevation="10dp"
             android:padding="24dp"
-            app:cardCornerRadius="1dp">
+            app:cardCornerRadius="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -257,6 +394,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".6" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -267,21 +405,25 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".4"
                         android:text="@string/received_byId" />
+
                     <TextView
                         android:id="@+id/txt_drs_received_byID"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".6" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".4"
                         android:text="@string/status" />
+
                     <TextView
                         android:id="@+id/txt_drs_statusID"
                         android:layout_width="0dp"
@@ -290,6 +432,17 @@
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/mapview_clickbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_shape"
+            android:text="@string/mapview"
+            android:layout_gravity="center"
+            android:textSize="10sp"
+            android:textColor="@color/white"/>
+
     </LinearLayout>
 
 

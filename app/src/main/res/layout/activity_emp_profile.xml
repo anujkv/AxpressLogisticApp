@@ -41,7 +41,7 @@
                     android:text="Employee Name"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
                 <TextView
@@ -52,7 +52,7 @@
                     android:text="A1234"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:textStyle="italic" />
 
             </LinearLayout>
@@ -81,7 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Employee Info"
-                        android:textSize="16dp"
+                        android:textSize="14sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/colorPrimaryDark" />
 
@@ -96,13 +96,14 @@
                             android:layout_weight=".5"
                             android:text="Name"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtname"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -118,7 +119,7 @@
                             android:layout_weight=".5"
                             android:text="Employee Code"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtEmpCode"
@@ -127,6 +128,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="A1234"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -142,7 +144,7 @@
                             android:layout_weight=".5"
                             android:text="Contact No."
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtContactNo"
@@ -151,6 +153,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="9876543210"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -166,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".5"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtContactAltNo"
@@ -190,7 +193,7 @@
                             android:layout_weight=".5"
                             android:text="Designation"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtDesignation"
@@ -199,6 +202,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="Android Developer"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -214,7 +218,7 @@
                             android:layout_weight=".5"
                             android:text="Department"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtDept"
@@ -223,6 +227,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="IT-Development"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -238,7 +243,7 @@
                             android:layout_weight=".5"
                             android:text="Branch"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtBranch"
@@ -247,6 +252,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:editable="false"
+                            android:textSize="14sp"
                             android:text="Gurgaon corporate office"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -262,7 +268,7 @@
                             android:layout_weight=".5"
                             android:text="Branch Code"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtBranchCode"
@@ -271,6 +277,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="GGN-CO"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -287,7 +294,7 @@
                             android:text="Email ID"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtEmail"
@@ -296,6 +303,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="anuj@axpress.com"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -325,7 +333,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Employee Presonal Info."
-                        android:textSize="16dp"
+                        android:textSize="14sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/colorPrimaryDark" />
 
@@ -340,13 +348,14 @@
                             android:layout_weight=".5"
                             android:text="Father's Name"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtFatherName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
+                            android:textSize="14sp"
                             android:text="Rajendra Prasad"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -363,7 +372,7 @@
                             android:layout_weight=".5"
                             android:text="DOB"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtDOB"
@@ -372,6 +381,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="1 jan 2000"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -387,7 +397,7 @@
                             android:layout_weight=".5"
                             android:text="Birth Place"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtBOP"
@@ -396,6 +406,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="Aligarh"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -411,7 +422,7 @@
                             android:layout_weight=".5"
                             android:text="Date of Joining"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtDOJ"
@@ -420,6 +431,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="10 Jan 2015"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -434,7 +446,7 @@
                             android:layout_weight=".5"
                             android:text="Qualification"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtQulification"
@@ -443,6 +455,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="B.Tech-IT"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -458,7 +471,7 @@
                             android:layout_weight=".5"
                             android:text="Adhar Card No."
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtAdharCard"
@@ -467,6 +480,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="664455332211"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -482,7 +496,7 @@
                             android:layout_weight=".5"
                             android:text="Address"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtAddress"
@@ -492,6 +506,7 @@
                             android:autoSizeMaxTextSize="8dp"
                             android:text="address-aligarh-up"
                             android:editable="false"
+                            android:textSize="14sp"
                             android:textColor="@color/primaryTextColor" />
                         <ImageButton
                             android:id="@+id/edtImageButtonAddress"
@@ -526,7 +541,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Employee Bank/Imp. Info."
-                        android:textSize="16dp"
+                        android:textSize="14sp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/colorPrimaryDark" />
 
@@ -541,7 +556,7 @@
                             android:layout_weight=".5"
                             android:text="PAN No."
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtPAN"
@@ -549,6 +564,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:text="xxxxxxuuuu"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -564,7 +580,7 @@
                             android:layout_weight=".5"
                             android:text="UAN No."
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtUAN"
@@ -573,6 +589,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="UAN96325874"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -588,7 +605,7 @@
                             android:layout_weight=".5"
                             android:text="ESI No."
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtESI"
@@ -597,6 +614,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="ESI365214"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -612,7 +630,7 @@
                             android:layout_weight=".5"
                             android:text="Bank Account No."
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtBankAccount"
@@ -620,6 +638,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:editable="false"
+                            android:textSize="14sp"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="1563 3654 8521 7896"
                             android:textColor="@color/primaryTextColor" />
@@ -642,7 +661,7 @@
                             android:layout_weight=".5"
                             android:text="Bank Name"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtBankName"
@@ -652,6 +671,7 @@
                             android:autoSizeMaxTextSize="8dp"
                             android:text="ICICI BANK"
                             android:editable="false"
+                            android:textSize="14sp"
                             android:textColor="@color/primaryTextColor" />
                         <ImageButton
                             android:id="@+id/edtImageButtonbankName"
@@ -672,7 +692,7 @@
                             android:layout_weight=".5"
                             android:text="IFSC Code"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="16dp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/edtBankIFSC"
@@ -681,6 +701,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="ICIC006244"
+                            android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                         <ImageButton
