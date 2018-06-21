@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     TextView textViewBackLinkId, textViewSubmitLinkId;
     String strEmail, strEmpId, strDOBID;
     Intent intent;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +44,17 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_reset_password);
         editTextResetEmail = findViewById(R.id.editTextResetEmail);
         editTextResetID = findViewById(R.id.editTextResetID);
-        editTextDOBID = findViewById(R.id.editTextDOBID);
+//        editTextDOBID = findViewById(R.id.editTextDOBID);
         textViewBackLinkId = findViewById(R.id.textViewBackLinkId);
         textViewSubmitLinkId = findViewById(R.id.textViewSubmitLinkId);
+        progressBar = findViewById(R.id.progressBar);
+        editTextResetID.setFocusable(true);
 
         textViewBackLinkId.setOnClickListener(this);
         textViewSubmitLinkId.setOnClickListener(this);
+
     }
+
 
     private void resetPassword() {
 
@@ -59,7 +65,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onResponse(String response) {
                 try {
-
                     JSONObject object = new JSONObject(response.toString());
                     String status = object.optString("Status");
                     String apiKEYresponse = object.optString("key");
@@ -67,9 +72,13 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
                     if (status.equals("true")) {
                         Toast.makeText(getApplicationContext(), "Password is default, same as Employee ID!.", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                         finish();
+
                     } else {
                         Toast.makeText(getApplicationContext(), "credential not match", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -81,8 +90,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 Log.d("response======", "" + error.toString());
                 if (error.toString().equals("com.android.volley.ServerError")) {
                     Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+
                 } else {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
         }) {
@@ -91,7 +103,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 Map<String, String> params = new HashMap<>();
                 params.put("employee_id", strEmpId);
                 params.put("employee_email", strEmail);
-                params.put("employee_dob", strDOBID);
+                params.put("employee_dob", "");
                 params.put("method", method);
                 params.put("key", apikey.trim());
                 Log.d("employee_id", strEmpId);
@@ -107,50 +119,31 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textViewSubmitLinkId:
-                editTextResetEmail.setFocusable(false);
-                editTextDOBID.setFocusable(false);
+                //Check Emp ID is empty or not...
                 if (editTextResetID.getText().toString().trim().isEmpty() &&
                         editTextResetID.getText().toString().trim().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Enter the employee Id!", LENGTH_SHORT).show();
-                } else {
+                    Toast.makeText(getApplicationContext(), "Enter the employee Id!",
+                            LENGTH_SHORT).show();
+                }
+                else {
                     strEmpId = editTextResetID.getText().toString().trim();
-                    editTextResetEmail.setFocusable(true);
-                    editTextDOBID.setFocusable(true);
-                    if (strEmail.isEmpty() && strDOBID.equals("") || strEmail.isEmpty() && strDOBID.equals("")) {
-                        Toast.makeText(getApplicationContext(), "Enter the email Id! or DOB!", LENGTH_SHORT).show();
-                    }else{
-                        if(editTextResetEmail.getText().toString().trim().isEmpty() &&
-                                editTextResetEmail.getText().toString().trim().equals("")){
-//                            Toast.makeText(getApplicationContext(), "Enter the email Id!", LENGTH_SHORT).show();
-                        }else if (){
-
-                        }
+                    if (editTextResetEmail.getText().toString().trim().isEmpty() &&
+                            editTextResetEmail.getText().toString().trim().equals("")) {
+                        Toast.makeText(getApplicationContext(), "Enter the email Id!",
+                                LENGTH_SHORT).show();
+                    } else {
                         strEmail = editTextResetEmail.getText().toString().trim();
-                        strDOBID = editTextDOBID.getText().toString().replace("/", "-").trim();
-                        callback();
+                        progressBar.setVisibility(View.VISIBLE);
+                        resetPassword();
+
                     }
 
-
-
-
-                    resetPassword();
                 }
                 break;
 
             case R.id.textViewBackLinkId:
                 finish();
                 break;
-        }
-    }
-
-    private void callback() {
-
-        if (editTextDOBID.getText().toString().trim().length() == 10) {
-            callback();
-        } else if (editTextDOBID.getText().toString().trim().contains("/")) {
-            strDOBID = editTextDOBID.getText().toString().trim();
-        } else {
-            Toast.makeText(getApplicationContext(), "Enter the correct DOB!", LENGTH_SHORT).show();
         }
     }
 

@@ -1,38 +1,55 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
-import android.content.Context;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.it2.axpresslogisticapp.R;
-import com.google.android.gms.flags.Flag;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
-public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener {
+    String update_url = "Type url update here";
     Boolean FLAG = false;
-    EditText edtName,edtEmpCode,edtContactNo,edtContactAltNo,edtDesignation,edtDept,edtBranch,edtBranchCode,
-                edtEmail,edtFatherName,edtDOB,edtBOP,edtDOJ,edtQulification,edtAdharCard,
-                edtAddress,edtPAN,edtUAN,edtESI,edtBankAccount,edtBankName,edtBankIFSC;
-    TextView txtName,txtEmpId;
-    String strName,strEmpCode,strContactNo,strContactAltNo,strDesignation,strDept,strBranch,strBranchCode,
-            strEmail,strFatherName,strDOB,strBOP,strDOJ,strQulification,strAdharCard,
-            strAddress,strPAN,strUAN,strESI,strBankAccount,strBankName,strBankIFSC;
-    ImageButton edtAddressBtn,edtBankAccountBtn,edtBankNameBtn,edtIFSCBtn;
+    EditText edtName, edtEmpCode, edtContactNo, edtContactAltNo, edtDesignation, edtDept, edtBranch,
+            edtBranchCode,
+            edtEmail, edtFatherName, edtDOB, edtBOP, edtDOJ, edtQulification, edtAdharCard,
+            edtAddress, edtPAN, edtUAN, edtESI, edtBankAccount, edtBankName, edtBankIFSC;
+    TextView txtName, txtEmpId, txt_address_update_status, txt_bank_account_update_status,
+            txt_bank_name_update_status,
+            txt_bank_ifsc_update_status;
+    String strName, strEmpCode, strContactNo, strContactAltNo, strDesignation, strDept, strBranch,
+            strBranchCode, strEmail, strFatherName, strDOB, strBOP, strDOJ, strQulification, strAdharCard,
+            strAddress, strPAN, strUAN, strESI, strBankAccount, strBankName, strBankIFSC;
+    ImageButton edtAddressBtn, edtBankAccountBtn, edtBankNameBtn, edtIFSCBtn;
     Intent intent;
-    String jsonString;
+    String jsonString, title, method, str;
     JSONObject jObj;
+    Dialog dialog;
+    DialogFragment dialogFragment;
     LinearLayout contactAltLinearLayout;
 
     @Override
@@ -151,46 +168,59 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         edtBankAccountBtn.setOnClickListener(this);
         edtBankNameBtn.setOnClickListener(this);
         edtIFSCBtn.setOnClickListener(this);
+
+        //update status textview fields...
+        txt_address_update_status = findViewById(R.id.txt_address_update_status);
+        txt_bank_account_update_status = findViewById(R.id.txt_bank_account_update_status);
+        txt_bank_name_update_status = findViewById(R.id.txt_bank_name_update_status);
+        txt_bank_ifsc_update_status = findViewById(R.id.txt_bank_ifsc_update_status);
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.edtImageButtonAddress:
-                if (FLAG.equals(false)){
+                if (FLAG.equals(false)) {
+                    String title = "Address";
+                    method = "address";
+                    showChangeProfileDialog(title, strAddress, method);
 //                    hide_keyboard();
-                    Toast.makeText(getApplicationContext(),"enable",Toast.LENGTH_SHORT).show();
-                    edtAddress.setEnabled(true);
-                    edtAddress.setFocusable(true);
-                    edtAddress.setFocusableInTouchMode(true);
-                    edtAddress.requestFocus();
-                    edtAddress.getEditableText();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(edtAddress, InputMethodManager.SHOW_IMPLICIT);
-                    FLAG = true;
-                } else {
-                    Toast.makeText(getApplicationContext(),"disable",Toast.LENGTH_SHORT).show();
-                    edtAddress.setFocusable(false);
-                    edtAddress.setFocusableInTouchMode(false);
-                    edtAddress.setClickable(false);
-                    FLAG = false;
+//                    Toast.makeText(getApplicationContext(),"enable",Toast.LENGTH_SHORT).show();
+//                    edtAddress.setEnabled(true);
+//                    edtAddress.setFocusable(true);
+//                    edtAddress.setFocusableInTouchMode(true);
+//                    edtAddress.requestFocus();
+//                    edtAddress.getEditableText();
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(edtAddress, InputMethodManager.SHOW_IMPLICIT);
+//                    FLAG = true;
+//                } else {
+//                    Toast.makeText(getApplicationContext(),"disable",Toast.LENGTH_SHORT).show();
+//                    edtAddress.setFocusable(false);
+//                    edtAddress.setFocusableInTouchMode(false);
+//                    edtAddress.setClickable(false);
+//                    FLAG = false;
+
                 }
                 break;
             case R.id.edtImageButtonBankAccount:
-                if (FLAG.equals(false)){
-//                    hide_keyboard();
-                    Toast.makeText(getApplicationContext(),"enable",Toast.LENGTH_SHORT).show();
-                    edtBankAccount.setEnabled(true);
-                    edtBankAccount.setFocusable(true);
-                    edtBankAccount.setFocusableInTouchMode(true);
-                    edtBankAccount.requestFocus();
-                    edtBankAccount.setClickable(true);
-                    edtBankAccount.getEditableText();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(edtBankAccount, InputMethodManager.SHOW_IMPLICIT);
-                    FLAG = true;
+                if (FLAG.equals(false)) {
+                    title = "Bank Account";
+                    method = "bank_account";
+                    showChangeProfileDialog(title, strBankAccount, method);
+////                    hide_keyboard();
+//                    Toast.makeText(getApplicationContext(),"enable",Toast.LENGTH_SHORT).show();
+//                    edtBankAccount.setEnabled(true);
+//                    edtBankAccount.setFocusable(true);
+//                    edtBankAccount.setFocusableInTouchMode(true);
+//                    edtBankAccount.requestFocus();
+//                    edtBankAccount.setClickable(true);
+//                    edtBankAccount.getEditableText();
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(edtBankAccount, InputMethodManager.SHOW_IMPLICIT);
+//                    FLAG = true;
                 } else {
-                    Toast.makeText(getApplicationContext(),"disable",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "disable", Toast.LENGTH_SHORT).show();
                     edtBankAccount.setFocusable(false);
                     edtBankAccount.setFocusableInTouchMode(false);
                     edtBankAccount.setClickable(false);
@@ -199,11 +229,120 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
 //
                 break;
             case R.id.edtImageButtonbankName:
-
+                String title = "Bank Name";
+                method = "bank_name";
+                showChangeProfileDialog(title, strBankName, method);
                 break;
             case R.id.edtImageButtonBankIFSC:
-
+                title = "Bank IFSC Code";
+                method = "bank_ifsc";
+                showChangeProfileDialog(title, strBankIFSC, method);
                 break;
         }
+    }
+
+    public void showChangeProfileDialog(String title, final String field_detail, final String method) {
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.update_emp_profile, null);
+        dialogBuilder.setView(dialogView);
+        final EditText edt = (dialogView.findViewById(R.id.edtUpdateDialog));
+        edt.setText(field_detail);
+        dialogBuilder.setTitle(title);
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                str = edt.getText().toString().trim();
+                //do something with edt.getText().toString();
+                Toast.makeText(getApplicationContext(), "Pending for approval : " + edt.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+                postUpdateFunction(str, method);
+                if (method.equals("address")) {
+                    txt_address_update_status.setVisibility(View.VISIBLE);
+                }else if(method.equals("bank_account")){
+                    txt_bank_account_update_status.setVisibility(View.VISIBLE);
+                }else if(method.equals("bank_name")){
+                    txt_bank_account_update_status.setVisibility(View.VISIBLE);
+                }else if(method.equals("bank_ifsc")){
+                    txt_bank_account_update_status.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                edt.setText(field_detail);
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
+    }
+
+    private void postUpdateFunction(final String str, final String method) {
+        this.method = method;
+        this.str = str;
+        final String apikey = saltStr();
+        final String arrlist[] = {"address", "bank_name", "bank_account", "bank_ifsc"};
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, update_url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response.toString());
+                    String status = object.optString("response");
+                    String apiKeyResponse = object.optString("key");
+                    String method = object.optString("method");
+
+                    if (status.equals("verified") && apiKeyResponse.equals(apikey)) {
+//                        for (int i = 0; i < arrlist.length; i++) {
+                            if (method.equals("address")) {
+                                txt_address_update_status.setText("Verified");
+                            }else if(method.equals("bank_account")){
+                                txt_bank_account_update_status.setText("Verified");
+                            }else if(method.equals("bank_name")){
+                                txt_bank_account_update_status.setText("Verified");
+                            }else if(method.equals("bank_ifsc")){
+                                txt_bank_account_update_status.setText("Verified");
+                            }
+//                        }
+
+                    } else if(status.equals("not_verified") && apiKeyResponse.equals(apikey)){
+                        txt_address_update_status.setText("Not verified,contact to HR");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("response======", "" + error.toString());
+                if (error.toString().equals("com.android.volley.ServerError")) {
+                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("method",method);
+                params.put("key",apikey);
+                params.put("string",str);
+                return params;
+            }
+        };
+    }
+
+    //apikey genrator...
+    private String saltStr() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
     }
 }
