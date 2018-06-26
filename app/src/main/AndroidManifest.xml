@@ -18,7 +18,6 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher24s"
@@ -66,16 +65,12 @@
             android:name=".acitvities.AddCustomerActivity"
             android:label="@string/add_customer" />
         <activity
-            android:name=".acitvities.QRCodeScanningActivity"
-            android:label="@string/qrcode" />
-        <activity
             android:name=".acitvities.EmpProfileActivity"
             android:label="@string/editprofile" />
         <activity android:name=".acitvities.ResetPasswordActivity" />
         <activity
             android:name=".acitvities.DocketTracking"
-            android:label="@string/docket_tracking">
-        </activity>
+            android:label="@string/docket_tracking" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -90,8 +85,22 @@
 
         <activity
             android:name=".acitvities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".CardScanner"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".ScannerActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <activity android:name=".CardScanner" />
+        <activity android:name=".ScannedDataActivity">
+        </activity>
     </application>
 
 </manifest>

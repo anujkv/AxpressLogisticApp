@@ -29,6 +29,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import com.example.it2.axpresslogisticapp.acitvities.ApiKey;
+
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String employeeCodeValue, passwordValue, username;
     Bundle bundle;
     ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +87,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void login() {
         progressBar.setVisibility(View.VISIBLE);
         login_button.setClickable(false);
+        ApiKey apiKey = new ApiKey();
         final String method = "login";
-        final String apikey = saltStr();
+        final String apikey = apiKey.saltStr();
         Log.d("apikey : ",apikey);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -136,19 +140,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
-
-
-    private String saltStr() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 18) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
     }
 
     //hide softkeyboard from screen..

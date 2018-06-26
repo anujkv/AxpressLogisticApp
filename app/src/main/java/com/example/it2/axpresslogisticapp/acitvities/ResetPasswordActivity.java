@@ -57,9 +57,9 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
 
     private void resetPassword() {
-
+        ApiKey apiKey = new ApiKey();
         final String method = "reset";
-        final String apikey = saltStr();
+        final String apikey = apiKey.saltStr();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -145,17 +145,5 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 finish();
                 break;
         }
-    }
-
-    private String saltStr() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 18) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
     }
 }

@@ -3,7 +3,6 @@ package com.example.it2.axpresslogisticapp.acitvities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -21,13 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.it2.axpresslogisticapp.CardScanner;
 import com.example.it2.axpresslogisticapp.R;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.it2.axpresslogisticapp.ScannerActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,7 +129,7 @@ public class MainHomeActivity extends AppCompatActivity
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                     case 6:
-                        startActivity(new Intent(getApplicationContext(),CardScanner.class));
+                        startActivity(new Intent(getApplicationContext(),ScannerActivity.class));
                         break;
                 }
 

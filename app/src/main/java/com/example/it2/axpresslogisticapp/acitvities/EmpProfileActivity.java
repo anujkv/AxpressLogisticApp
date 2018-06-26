@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,8 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emp_profile);
+//        Toolbar toolbar =  findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
         //Set View with fields..
         setView();
 
@@ -184,23 +187,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                     String title = "Address";
                     method = "address";
                     showChangeProfileDialog(title, strAddress, method);
-//                    hide_keyboard();
-//                    Toast.makeText(getApplicationContext(),"enable",Toast.LENGTH_SHORT).show();
-//                    edtAddress.setEnabled(true);
-//                    edtAddress.setFocusable(true);
-//                    edtAddress.setFocusableInTouchMode(true);
-//                    edtAddress.requestFocus();
-//                    edtAddress.getEditableText();
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.showSoftInput(edtAddress, InputMethodManager.SHOW_IMPLICIT);
-//                    FLAG = true;
-//                } else {
-//                    Toast.makeText(getApplicationContext(),"disable",Toast.LENGTH_SHORT).show();
-//                    edtAddress.setFocusable(false);
-//                    edtAddress.setFocusableInTouchMode(false);
-//                    edtAddress.setClickable(false);
-//                    FLAG = false;
-
                 }
                 break;
             case R.id.edtImageButtonBankAccount:
@@ -208,17 +194,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                     title = "Bank Account";
                     method = "bank_account";
                     showChangeProfileDialog(title, strBankAccount, method);
-////                    hide_keyboard();
-//                    Toast.makeText(getApplicationContext(),"enable",Toast.LENGTH_SHORT).show();
-//                    edtBankAccount.setEnabled(true);
-//                    edtBankAccount.setFocusable(true);
-//                    edtBankAccount.setFocusableInTouchMode(true);
-//                    edtBankAccount.requestFocus();
-//                    edtBankAccount.setClickable(true);
-//                    edtBankAccount.getEditableText();
-//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.showSoftInput(edtBankAccount, InputMethodManager.SHOW_IMPLICIT);
-//                    FLAG = true;
                 } else {
                     Toast.makeText(getApplicationContext(), "disable", Toast.LENGTH_SHORT).show();
                     edtBankAccount.setFocusable(false);
@@ -278,8 +253,9 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
 
     private void postUpdateFunction(final String str, final String method) {
         this.method = method;
+        ApiKey apiKey = new ApiKey();
         this.str = str;
-        final String apikey = saltStr();
+        final String apikey = apiKey.saltStr();
         final String arrlist[] = {"address", "bank_name", "bank_account", "bank_ifsc"};
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, update_url, new Response.Listener<String>() {
@@ -303,7 +279,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                                 txt_bank_account_update_status.setText("Verified");
                             }
 //                        }
-
                     } else if(status.equals("not_verified") && apiKeyResponse.equals(apikey)){
                         txt_address_update_status.setText("Not verified,contact to HR");
                     }
@@ -331,18 +306,5 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 return params;
             }
         };
-    }
-
-    //apikey genrator...
-    private String saltStr() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 18) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
     }
 }

@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
@@ -69,6 +70,8 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_attendance);
+//        Toolbar toolbar =  findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
         set_and_bind();
 
         try {
@@ -120,8 +123,9 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
+            ApiKey apiKey = new ApiKey();
             final String method = "Attendance";
-            final String apikey = saltStr();
+            final String apikey = apiKey.saltStr();
             Log.d("apikey : ", apikey);
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -176,18 +180,6 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     private void disable_button() {
         attendance_btn.setTextColor(getColor(R.color.white));
         attendance_btn.setClickable(false);
-    }
-
-    private String saltStr() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 18) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
     }
 
     private void getValuesFromAPI() {

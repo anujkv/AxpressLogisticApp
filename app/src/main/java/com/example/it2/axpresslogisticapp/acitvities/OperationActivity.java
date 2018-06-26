@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.ScannedDataActivity;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,8 @@ public class OperationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
+//        Toolbar toolbar =  findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
         gridView = findViewById(R.id.gridhrms);
         gridView = findViewById(R.id.gridhrms);
 
@@ -77,8 +80,10 @@ public class OperationActivity extends AppCompatActivity {
                         startActivity(intent_addC);
                         break;
                     case 3:
+//                        Intent intent_qrcode = new Intent(OperationActivity.this,
+//                                QRCodeScanningActivity.class);
                         Intent intent_qrcode = new Intent(OperationActivity.this,
-                                QRCodeScanningActivity.class);
+                                ScannedDataActivity.class);
                         // passing array index
                         intent_qrcode.putExtra("id", position);
                         startActivity(intent_qrcode);

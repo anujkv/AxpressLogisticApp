@@ -9,11 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.adaptor.DocketTrackingAdaptor;
@@ -57,6 +59,8 @@ public class DocketTracking extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docket_tracking);
+//        android.support.v7.widget.Toolbar toolbar =  findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
         try {
             intent = getIntent();
             jsonString = intent.getStringExtra("response");
@@ -71,6 +75,7 @@ public class DocketTracking extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DocketTracking.this, MapsActivity.class);
+                intent.putExtra("docket",strDocket_no);
                 startActivity(intent);
             }
         });

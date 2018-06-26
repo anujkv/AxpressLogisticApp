@@ -2,6 +2,7 @@ package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -39,6 +40,8 @@ public class VehicalEnquiryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehical_enquiry);
+//        Toolbar toolbar =  findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
 
         search_input = findViewById(R.id.input_edit_text_id);
         search_title_text = findViewById(R.id.title);

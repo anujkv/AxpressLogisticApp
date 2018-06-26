@@ -7,6 +7,9 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".acitvities.MarkAttendanceActivity">
+   <!-- <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_toolbar"/>-->
 
 
     <android.support.v7.widget.CardView

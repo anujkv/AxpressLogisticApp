@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     android:stretchColumns="5"
     android:orientation="vertical">
+    <!--<include
+        android:id="@+id/app_bar"
+        layout="@layout/app_toolbar"/>-->
 
     <include layout="@layout/search_formate"/>
 

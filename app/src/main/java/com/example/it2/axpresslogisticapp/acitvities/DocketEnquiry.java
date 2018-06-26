@@ -3,6 +3,7 @@ package com.example.it2.axpresslogisticapp.acitvities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,8 @@ public class DocketEnquiry extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docket_enquiry);
+//        Toolbar toolbar = findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
 
         //initialize_data_types..
         initialize_dataType();
@@ -79,8 +82,9 @@ public class DocketEnquiry extends AppCompatActivity {
     private void dataJsonFunction() {
         submit_docket_btn.setClickable(false);
 //        final String method;
+        ApiKey apiKey = new ApiKey();
         final String method = "docket";
-        final String apikey = saltStr();
+        final String apikey = apiKey.saltStr();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -131,18 +135,6 @@ public class DocketEnquiry extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
-
-    private String saltStr() {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder salt = new StringBuilder();
-        Random rnd = new Random();
-        while (salt.length() < 18) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        String saltStr = salt.toString();
-        return saltStr;
     }
 
     private void initialize_dataType() {

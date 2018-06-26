@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".acitvities.VehicalEnquiryActivity">
 
+   <!-- <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_toolbar"/>-->
+
     <include layout="@layout/activity_leave_info"/>
 
 

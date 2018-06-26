@@ -51,6 +51,8 @@ public class HrmsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hrms);
+//        Toolbar toolbar =  findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
         gridView = findViewById(R.id.gridhrms);
         gridView = findViewById(R.id.gridhrms);
 

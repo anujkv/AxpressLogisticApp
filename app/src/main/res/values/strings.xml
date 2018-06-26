@@ -82,4 +82,15 @@
     <string name="dateofbirth">Date of birth (YYYY/MM/DD)</string>
 
     <string name="google_maps_key">AIzaSyA7x5XMZXg6oAuX1qSWD4DHQA6-o3N_btY</string>
+    <string name="Businesscard">Business Card Details</string>
+    <string name="job_title">Job Title</string>
+    <string name="company">Company</string>
+    <string name="mobile">Mobile</string>
+    <string name="telcom">Telephone</string>
+    <string name="website">Website</string>
+    <string name="fax">Fax No.</string>
+    <string name="scancard_view">Business card</string>
+    <string name="front_view">Front Card</string>
+    <string name="back_view">Back Card</string>
+    <string name="barcode">Barcode</string>
 </resources>
