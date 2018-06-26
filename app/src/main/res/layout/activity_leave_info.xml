@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".acitvities.LeaveInfoActivity">
-    <!--<include
+    <include
         android:id="@+id/app_bar"
-        layout="@layout/app_toolbar"/>-->
+        layout="@layout/app_toolbar"/>
 
     <include layout="@layout/search_formate"/>
 

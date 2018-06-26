@@ -37,8 +37,8 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
-        Toolbar toolbar =  findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar =  findViewById(R.id.app_bar);
+//        setSupportActionBar(toolbar);
         camerabtn = findViewById(R.id.camerabtn);
         qrcodebtn = findViewById(R.id.qrcodebtn);
 

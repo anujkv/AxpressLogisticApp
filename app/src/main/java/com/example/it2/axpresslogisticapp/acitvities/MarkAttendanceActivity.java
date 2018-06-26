@@ -14,6 +14,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -70,8 +71,17 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_attendance);
-//        Toolbar toolbar =  findViewById(R.id.app_bar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar =  findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        TextView lable = findViewById(R.id.title_toolbar);
+        lable.setText("Attendance");
+        ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
+        backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         set_and_bind();
 
         try {

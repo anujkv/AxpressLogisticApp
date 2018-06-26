@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.ScannedDataActivity;
@@ -42,8 +44,17 @@ public class OperationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
-//        Toolbar toolbar =  findViewById(R.id.app_bar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar =  findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        TextView lable = findViewById(R.id.title_toolbar);
+        lable.setText("Operation");
+        ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
+        backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         gridView = findViewById(R.id.gridhrms);
         gridView = findViewById(R.id.gridhrms);
 

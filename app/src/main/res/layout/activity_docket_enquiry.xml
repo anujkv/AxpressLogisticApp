@@ -5,9 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
     tools:context="com.example.it2.axpresslogisticapp.acitvities.DocketEnquiry">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -65,5 +73,5 @@
         android:background="@drawable/button_shape"
         android:padding="12dp"
         android:text="@string/searchbtn" />
-
+    </LinearLayout>
 </LinearLayout>

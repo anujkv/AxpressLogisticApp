@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DocketTracking extends AppCompatActivity {
+public class DocketTracking extends AppCompatActivity implements View.OnClickListener {
     //    String url = "http://webapi.axpresslogistics.com/api/Operations/Docket_Invoice";
     TextView txtDocket_no, txtDocket_date, txtDocket_from, txtDocket_to, txtDocketConsignee,
             txtDocket_status, txtDRS_no, txtDRS_date, txtDRS_receiving, txtDRS_received_by, txtDRS_status;
@@ -54,13 +55,20 @@ public class DocketTracking extends AppCompatActivity {
     ProgressDialog progressDialog;
     CardView challanCardView;
     LinearLayout linearLayout;
+    ImageButton backbtn_toolbar, mapbtn_toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docket_tracking);
-//        android.support.v7.widget.Toolbar toolbar =  findViewById(R.id.app_bar);
-//        setSupportActionBar(toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        TextView lable = findViewById(R.id.title_toolbar);
+        lable.setText("Docket Tracking Details");
+        backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
+        mapbtn_toolbar = findViewById(R.id.mapbtn_toolbar);
+        backbtn_toolbar.setOnClickListener(this);
+        mapbtn_toolbar.setOnClickListener(this);
         try {
             intent = getIntent();
             jsonString = intent.getStringExtra("response");
@@ -71,14 +79,6 @@ public class DocketTracking extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        mapview_clickbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DocketTracking.this, MapsActivity.class);
-                intent.putExtra("docket",strDocket_no);
-                startActivity(intent);
-            }
-        });
     }
 
     private void declareVariable() {
@@ -112,7 +112,6 @@ public class DocketTracking extends AppCompatActivity {
 //        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
         challanList = new ArrayList<com.example.it2.axpresslogisticapp.model.DocketTracking>();
-        mapview_clickbtn = findViewById(R.id.mapview_clickbtn);
     }
 
     private void getData() {
@@ -228,6 +227,19 @@ public class DocketTracking extends AppCompatActivity {
         txtDRS_receiving.setText(strDRS_receiving);
         txtDRS_received_by.setText(strDRS_received_by);
         txtDRS_status.setText(strDRS_status);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backbtn_toolbar:
+                finish();
+                break;
+            case R.id.mapbtn_toolbar:
+                Intent intent = new Intent(DocketTracking.this, MapsActivity.class);
+                intent.putExtra("docket", strDocket_no);
+                startActivity(intent);
+        }
     }
 }
 

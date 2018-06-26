@@ -39,38 +39,48 @@
             android:label="@string/loginPage" />
         <activity
             android:name=".acitvities.OperationActivity"
-            android:label="@string/operations" />
+            android:label="@string/operations"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.MainHomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.DocketEnquiry"
-            android:label="@string/docket_enquiry" />
+            android:label="@string/docket_enquiry"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.HrmsActivity"
-            android:label="@string/hrms" />
+            android:label="@string/hrms"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.MarkAttendanceActivity"
-            android:label="@string/mark_attendance" />
+            android:label="@string/mark_attendance"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.AttendanceSummaryActivity"
-            android:label="@string/attendance_summary" />
+            android:label="@string/attendance_summary"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.LeaveInfoActivity"
-            android:label="@string/leave_info" />
+            android:label="@string/leave_info"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.VehicalEnquiryActivity"
-            android:label="@string/vehical_enquiry" />
+            android:label="@string/vehical_enquiry"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.AddCustomerActivity"
-            android:label="@string/add_customer" />
+            android:label="@string/add_customer"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.EmpProfileActivity"
-            android:label="@string/editprofile" />
+            android:label="@string/editprofile"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".acitvities.ResetPasswordActivity" />
         <activity
             android:name=".acitvities.DocketTracking"
-            android:label="@string/docket_tracking" />
+            android:label="@string/docket_tracking"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -86,7 +96,9 @@
         <activity
             android:name=".acitvities.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".ScannerActivity" />
+        <activity
+            android:name=".ScannerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -98,8 +110,12 @@
                 android:resource="@xml/file_path" />
         </provider>
 
-        <activity android:name=".CardScanner" />
-        <activity android:name=".ScannedDataActivity">
+        <activity
+            android:name=".CardScanner"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ScannedDataActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

@@ -18,6 +18,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.it2.axpresslogisticapp.acitvities.ApiKey;
@@ -33,6 +35,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Intent intent;
     ApiKey apiKey;
     double latitude,longitude;
+    String receive_at_destination,tcs_no,vehicle_no,location,origin,destination,start_time,
+            current_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +66,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(status.equals("true") && apikeyResponse.equals(apikey)){
                         String str_latitude = object.optString("latitude");
                         String str_longitude = object.optString("longitude");
+
                         latitude = Double.parseDouble(str_latitude);
                         longitude = Double.parseDouble(str_longitude);
-                        Toast.makeText(getApplicationContext(),"Latitude = "+ latitude + " , longitude = "+
-                                longitude,Toast.LENGTH_SHORT).show();
+                        Log.d("Response ====> ",object.toString());
+//                        tcs_no = object.optString("tcs_no");
+
+                        vehicle_no = object.optString("vehicle_no");
+//                        location  = object.optString("location");
+//                        origin  = object.optString("origin");
+//                        destination  = object.optString("destination");
+//                        start_time  = object.optString("start_time");
+//                        current_location  = object.optString("current_location");
+//                        receive_at_destination  = object.optString("recevied_at_destination");
+//                        Toast.makeText(getApplicationContext(),"Latitude = "+ latitude +
+//                                " , longitude = "+ longitude,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"receive_at_destination = "+
+//                                receive_at_destination,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"tcs_no = "+ tcs_no,
+//                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"vehicle_no = "+ vehicle_no
+                               ,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"location = "+ location,
+//                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"origin = "+ origin,
+//                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"destination = "+ destination,
+//                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"start_time = "+ start_time,
+//                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(),"current_location = "+ current_location,
+//                                Toast.LENGTH_SHORT).show();
                         getlocation();
 
                     } else if(status.equals("false") && apikeyResponse.equals(apikey)){
@@ -114,9 +145,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng tcs = new LatLng(latitude, longitude);
-        Toast.makeText(getApplicationContext(),"Lat = "+ latitude + " , long = "+
-                longitude,Toast.LENGTH_SHORT).show();
-        mMap.addMarker(new MarkerOptions().position(tcs).title("Axpress Logistics pvt. ltd"));
+        mMap.addMarker(new MarkerOptions().position(tcs));
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude) , 14.0f) );
         mMap.moveCamera(CameraUpdateFactory.newLatLng(tcs));
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setRotateGesturesEnabled(true);
+        googleMap.getUiSettings().setScrollGesturesEnabled(true);
+        googleMap.getUiSettings().setTiltGesturesEnabled(true);
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(new LatLng(/*current latitude*/latitude, /*current longitude*/longitude))      // Sets the center of the map to location user
+//                .zoom(17)                   // Sets the zoom
+//                .build();                   // Creates a CameraPosition from the builder
+//        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

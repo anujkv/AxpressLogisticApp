@@ -8,9 +8,9 @@
     tools:context=".acitvities.EmpProfileActivity"
     tools:layout_editor_absoluteY="81dp">
 
-    <!--<include
+    <include
         android:id="@+id/app_bar"
-        layout="@layout/app_toolbar"/>-->
+        layout="@layout/app_toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
