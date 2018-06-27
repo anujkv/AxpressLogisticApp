@@ -54,22 +54,38 @@
         </RadioGroup>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/input_editSearch_text_id"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:textAlignment="gravity"
-        android:inputType="number"
-        android:background="@drawable/edittext_shape"
-        android:shadowRadius="50"/>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="74dp"
+            android:layout_marginTop="20dp">
 
+            <EditText
+                android:id="@+id/input_editSearch_text_id"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edittext_shape"
+                android:inputType="number"
+                android:shadowRadius="50"
+                android:textAlignment="gravity"
+                app:layout_constraintBottom_toTopOf="@+id/progressBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
         android:background="@drawable/button_shape"
         android:padding="12dp"
         android:text="@string/searchbtn" />

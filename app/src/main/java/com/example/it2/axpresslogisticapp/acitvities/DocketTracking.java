@@ -1,7 +1,10 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
+
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -231,15 +234,40 @@ public class DocketTracking extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        String status_delivered = "delivered";
+        String status_at_rest = "at rest";
         switch (v.getId()) {
             case R.id.backbtn_toolbar:
                 finish();
                 break;
             case R.id.mapbtn_toolbar:
-                Intent intent = new Intent(DocketTracking.this, MapsActivity.class);
-                intent.putExtra("docket", strDocket_no);
-                startActivity(intent);
+                Log.d("strDocket_status",strDocket_status);
+                if (status_delivered.equals(strDocket_status.toLowerCase()) ||
+                        status_at_rest.equals(strDocket_status.toLowerCase())) {
+//                    showDialogbox();
+                    Intent intent = new Intent(DocketTracking.this, MapsActivity.class);
+                    intent.putExtra("docket", strDocket_no);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(DocketTracking.this, MapsActivity.class);
+                    intent.putExtra("docket", strDocket_no);
+                    startActivity(intent);
+                }
         }
+    }
+
+    private void showDialogbox() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Docket : "+ strDocket_no);
+        builder.setMessage("Docket has been "+ strDocket_status + ",Location disabled");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        android.support.v7.app.AlertDialog b = builder.create();
+        b.show();
     }
 }
 

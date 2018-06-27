@@ -43,7 +43,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         apiKey = new ApiKey();
-
         map();
 
     }
@@ -53,7 +52,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final String method = "map";
         final String apikey = apiKey.saltStr();
         final String docket_no = intent.getStringExtra("docket");
-
         StringRequest stringRequest =  new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -78,11 +76,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                        destination  = object.optString("destination");
 //                        start_time  = object.optString("start_time");
 //                        current_location  = object.optString("current_location");
-//                        receive_at_destination  = object.optString("recevied_at_destination");
+                        receive_at_destination  = object.optString("recevied_at_destination");
 //                        Toast.makeText(getApplicationContext(),"Latitude = "+ latitude +
 //                                " , longitude = "+ longitude,Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(),"receive_at_destination = "+
-//                                receive_at_destination,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"receive_at_destination = "+
+                                receive_at_destination,Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(getApplicationContext(),"tcs_no = "+ tcs_no,
 //                                Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(),"vehicle_no = "+ vehicle_no
@@ -145,17 +143,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng tcs = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(tcs));
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude) , 14.0f) );
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(tcs));
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setRotateGesturesEnabled(true);
-        googleMap.getUiSettings().setScrollGesturesEnabled(true);
-        googleMap.getUiSettings().setTiltGesturesEnabled(true);
+        if (tcs.latitude == 0.0 && tcs.longitude == 0.0){
+            mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(28.4995993,77.0738609), 3.0f) );
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(tcs));
+        } else {
+            mMap.addMarker(new MarkerOptions().position(tcs));
+            mMap.moveCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude) , 14.0f) );
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(tcs));
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setRotateGesturesEnabled(true);
+            googleMap.getUiSettings().setScrollGesturesEnabled(true);
+            googleMap.getUiSettings().setTiltGesturesEnabled(true);
 //        CameraPosition cameraPosition = new CameraPosition.Builder()
 //                .target(new LatLng(/*current latitude*/latitude, /*current longitude*/longitude))      // Sets the center of the map to location user
 //                .zoom(17)                   // Sets the zoom
 //                .build();                   // Creates a CameraPosition from the builder
 //        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
     }
 }

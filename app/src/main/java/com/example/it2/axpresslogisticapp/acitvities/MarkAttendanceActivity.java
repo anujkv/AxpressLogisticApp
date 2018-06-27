@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +30,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +45,7 @@ import java.util.Random;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class MarkAttendanceActivity extends AppCompatActivity {
+public class MarkAttendanceActivity extends AppCompatActivity{
     private String url = "http://webapi.axpresslogistics.com/api/HRMS/Attendance";
     static final int REQUEST_LOCATION = 1;
     public static TextView txtUsername, txtUserId, txtDateTime, txtDept, txtBranch, txtDesignation;
@@ -82,6 +85,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 finish();
             }
         });
+        pre_getLocation();
         set_and_bind();
 
         try {
@@ -223,18 +227,30 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 if (location != null) {
                     lat = location.getLatitude();
                     lon = location.getLongitude();
-                    Toast.makeText(getApplicationContext(),"GPS "+lat+" " +lon,LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"PRE-GPS "+lat+" " +lon,LENGTH_SHORT).show();
                 } else {
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     if (location != null) {
                         lat = location.getLatitude();
                         lon = location.getLongitude();
-//                        Toast.makeText(getApplicationContext(),"NETWORK "+lat+" " +lon,LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"NETWORK "+lat+" " +lon,LENGTH_SHORT).show();
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void pre_getLocation() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.
+                ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.
+                checkSelfPermission(getApplicationContext(), Manifest.permission.
+                        ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.
+                    ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    101);
         }
     }
 }
