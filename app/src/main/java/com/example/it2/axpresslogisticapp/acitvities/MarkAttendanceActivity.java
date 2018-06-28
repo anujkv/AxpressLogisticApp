@@ -4,7 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -40,12 +43,14 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class MarkAttendanceActivity extends AppCompatActivity{
+public class MarkAttendanceActivity extends AppCompatActivity implements LocationListener {
     private String url = "http://webapi.axpresslogistics.com/api/HRMS/Attendance";
     static final int REQUEST_LOCATION = 1;
     public static TextView txtUsername, txtUserId, txtDateTime, txtDept, txtBranch, txtDesignation;
@@ -74,7 +79,8 @@ public class MarkAttendanceActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_attendance);
-        Toolbar toolbar =  findViewById(R.id.app_bar);
+        //custom toolbar...
+        Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
         lable.setText("Attendance");
@@ -85,9 +91,17 @@ public class MarkAttendanceActivity extends AppCompatActivity{
                 finish();
             }
         });
-        pre_getLocation();
-        set_and_bind();
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000,
+                    5, (LocationListener) this);
+//            Toast.makeText(getApplicationContext(),"Location : "+latLong,Toast.LENGTH_LONG).show();
 
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        init();
         try {
             intent = getIntent();
             jsonString = intent.getStringExtra("response");
@@ -100,9 +114,7 @@ public class MarkAttendanceActivity extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        getLocation();
-
+        getLocationPermissionCheck();
         if (FLAG.equals(true)) {
             attendance_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,37 +124,29 @@ public class MarkAttendanceActivity extends AppCompatActivity{
                 }
             });
         }
-    }
 
-    private void date_time() {
-        Calendar c = Calendar.getInstance();
-        System.out.println("Current time =&gt; " + c.getTime());
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        formattedDate = df.format(c.getTime());
-// Now formattedDate have current date/time
-        Toast.makeText(this, formattedDate, Toast.LENGTH_SHORT).show();
-    }
-
-    private void setValuesInFields() {
-        txtUsername.setText(strUsername.trim());
-        txtUserId.setText(strUserId.trim());
-        txtBranch.setText(strBranch.trim());
-        txtDesignation.setText(strDesignation.trim());
-        attendance_btn.setText("Submit Attendance");
-        txtDept.setText(strDept.trim());
     }
 
     private void markAttendance() {
-        progressBar.setVisibility(View.VISIBLE);
+        disable_button();
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000,
+                    5, (LocationListener) this);
+//            Toast.makeText(getApplicationContext(),"Location : "+latLong,Toast.LENGTH_LONG).show();
 
-        if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long >= lon && lon >= nearbycompany_min_long)) {
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long
+                >= lon && lon >= nearbycompany_min_long)) {
             ApiKey apiKey = new ApiKey();
             final String method = "Attendance";
             final String apikey = apiKey.saltStr();
             Log.d("apikey : ", apikey);
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.
+                    Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {
@@ -151,21 +155,31 @@ public class MarkAttendanceActivity extends AppCompatActivity{
                         String apiKEYresponse = object.optString("key");
 
                         if (status.equals("Marked") && apikey.equals(apiKEYresponse)) {
-                            Toast.makeText(getApplicationContext(), "Attendance Marked!", LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Attendance Marked!",
+                                    LENGTH_SHORT).show();
+                            enable_button();
                         } else if (status.equals("Already Marked")) {
-                            Toast.makeText(getApplicationContext(), "Attendance Already Marked!", LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Attendance Already Marked!",
+                                    LENGTH_SHORT).show();
+                            enable_button();
                         } else if (status.equals("failed")) {
-                            Toast.makeText(getApplicationContext(), "Something went wrong, Kindly contact HR Dept.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Something went wrong, " +
+                                    "Kindly contact HR Dept.", Toast.LENGTH_LONG).show();
+                            enable_button();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        enable_button();
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.
+                            LENGTH_LONG).show();
+                    enable_button();
+
                 }
             }) {
                 @Override
@@ -180,20 +194,25 @@ public class MarkAttendanceActivity extends AppCompatActivity{
             };
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
-            disable_button();
 
-        } else {
+        }
+        else {
             String lat_long = "Latitude = " + lat + " Longitude = " + lon;
             Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_SHORT).show();
+            enable_button();
         }
-//        String lat_long = "LOGLatitude = " + lat + " LOGLongitude = " + lon;
-//        Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_LONG).show();
-        progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void disable_button() {
-        attendance_btn.setTextColor(getColor(R.color.white));
-        attendance_btn.setClickable(false);
+    private void init() {
+        txtUsername = findViewById(R.id.user_nameId);
+        txtUserId = findViewById(R.id.user_id);
+        txtDesignation = findViewById(R.id.txtDesignationId);
+        txtBranch = findViewById(R.id.txtBranchId);
+        txtDept = findViewById(R.id.txtDeptID);
+        userImage = findViewById(R.id.user_imageId);
+        attendance_btn = findViewById(R.id.btn_login);
+        progressBar = findViewById(R.id.attendance_progressbarId);
+
     }
 
     private void getValuesFromAPI() {
@@ -204,53 +223,78 @@ public class MarkAttendanceActivity extends AppCompatActivity{
         strBranch = jObj.optString("Employee_Branch");
     }
 
-    private void set_and_bind() {
-        txtUsername = findViewById(R.id.user_nameId);
-        txtUserId = findViewById(R.id.user_id);
-        txtDesignation = findViewById(R.id.txtDesignationId);
-        txtBranch = findViewById(R.id.txtBranchId);
-        txtDept = findViewById(R.id.txtDeptID);
-        userImage = findViewById(R.id.user_imageId);
-        attendance_btn = findViewById(R.id.btn_login);
-        progressBar = findViewById(R.id.attendance_progressbarId);
+    private void setValuesInFields() {
+        txtUsername.setText(strUsername.trim());
+        txtUserId.setText(strUserId.trim());
+        txtBranch.setText(strBranch.trim());
+        txtDesignation.setText(strDesignation.trim());
+        attendance_btn.setText("Submit Attendance");
+        txtDept.setText(strDept.trim());
     }
 
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.
-                ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.
-                checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-            try {
-                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null) {
-                    lat = location.getLatitude();
-                    lon = location.getLongitude();
-                    Toast.makeText(getApplicationContext(),"PRE-GPS "+lat+" " +lon,LENGTH_SHORT).show();
-                } else {
-                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if (location != null) {
-                        lat = location.getLatitude();
-                        lon = location.getLongitude();
-                        Toast.makeText(getApplicationContext(),"NETWORK "+lat+" " +lon,LENGTH_SHORT).show();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    private void date_time() {
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time =&gt; " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formattedDate = df.format(c.getTime());
     }
 
-    private void pre_getLocation() {
+    private void getLocationPermissionCheck() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.
                 ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.
                 checkSelfPermission(getApplicationContext(), Manifest.permission.
                         ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.
-                    ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                            ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                     101);
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+//        locationText.setText("Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude());
+        String latLong = location.toString();
+        lat = location.getLatitude();
+        lon = location.getLongitude();
+//
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+////            locationText.setText(locationText.getText() + "\n"+addresses.get(0).getAddressLine(0)+", "+
+////                    addresses.get(0).getAddressLine(1)+", "+addresses.get(0).getAddressLine(2));
+//        } catch (Exception e) {
+//        }
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(MarkAttendanceActivity.this, "Please Enable GPS and Internet",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+
+    private void disable_button() {
+        attendance_btn.setTextColor(getColor(R.color.white));
+        progressBar.setVisibility(View.VISIBLE);
+        attendance_btn.setClickable(false);
+    }
+
+    private void enable_button() {
+        attendance_btn.setTextColor(getColor(R.color.black));
+        progressBar.setVisibility(View.INVISIBLE);
+        attendance_btn.setClickable(true);
     }
 }
