@@ -1,9 +1,19 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
+import android.app.AlarmManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,19 +39,31 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,View.OnClickListener {
     private String url = "http://webapi.axpresslogistics.com/api/Operations/map";
     private GoogleMap mMap;
+    ImageButton backbtn_toolbar,mapbtn_toolbar;
     Intent intent;
     ApiKey apiKey;
     double latitude,longitude;
-    String receive_at_destination,tcs_no,vehicle_no,location,origin,destination,start_time,
+    String receive_at_destination,tcs_no,vehicle_no,location,origin,destination,start_time,docketno,
             current_location;
+    EditText edtDocket,edtVehicle,edtOrigin,edtDesignation,edtStartTime,edtCLocation,
+            edtRADestination,edtLocation,edtTCS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        TextView lable = findViewById(R.id.title_toolbar);
+        lable.setText("Docket Tracking Details");
+        backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
+        mapbtn_toolbar = findViewById(R.id.mapbtn_toolbar);
+        mapbtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_information));
+        backbtn_toolbar.setOnClickListener(this);
+        mapbtn_toolbar.setOnClickListener(this);
         apiKey = new ApiKey();
         map();
 
@@ -52,6 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final String method = "map";
         final String apikey = apiKey.saltStr();
         final String docket_no = intent.getStringExtra("docket");
+        docketno = docket_no;
         StringRequest stringRequest =  new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -68,33 +91,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         latitude = Double.parseDouble(str_latitude);
                         longitude = Double.parseDouble(str_longitude);
                         Log.d("Response ====> ",object.toString());
-//                        tcs_no = object.optString("tcs_no");
+                        tcs_no = object.optString("tcs_no");
 
                         vehicle_no = object.optString("vehicle_no");
-//                        location  = object.optString("location");
-//                        origin  = object.optString("origin");
-//                        destination  = object.optString("destination");
-//                        start_time  = object.optString("start_time");
-//                        current_location  = object.optString("current_location");
+                        location  = object.optString("location");
+                        origin  = object.optString("origin");
+                        destination  = object.optString("destination");
+                        start_time  = object.optString("start_time");
+                        current_location  = object.optString("current_location");
                         receive_at_destination  = object.optString("recevied_at_destination");
-//                        Toast.makeText(getApplicationContext(),"Latitude = "+ latitude +
-//                                " , longitude = "+ longitude,Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(),"receive_at_destination = "+
-                                receive_at_destination,Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(),"tcs_no = "+ tcs_no,
-//                                Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(),"vehicle_no = "+ vehicle_no
-                               ,Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(),"location = "+ location,
-//                                Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(),"origin = "+ origin,
-//                                Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(),"destination = "+ destination,
-//                                Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(),"start_time = "+ start_time,
-//                                Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(),"current_location = "+ current_location,
-//                                Toast.LENGTH_SHORT).show();
+//
                         getlocation();
 
                     } else if(status.equals("false") && apikeyResponse.equals(apikey)){
@@ -160,5 +166,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //                .build();                   // Creates a CameraPosition from the builder
 //        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backbtn_toolbar:
+                finish();
+                break;
+            case R.id.mapbtn_toolbar:
+                showDetails();
+        }
+    }
+
+    private void showDetails() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.map_details_view,null);
+        builder.setView(dialogView);
+        initDialogView(dialogView);
+        builder.setTitle("Map Details");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog b = builder.create();
+        b.show();
+    }
+
+    private void initDialogView(View dialogView) {
+        edtDocket = dialogView.findViewById(R.id.edtDocket);
+        edtVehicle = dialogView.findViewById(R.id.edtVehicle);
+        edtOrigin = dialogView.findViewById(R.id.edtOrigin);
+        edtDesignation = dialogView.findViewById(R.id.edtDesignation);
+        edtStartTime = dialogView.findViewById(R.id.edtStartTime);
+        edtCLocation = dialogView.findViewById(R.id.edtCLocation);
+        edtRADestination = dialogView.findViewById(R.id.edtRADestination);
+        edtLocation = dialogView.findViewById(R.id.edtLocation);
+        edtTCS = dialogView.findViewById(R.id.edtTCS);
+
+        edtDocket.setText(docketno);
+        edtVehicle.setText(vehicle_no);
+        edtOrigin.setText(origin);
+        edtDesignation.setText(destination);
+        edtStartTime.setText(start_time);
+        edtCLocation.setText(current_location);
+        edtRADestination.setText(receive_at_destination);
+        edtLocation.setText(location);
+        edtTCS.setText(tcs_no);
     }
 }

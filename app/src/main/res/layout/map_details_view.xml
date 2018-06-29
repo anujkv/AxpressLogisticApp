@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Docket No."
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtDocket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="TCS No."
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtTCS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="12563"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Vehicle No."
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtVehicle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="SH-1234-32"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Origin"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtOrigin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="Shimla"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/altContactLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtContactAltNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="9876543210"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Designation"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtDesignation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="Jaipur"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Start Time"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtStartTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="23 jun 2018 03:15:25 AM"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Current Location"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtCLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:editable="false"
+            android:textSize="14sp"
+            android:text="Gurgaon corporate office"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Receive At Destination"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtRADestination"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="GGN-CO"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:text="Location"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/edtLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:autoSizeMaxTextSize="8dp"
+            android:text="xxyyzz"
+            android:textSize="14sp"
+            android:editable="false"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+</LinearLayout>

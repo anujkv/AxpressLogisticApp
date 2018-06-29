@@ -83,7 +83,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText("Attendance");
+        lable.setText("Mark Attendance");
         ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
             @Override

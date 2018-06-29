@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class OperationActivity extends AppCompatActivity {
     public static String[] gridViewStrings = {
             "Docket / Invoice Enquiry",
-            "Vehical Enquiry",
+            "Vehicle Enquiry",
             "New Customer",
             "QR Code Scanner",
             "Document Scanning",
@@ -33,12 +33,8 @@ public class OperationActivity extends AppCompatActivity {
             R.drawable.icon_qrcode,
             R.drawable.icon_scanning,
     };
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    CoordinatorLayout coordinatorLayout;
     GridView gridView;
     Toolbar toolbar;
-    Context context;
-    ArrayList arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

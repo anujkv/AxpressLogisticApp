@@ -95,7 +95,8 @@
 
         <activity
             android:name=".acitvities.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ScannerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -116,7 +117,22 @@
         <activity
             android:name=".ScannedDataActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
+        <activity
+            android:name=".acitvities.CRMActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".CameraActivity">
+
+        </activity>
+        <!--<meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr" />-->
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
     </application>
 
 </manifest>

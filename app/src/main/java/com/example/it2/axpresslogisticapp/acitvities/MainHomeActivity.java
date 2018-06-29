@@ -36,8 +36,7 @@ public class MainHomeActivity extends AppCompatActivity
             "CRM",
             "Activities",
             "Financial",
-            "My Tickets",
-            "Card Scanner"
+            "My Tickets"
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_operation,
@@ -45,8 +44,7 @@ public class MainHomeActivity extends AppCompatActivity
             R.drawable.icon_crm,
             R.drawable.icon_activities,
             R.drawable.icon_financial,
-            R.drawable.icon_tickets,
-            R.drawable.icon_card_scanner
+            R.drawable.icon_tickets
     };
     CollapsingToolbarLayout collapsingToolbarLayout;
     CoordinatorLayout coordinatorLayout;
@@ -113,8 +111,9 @@ public class MainHomeActivity extends AppCompatActivity
                         startActivity(intent_hrms);
                         break;
                     case 2:
-                        Toast.makeText(getApplicationContext(), "No Activity " +
-                                String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Intent intent_crm = new Intent(MainHomeActivity.this,CRMActivity.class);
+                        intent_crm.putExtra("response", jObj.toString());
+                        startActivity(intent_crm);
                         break;
                     case 3:
                         Toast.makeText(getApplicationContext(), "No Activity " +
@@ -127,9 +126,6 @@ public class MainHomeActivity extends AppCompatActivity
                     case 5:
                         Toast.makeText(getApplicationContext(), "No Activity " +
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
-                        break;
-                    case 6:
-                        startActivity(new Intent(getApplicationContext(),ScannerActivity.class));
                         break;
                 }
 
