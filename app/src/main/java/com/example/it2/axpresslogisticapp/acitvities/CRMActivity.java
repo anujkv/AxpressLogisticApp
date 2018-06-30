@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.it2.axpresslogisticapp.CameraActivity;
+import com.example.it2.axpresslogisticapp.CardActivity;
 import com.example.it2.axpresslogisticapp.CardScanner;
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.ScannedDataActivity;
@@ -61,12 +62,15 @@ public class CRMActivity extends AppCompatActivity {
             "QR Code Scanner",
             "Saved Cards",
             "My Card Profile",
+
+            "Card",
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_card_scanner,
             R.drawable.icon_qrcode,
             R.drawable.icon_qrcode,
             R.drawable.icon_qrcode,
+            R.drawable.icon_card_scanner,
     };
     GridView gridView;
     Toolbar toolbar;
@@ -128,6 +132,15 @@ public class CRMActivity extends AppCompatActivity {
                         // passing array index
                         intent_qrcode.putExtra("id", position);
                         startActivity(intent_qrcode);
+                        break;
+                    case 4:
+//                        Intent intent_qrcode = new Intent(OperationActivity.this,
+//                                QRCodeScanningActivity.class);
+                        Intent intent_card = new Intent(CRMActivity.this,
+                                CardActivity.class);
+                        // passing array index
+                        intent_card.putExtra("id", position);
+                        startActivity(intent_card);
                         break;
                 }
             }

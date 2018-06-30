@@ -47,7 +47,6 @@ public class CardScanner extends AppCompatActivity {
     public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
 
     public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
 
     // Bitmap sampling size
     public static final int BITMAP_SAMPLE_SIZE = 8;
@@ -264,13 +263,15 @@ public class CardScanner extends AppCompatActivity {
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
                         .show();
             }
-        } else if (requestCode ==PICK_IMAGE_REQUEST && data != null) {
+        }
+        else if (requestCode ==PICK_IMAGE_REQUEST && data != null) {
             Uri selectedImage = data.getData();
 //            saveImage( );
             imgFrontPreview.setImageURI(selectedImage);
             pathToImage = selectedImage.getPath();
             //stuff to do on click button upload cover??
-        }else if (requestCode ==PICK_IMAGE2_REQUEST && data != null) {
+        }
+        else if (requestCode ==PICK_IMAGE2_REQUEST && data != null) {
             Uri selectedImage = data.getData();
 //            saveImage( );
             imgBackPreview.setImageURI(selectedImage);
