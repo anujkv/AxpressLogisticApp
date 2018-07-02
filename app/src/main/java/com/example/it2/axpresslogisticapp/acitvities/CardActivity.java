@@ -1,8 +1,10 @@
-package com.example.it2.axpresslogisticapp;
+package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
@@ -20,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.it2.axpresslogisticapp.CameraUtils;
+import com.example.it2.axpresslogisticapp.R;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -28,6 +32,8 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,13 +42,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
-import static com.example.it2.axpresslogisticapp.CardScanner.BITMAP_SAMPLE_SIZE;
-import static com.example.it2.axpresslogisticapp.CardScanner.IMAGE_EXTENSION;
-import static com.example.it2.axpresslogisticapp.CardScanner.KEY_IMAGE_STORAGE_PATH;
+import static com.example.it2.axpresslogisticapp.acitvities.CardScanner.BITMAP_SAMPLE_SIZE;
+import static com.example.it2.axpresslogisticapp.acitvities.CardScanner.IMAGE_EXTENSION;
+import static com.example.it2.axpresslogisticapp.acitvities.CardScanner.KEY_IMAGE_STORAGE_PATH;
 
 public class CardActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Uri mCropImageUri;
+    private CropImageView mCropImageView;
     // Activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 11;
     private int PICK_IMAGE_REQUEST = 1;
@@ -50,7 +57,6 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     private static String imageStoragePath;
     Bitmap bitmap1,bitmap2;
     String pathToImage;
-    TextView txt_front_view,txt_back_view;
     StringBuilder stringBuilder;
     ImageButton backbtn_toolbar,savebtn_toolbar,icon_rotate_right,icon_rotate_left,
             icon_rotate_rightFront,icon_rotate_leftFront;
@@ -90,7 +96,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 imgFrontPreview.setVisibility(View.VISIBLE);
-                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.
+                        EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryintent, PICK_IMAGE_REQUEST);
             }
         });
@@ -100,7 +107,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 imgBackPreview.setVisibility(View.VISIBLE);
-                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.
+                        EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryintent, PICK_IMAGE2_REQUEST);
             }
         });
@@ -426,6 +434,29 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                CropImage.startPickImageActivity(this);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
+            if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // required permissions granted, start crop image activity
+                startCropImageActivity(mCropImageUri);
+            } else {
+                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void startCropImageActivity(Uri mCropImageUri) {
+        CropImage.activity(mCropImageUri)
+                .start(this);
+    }
+
 
     /**
      * Requesting permissions using Dexter library
@@ -450,7 +481,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest>
+                                                                           permissions,
+                                                                   PermissionToken token) {
                         token.continuePermissionRequest();
                     }
                 }).check();
@@ -504,6 +537,21 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                mCropImageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
+            } else {
+                // no permissions required or already granted, can start crop image activity
+                startCropImageActivity(imageUri);
+            }
+        }
         // if the result is capturing Image
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -533,7 +581,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
             pathToImage = selectedImage.getPath();
             try {
                 bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                textRecognizer(bitmap1);
+                Bitmap resizedbitmap=Bitmap.createBitmap(bitmap1, 0,0,200, 150);
+                textRecognizer(resizedbitmap);
                 flush_edt_fields();
             } catch (IOException e) {
                 e.printStackTrace();

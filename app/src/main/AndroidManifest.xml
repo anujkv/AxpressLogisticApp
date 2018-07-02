@@ -112,7 +112,7 @@
         </provider>
 
         <activity
-            android:name=".CardScanner"
+            android:name=".acitvities.CardScanner"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ScannedDataActivity"
@@ -137,7 +137,12 @@
             android:value="ocr" />
 
         <activity
-            android:name=".CardActivity"
+            android:name=".acitvities.CardActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".CustomerVisitFormActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

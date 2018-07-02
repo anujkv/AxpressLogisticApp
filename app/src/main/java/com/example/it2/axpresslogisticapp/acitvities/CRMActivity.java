@@ -1,22 +1,17 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -26,20 +21,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.it2.axpresslogisticapp.CameraActivity;
-import com.example.it2.axpresslogisticapp.CardActivity;
-import com.example.it2.axpresslogisticapp.CardScanner;
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.ScannedDataActivity;
 import com.example.it2.axpresslogisticapp.ScannerActivity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Locale;
 
 public class CRMActivity extends AppCompatActivity {
 

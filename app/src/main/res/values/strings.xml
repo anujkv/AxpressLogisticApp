@@ -98,4 +98,9 @@
     <string name="preview_description">Image preview</string>
     <string name="btn_save">Save</string>
     <string name="address">Address</string>
+    <string name="customer_visit">Customer Visit</string>
+    <string name="visit_date">Visit Date</string>
+    <string name="visit_for">Visit For</string>
+    <string name="visit_type">Visit Type</string>
+    <string name="status_details">Status Info.</string>
 </resources>

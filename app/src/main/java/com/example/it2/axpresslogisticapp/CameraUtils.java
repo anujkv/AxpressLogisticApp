@@ -14,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import com.example.it2.axpresslogisticapp.acitvities.CardScanner;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
