@@ -11,7 +11,7 @@
         android:id="@+id/app_bar"
         layout="@layout/mapapp_toolbar"/>
     <include
-        android:id="@+id/search_panal"
+        android:id="@+id/search_panalLayout"
         layout="@layout/search_panal"/>
     <ScrollView
         android:layout_width="match_parent"
@@ -42,6 +42,36 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <CheckBox
+                            android:id="@+id/check_new"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            android:text="New"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+                        <CheckBox
+                            android:id="@+id/check_followUp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".2"
+                            android:text="Follow Up"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -93,39 +123,16 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:maxLines="1"
+                            android:lines="1"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/altContactLinearLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:textColor="@color/primaryTextColor"
-                            android:textSize="14sp" />
-
-                        <EditText
-                            android:id="@+id/edtContactAltNo"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".7"
-                            android:autoSizeMaxTextSize="8dp"
-                            android:maxLines="1"
-                            android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -135,21 +142,22 @@
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
 
-                        <EditText
-                            android:id="@+id/edtVisitFor"
+                        <Spinner
+                            android:id="@+id/spinner_visit_for"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:maxLines="1"
-                            android:textColor="@color/primaryTextColor"
-                            android:textSize="14sp" />
+                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/visit_for_arrays"
+                            android:prompt="@string/visit_for_prompt" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -159,8 +167,31 @@
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
 
+                        <Spinner
+                            android:id="@+id/spinner_visit_type"
+                            android:layout_width="0dp"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/visit_type_arrays"
+                            android:prompt="@string/visit_for_prompt" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/contact_person"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
                         <EditText
-                            android:id="@+id/edt_visitType"
+                            android:id="@+id/edtContactPerson"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
@@ -169,7 +200,6 @@
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -253,7 +283,6 @@
                 android:dividerHeight="5dp"
                 android:elevation="10dp"
                 app:cardCornerRadius="5dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -263,98 +292,261 @@
                     android:paddingRight="20dp"
                     android:paddingTop="10dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/status_details"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="14sp"
-                        android:textStyle="bold|italic" />
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/customer_visit"-->
+                        <!--android:textColor="@color/colorPrimaryDark"-->
+                        <!--android:textSize="14sp"-->
+                        <!--android:textStyle="bold|italic" />-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/front_view"
+                            android:layout_weight=".5"
+                            android:text="@string/product"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <ImageView
-                                android:id="@+id/imageViewFront"
-                                android:layout_width="400dp"
-                                android:layout_height="200dp"
-                                android:src="@drawable/greenleafsview" />
-
-                            <ImageButton
-                                android:id="@+id/icon_rotate_rightFront"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:src="@drawable/icon_rotate_right" />
-
-                            <ImageButton
-                                android:id="@+id/icon_rotate_leftFront"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_below="@+id/icon_rotate_rightFront"
-                                android:src="@drawable/icon_rotate_left" />
-
-
-                        </RelativeLayout>
+                        <EditText
+                            android:id="@+id/edt_product_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:orientation="vertical">
-
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/back_view"
+                            android:layout_weight=".5"
+                            android:text="@string/status"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
 
-                        <RelativeLayout
+                        <Spinner
+                            android:id="@+id/spinner_status"
+                            android:layout_width="0dp"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/status_arrays"
+                            android:prompt="@string/Status_prompt" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:text="@string/scope"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_scope"
+                            android:layout_width="0dp"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="12sp"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/scope_arrays"
+                            android:prompt="@string/Scope_prompt" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/remark"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtRemark"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/other_employee_name"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edt_other_employee_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/add_card"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:layout_marginTop="10dp"/>
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="24dp">
 
-                            <ImageView
-                                android:id="@+id/imageViewBack"
-                                android:layout_width="400dp"
-                                android:layout_height="200dp"
-                                android:src="@drawable/greenleafsview" />
-
-                            <ImageButton
-                                android:id="@+id/icon_rotate_right"
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:src="@drawable/icon_rotate_right" />
+                                android:layout_weight=".5"
+                                android:text="@string/add_new_card"
+                                android:textColor="@color/primaryTextColor"
+                                android:id="@+id/add_new_card"
+                                android:textSize="14sp" />
 
-                            <ImageButton
-                                android:id="@+id/icon_rotate_left"
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/add_exist_card"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_below="@+id/icon_rotate_right"
-                                android:src="@drawable/icon_rotate_left" />
+                                android:layout_weight=".5"
+                                android:text="@string/add_exist_card"
+                                android:textColor="@color/primaryTextColor"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/show_front_cardLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/front_view"
+                                android:textColor="@color/primaryTextColor"
+                                android:textSize="14sp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imageViewFront"
+                                    android:layout_width="400dp"
+                                    android:layout_height="200dp"
+                                    android:src="@drawable/grayshade" />
+
+                                <ImageButton
+                                    android:id="@+id/icon_rotate_rightFront"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:src="@drawable/icon_rotate_right" />
+
+                                <ImageButton
+                                    android:id="@+id/icon_rotate_leftFront"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_below="@+id/icon_rotate_rightFront"
+                                    android:src="@drawable/icon_rotate_left" />
 
 
-                        </RelativeLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
 
+                        <LinearLayout
+                            android:id="@+id/show_back_cardLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/back_view"
+                                android:textColor="@color/primaryTextColor"
+                                android:textSize="14sp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/imageViewBack"
+                                    android:layout_width="400dp"
+                                    android:layout_height="200dp"
+                                    android:src="@drawable/grayshade" />
+
+                                <ImageButton
+                                    android:id="@+id/icon_rotate_right"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:src="@drawable/icon_rotate_right" />
+
+                                <ImageButton
+                                    android:id="@+id/icon_rotate_left"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_below="@+id/icon_rotate_right"
+                                    android:src="@drawable/icon_rotate_left" />
+
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>

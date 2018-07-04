@@ -112,9 +112,6 @@
         </provider>
 
         <activity
-            android:name=".acitvities.CardScanner"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ScannedDataActivity"
             android:theme="@style/AppTheme.NoActionBar">
 

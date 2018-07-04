@@ -14,7 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.example.it2.axpresslogisticapp.acitvities.CardScanner;
+import com.example.it2.axpresslogisticapp.acitvities.CardActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -97,13 +97,13 @@ public class CameraUtils {
         File mediaStorageDir = new File(
                 Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                CardScanner.GALLERY_DIRECTORY_NAME);
+                CardActivity.GALLERY_DIRECTORY_NAME);
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
-                Log.e(CardScanner.GALLERY_DIRECTORY_NAME, "Oops! Failed create "
-                        + CardScanner.GALLERY_DIRECTORY_NAME + " directory");
+                Log.e(CardActivity.GALLERY_DIRECTORY_NAME, "Oops! Failed create "
+                        + CardActivity.GALLERY_DIRECTORY_NAME + " directory");
                 return null;
             }
         }
@@ -113,9 +113,9 @@ public class CameraUtils {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
         File mediaFile;
-        if (type == CardScanner.MEDIA_TYPE_IMAGE) {
+        if (type == CardActivity.MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "IMG_" + timeStamp + "." + CardScanner.IMAGE_EXTENSION);
+                    + "IMG_" + timeStamp + "." + CardActivity.IMAGE_EXTENSION);
         } else {
             return null;
         }

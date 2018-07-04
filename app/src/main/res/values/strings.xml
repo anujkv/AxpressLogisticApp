@@ -103,4 +103,51 @@
     <string name="visit_for">Visit For</string>
     <string name="visit_type">Visit Type</string>
     <string name="status_details">Status Info.</string>
+    <string name="scope">Scope</string>
+    <string name="remark">Remark</string>
+    <string name="other_employee_name">Other Employee name</string>
+    <string name="product">Product</string>
+    <string name="add_card">Add Card</string>
+    <string name="add_new_card">Add New Card</string>
+    <string name="add_exist_card">Add Exist Card</string>
+    <string name="contact_person">Contact Person</string>
+
+
+    //string for visit for...
+    <string name="visit_for_prompt">Select</string>
+    <string-array name="visit_for_arrays">
+        <item>Select</item>
+        <item>New Business</item>
+        <item>Business Follow Operation</item>
+        <item>Bill Submission</item>
+        <item>Payment Collection</item>
+    </string-array>
+
+    //string for visit type...
+    <string name="visit_type_prompt">Select</string>
+    <string-array name="visit_type_arrays">
+        <item>Select</item>
+        <item>Physical Visit</item>
+        <item>By Phone</item>
+        <item>By Email</item>
+    </string-array>
+
+    //string for scope...
+    <string name="Scope_prompt">Select</string>
+    <string-array name="scope_arrays">
+        <item>Select</item>
+        <item>Air</item>
+        <item>Cargo</item>
+        <item>Road</item>
+    </string-array>
+
+    //string for status...
+    <string name="Status_prompt">Select</string>
+    <string-array name="status_arrays">
+        <item>Select</item>
+        <item>In Process</item>
+        <item>Converted</item>
+        <item>Drop</item>
+        <item>Close</item>
+    </string-array>
 </resources>

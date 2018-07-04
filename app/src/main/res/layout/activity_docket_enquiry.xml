@@ -50,7 +50,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invoice" />
-
         </RadioGroup>
     </LinearLayout>
 
@@ -64,9 +63,11 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@drawable/edittext_shape"
+                android:drawableRight="@android:drawable/ic_menu_search"
                 android:inputType="number"
                 android:shadowRadius="50"
                 android:textAlignment="gravity"
+                android:hint="Enter docket/invoice no."
                 app:layout_constraintBottom_toTopOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

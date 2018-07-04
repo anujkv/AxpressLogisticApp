@@ -6,8 +6,12 @@
     android:layout_margin="10dp">
 
     <EditText
+        android:id="@+id/edt_search_panal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/search_panal_background"/>
+        android:textSize="14sp"
+        android:paddingLeft="20dp"
+        android:background="@drawable/search_panal_background"
+        android:drawableRight="@android:drawable/ic_menu_search"/>
 
 </android.support.constraint.ConstraintLayout>

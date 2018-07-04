@@ -22,6 +22,7 @@
         android:layout_marginTop="20dp"
         android:textAlignment="gravity"
         android:background="@drawable/edittext_shape"
+        android:drawableRight="@android:drawable/ic_menu_search"
         android:shadowRadius="50"/>
 
     <android.support.v7.widget.AppCompatButton

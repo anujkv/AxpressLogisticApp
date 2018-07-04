@@ -42,15 +42,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
-import static com.example.it2.axpresslogisticapp.acitvities.CardScanner.BITMAP_SAMPLE_SIZE;
-import static com.example.it2.axpresslogisticapp.acitvities.CardScanner.IMAGE_EXTENSION;
-import static com.example.it2.axpresslogisticapp.acitvities.CardScanner.KEY_IMAGE_STORAGE_PATH;
 
 public class CardActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Uri mCropImageUri;
     private CropImageView mCropImageView;
     // Activity request codes
+
+    // key to store image path in savedInstance state
+    public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
+    // Gallery directory name to store the images or videos
+    public static final String GALLERY_DIRECTORY_NAME = "axpress/camera";
+    public static final int MEDIA_TYPE_IMAGE = 1;
+
+    // Image and Video file extensions
+    public static final String IMAGE_EXTENSION = "jpg";
+
+    // Bitmap sampling size
+    public static final int BITMAP_SAMPLE_SIZE = 8;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 11;
     private int PICK_IMAGE_REQUEST = 1;
     private int PICK_IMAGE2_REQUEST = 2;

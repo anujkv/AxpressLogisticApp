@@ -52,13 +52,23 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     Dialog dialog;
     DialogFragment dialogFragment;
     LinearLayout contactAltLinearLayout;
+    ImageButton backbtn_toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emp_profile);
-//        Toolbar toolbar =  findViewById(R.id.app_bar);
-//        setSupportActionBar(toolbar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        TextView lable = findViewById(R.id.title_toolbar);
+        lable.setText("Profile");
+        backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
+        backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         //Set View with fields..
         setView();
 
