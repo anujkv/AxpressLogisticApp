@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".acitvities.EmpProfileActivity"
-    tools:layout_editor_absoluteY="81dp">
-
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_toolbar"/>
-
+        layout="@layout/mapapp_toolbar"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -68,7 +64,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
-                            android:editable="false"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -92,31 +88,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
-                            android:textColor="@color/primaryTextColor"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".5"
-                            android:text="@string/company"
-                            android:textColor="@color/primaryTextColor"
-                            android:textSize="14sp" />
-
-                        <EditText
-                            android:id="@+id/edtCompany"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".7"
-                            android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -141,8 +113,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
-                            android:text="9876543210"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
 
@@ -165,7 +136,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -189,7 +160,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -213,7 +184,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -232,13 +203,13 @@
                             android:textSize="14sp" />
 
                         <EditText
-                            android:id="@+id/edtBranchCode"
+                            android:id="@+id/edtEmail"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
                             android:inputType="textEmailAddress"
+                            android:maxLines="1"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -252,7 +223,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".5"
-                            android:editable="false"
                             android:text="@string/fax"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
@@ -262,8 +232,55 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
+                            android:maxLines="1"
                             android:autoSizeMaxTextSize="8dp"
-                            android:editable="false"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/company"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtCompany"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/address"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -276,7 +293,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".5"
-                            android:editable="false"
                             android:text="@string/barcode"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
@@ -331,11 +347,33 @@
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
 
-                        <ImageView
-                            android:id="@+id/img_front_card"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/greenleafsview"/>
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imageViewFront"
+                                android:layout_width="400dp"
+                                android:layout_height="200dp"
+                                android:src="@drawable/greenleafsview" />
+
+                            <ImageButton
+                                android:id="@+id/icon_rotate_rightFront"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:src="@drawable/icon_rotate_right" />
+
+                            <ImageButton
+                                android:id="@+id/icon_rotate_leftFront"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_below="@+id/icon_rotate_rightFront"
+                                android:src="@drawable/icon_rotate_left" />
+
+
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -344,6 +382,7 @@
                         android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -351,24 +390,38 @@
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
 
-                        <ImageView
-                            android:id="@+id/img_back_card"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/greenleafsview"/>
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/imageViewBack"
+                                android:layout_width="400dp"
+                                android:layout_height="200dp"
+                                android:src="@drawable/greenleafsview" />
+
+                            <ImageButton
+                                android:id="@+id/icon_rotate_right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:src="@drawable/icon_rotate_right" />
+
+                            <ImageButton
+                                android:id="@+id/icon_rotate_left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_below="@+id/icon_rotate_right"
+                                android:src="@drawable/icon_rotate_left" />
+
+
+                        </RelativeLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <Button
-                android:id="@+id/submitbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_shape"
-                android:text="Submit"
-                android:layout_gravity="center"/>
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

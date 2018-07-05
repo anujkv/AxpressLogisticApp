@@ -113,17 +113,11 @@
 
         <activity
             android:name=".ScannedDataActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".acitvities.CRMActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".CameraActivity">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".CameraActivity"></activity>
         <!--
             <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
@@ -140,6 +134,11 @@
         </activity>
         <activity
             android:name=".CustomerVisitFormActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".acitvities.SavedCardActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

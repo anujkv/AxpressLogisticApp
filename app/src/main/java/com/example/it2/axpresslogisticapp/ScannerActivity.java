@@ -1,14 +1,6 @@
 package com.example.it2.axpresslogisticapp;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,17 +9,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.it2.axpresslogisticapp.acitvities.SavedCardActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
-
 public class ScannerActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageButton camerabtn, qrcodebtn;
+    ImageButton camerabtn, qrcodebtn, saved_cardbtn, mycardbtn;
     TextView textViewName, textViewAddress;
 
     //qr code scanner object
@@ -40,7 +30,7 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
         Toolbar toolbar =  findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText("Operation");
+        lable.setText("Card Scanner");
         ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,21 +40,32 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
         });
         camerabtn = findViewById(R.id.camerabtn);
         qrcodebtn = findViewById(R.id.qrcodebtn);
+        saved_cardbtn = findViewById(R.id.saved_cardbtn);
+        mycardbtn = findViewById(R.id.my_cardbtn);
 
         //intializing scan object
         qrScan = new IntentIntegrator(this);
 
         camerabtn.setOnClickListener(this);
         qrcodebtn.setOnClickListener(this);
+        saved_cardbtn.setOnClickListener(this);
+        mycardbtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.camerabtn:
+                startActivity(new Intent(getApplicationContext(),CameraActivity.class));
                 break;
             case R.id.qrcodebtn:
                 qrScan.initiateScan();
+                break;
+            case R.id.saved_cardbtn:
+                startActivity(new Intent(getApplicationContext(),SavedCardActivity.class));
+                break;
+            case R.id.my_cardbtn:
+                startActivity(new Intent(getApplicationContext(),ScannedDataActivity.class));
                 break;
         }
     }

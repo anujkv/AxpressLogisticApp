@@ -143,6 +143,10 @@
 
     //string for status...
     <string name="Status_prompt">Select</string>
+    <string name="Camera">Camera</string>
+    <string name="scan_qrcode">Scan QRCode</string>
+    <string name="saved_cards">Saved Cards</string>
+    <string name="my_bcard">My Card</string>
     <string-array name="status_arrays">
         <item>Select</item>
         <item>In Process</item>

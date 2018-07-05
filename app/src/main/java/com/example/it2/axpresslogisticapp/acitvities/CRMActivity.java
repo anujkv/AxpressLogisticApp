@@ -50,8 +50,8 @@ public class CRMActivity extends AppCompatActivity {
             "QR Code Scanner",
             "Saved Cards",
             "My Card Profile",
-
             "Card",
+            "Visit Form"
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_card_scanner,
@@ -59,6 +59,7 @@ public class CRMActivity extends AppCompatActivity {
             R.drawable.icon_qrcode,
             R.drawable.icon_qrcode,
             R.drawable.icon_card_scanner,
+            R.drawable.icon_visit,
     };
     GridView gridView;
     Toolbar toolbar;
@@ -113,8 +114,6 @@ public class CRMActivity extends AppCompatActivity {
                         startActivity(intent_addC);
                         break;
                     case 3:
-//                        Intent intent_qrcode = new Intent(OperationActivity.this,
-//                                QRCodeScanningActivity.class);
                         Intent intent_qrcode = new Intent(CRMActivity.this,
                                 ScannedDataActivity.class);
                         // passing array index
@@ -122,13 +121,18 @@ public class CRMActivity extends AppCompatActivity {
                         startActivity(intent_qrcode);
                         break;
                     case 4:
-//                        Intent intent_qrcode = new Intent(OperationActivity.this,
-//                                QRCodeScanningActivity.class);
                         Intent intent_card = new Intent(CRMActivity.this,
                                 CardActivity.class);
                         // passing array index
                         intent_card.putExtra("id", position);
                         startActivity(intent_card);
+                        break;
+                    case 5:
+                        Intent intent_visit = new Intent(CRMActivity.this,
+                                CustomerVisitFormActivity.class);
+                        // passing array index
+                        intent_visit.putExtra("id", position);
+                        startActivity(intent_visit);
                         break;
                 }
             }

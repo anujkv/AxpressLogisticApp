@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,14 +37,16 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
-public class CardActivity extends AppCompatActivity implements View.OnClickListener{
+public class CardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Uri mCropImageUri;
     private CropImageView mCropImageView;
@@ -64,13 +67,20 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     private int PICK_IMAGE_REQUEST = 1;
     private int PICK_IMAGE2_REQUEST = 2;
     private static String imageStoragePath;
-    Bitmap bitmap1,bitmap2;
+    Bitmap bitmap1, bitmap2;
     String pathToImage;
     StringBuilder stringBuilder;
-    ImageButton backbtn_toolbar,savebtn_toolbar,icon_rotate_right,icon_rotate_left,
-            icon_rotate_rightFront,icon_rotate_leftFront;
-    ImageView imgFrontPreview,imgBackPreview;
-    EditText edtname,edtJobTitle,edtMobile,edtEmail,edtAddress,edtWebsite,edtCompany,edtFax;
+    ImageButton backbtn_toolbar, savebtn_toolbar, icon_rotate_right, icon_rotate_left,
+            icon_rotate_rightFront, icon_rotate_leftFront;
+    ImageView imgFrontPreview, imgBackPreview;
+    static EditText edtname;
+    EditText edtJobTitle;
+    EditText edtMobile;
+    EditText edtEmail;
+    EditText edtAddress;
+    EditText edtWebsite;
+    EditText edtCompany;
+    EditText edtFax;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,13 +138,13 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init() {
-        edtname =  findViewById(R.id.edtname);
-        edtJobTitle =  findViewById(R.id.edtJobTitle);
-        edtMobile =  findViewById(R.id.edtMobile);
-        edtEmail =  findViewById(R.id.edtEmail);
-        edtWebsite =  findViewById(R.id.edtWebsite);
-        edtCompany =  findViewById(R.id.edtCompany);
-        edtAddress =  findViewById(R.id.edtAddress);
+        edtname = findViewById(R.id.edtname);
+        edtJobTitle = findViewById(R.id.edtJobTitle);
+        edtMobile = findViewById(R.id.edtMobile);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtWebsite = findViewById(R.id.edtWebsite);
+        edtCompany = findViewById(R.id.edtCompany);
+        edtAddress = findViewById(R.id.edtAddress);
         edtFax = findViewById(R.id.edtFax);
 
         imgFrontPreview = findViewById(R.id.imageViewFront);
@@ -146,9 +156,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         icon_rotate_leftFront = findViewById(R.id.icon_rotate_leftFront);
     }
 
-    public void processImage(){
+    public void processImage() {
         String OCRresult = stringBuilder.toString();
-        System.out.println(" OUTPUT>>>" +stringBuilder.toString());
+        System.out.println(" OUTPUT>>>" + stringBuilder.toString());
         extractName(OCRresult);
         extractEmail(OCRresult);
         extractPhone(OCRresult);
@@ -158,26 +168,26 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         extractAddress(OCRresult);
     }
 
-    public void extractName(String str){
+    public void extractName(String str) {
         System.out.println("Getting the Name");
 //        edtname.setText("");
         final String NAME_REGEX = "^([A-Z]([a-z]*|\\.) *){1,2}([A-Z][a-z]+-?)+$";
         Pattern p = Pattern.compile(NAME_REGEX, Pattern.MULTILINE);
-        Matcher m =  p.matcher(str);
-        if(m.find()){
+        Matcher m = p.matcher(str);
+        if (m.find()) {
             System.out.println(m.group());
             edtname.setText(m.group().trim());
             System.out.println(edtname);
         }
     }
 
-    public void extractJobTitle(String str){
+    public void extractJobTitle(String str) {
         System.out.println("Getting the Job Title");
 //        edtJobTitle.setText("");
         final String NAME_REGEX = "([A-Z]([a-z]*|\\.) *){1,2}([A-Z][a-z]+-?)+$";
         Pattern p = Pattern.compile(NAME_REGEX, Pattern.MULTILINE);
-        Matcher m =  p.matcher(str);
-        if(m.find()){
+        Matcher m = p.matcher(str);
+        if (m.find()) {
             System.out.println(m.group());
             edtJobTitle.setText(m.group().trim());
             System.out.println(edtJobTitle);
@@ -189,68 +199,68 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 //        edtEmail.setText("");
         final String EMAIL_REGEX = "(\\w+\\@\\w+\\.\\w+)";
         Pattern p = Pattern.compile(EMAIL_REGEX, Pattern.MULTILINE);
-        Log.e("EMAIL_PATTERN : ",p.toString());
+        Log.e("EMAIL_PATTERN : ", p.toString());
         Matcher m = p.matcher(str);   // get a matcher object
-        Log.e("EMAIL_MATCHER : ",m.toString());
-        if(m.find()){
+        Log.e("EMAIL_MATCHER : ", m.toString());
+        if (m.find()) {
             System.out.println(m.group());
             edtEmail.setText(m.group().trim());
             System.out.println(edtEmail);
         }
     }
 
-    public void extractPhone(String str){
-        Log.e("STRING : ",str);
+    public void extractPhone(String str) {
+        Log.e("STRING : ", str);
         System.out.println("Getting Phone Number");
 //        edtMobile.setText("");
         final String PHONE_REGEX = "(\\+?\\d+\\-?\\d+)";
         Pattern p = Pattern.compile(PHONE_REGEX, Pattern.MULTILINE);
-        Log.e("PHONE_PATTERN : ",p.toString());
+        Log.e("PHONE_PATTERN : ", p.toString());
         Matcher m = p.matcher(str);   // get a matcher object
         Log.e("PHONE" +
-                "_MATCHER : ",m.toString());
-        if(m.find()){
+                "_MATCHER : ", m.toString());
+        if (m.find()) {
             System.out.println(m.group());
             edtMobile.setText(m.group().trim());
             System.out.println(edtMobile);
         }
     }
 
-    public void extractWebsite(String str){
+    public void extractWebsite(String str) {
         System.out.println("Getting Website");
 //        edtWebsite.setText("");
         final String WEBSITE_REGEX = "(www\\.?\\w+\\.?\\w+)";
         Pattern p = Pattern.compile(WEBSITE_REGEX, Pattern.MULTILINE);
-        Log.e("WEBSITE_PATTERN : ",p.toString());
+        Log.e("WEBSITE_PATTERN : ", p.toString());
         Matcher m = p.matcher(str);   // get a matcher object
-        Log.e("WEBSITE_MATCHER : ",m.toString());
-        if(m.find()){
+        Log.e("WEBSITE_MATCHER : ", m.toString());
+        if (m.find()) {
             System.out.println(m.group());
             edtWebsite.setText(m.group().trim());
             System.out.println(edtWebsite);
         }
     }
 
-    public void extractCompany(String str){
+    public void extractCompany(String str) {
         System.out.println("Getting the Company");
 //        edtCompany.setText("");
         final String NAME_REGEX = "^([A-Z]([a-z]*|\\.) *){1,2}([A-Z][a-z]+-?)+$";
         Pattern p = Pattern.compile(NAME_REGEX, Pattern.MULTILINE);
-        Matcher m =  p.matcher(str);
-        if(m.find()){
+        Matcher m = p.matcher(str);
+        if (m.find()) {
             System.out.println(m.group());
             edtCompany.setText(m.group().trim());
             System.out.println(edtCompany);
         }
     }
 
-    public void extractAddress(String str){
+    public void extractAddress(String str) {
         System.out.println("Getting the Address");
 //        edtAddress.setText("");
         final String NAME_REGEX = "^([A-Z]([a-z]*|\\.) *){1,2}([A-Z][a-z]+-?)+$";
         Pattern p = Pattern.compile(NAME_REGEX, Pattern.MULTILINE);
-        Matcher m =  p.matcher(str);
-        if(m.find()){
+        Matcher m = p.matcher(str);
+        if (m.find()) {
             System.out.println(m.group());
             edtAddress.setText(m.group().trim());
             System.out.println(edtAddress);
@@ -259,15 +269,16 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.backbtn_toolbar:
                 finish();
                 break;
-                
+
             //for save on click...
             case R.id.mapbtn_toolbar:
+                saveImage(bitmap1);
                 break;
-                                
+
             case R.id.icon_rotate_right:
                 rotation_right(PICK_IMAGE2_REQUEST);
                 break;
@@ -288,31 +299,29 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void rotation_left(int val) {
-        if(val==1){
-            if(bitmap1==null){
+        if (val == 1) {
+            if (bitmap1 == null) {
                 Toast.makeText(getApplicationContext(), "Image photo is not yet set", Toast.LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 Matrix matrix = new Matrix();
                 imgFrontPreview.setScaleType(ImageView.ScaleType.MATRIX);   //required
-                matrix.postRotate(-90,imgFrontPreview.getDrawable().getBounds().width()/2,imgFrontPreview.getDrawable().getBounds().height()/2);
-                Bitmap bmp=Bitmap.createBitmap(bitmap1, 0, 0,bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                matrix.postRotate(-90, imgFrontPreview.getDrawable().getBounds().width() / 2, imgFrontPreview.getDrawable().getBounds().height() / 2);
+                Bitmap bmp = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
                 bitmap1.recycle();
-                bitmap1=bmp;
+                bitmap1 = bmp;
                 imgFrontPreview.setImageBitmap(bitmap1);
                 textRecognizer(bitmap1);
             }
-        } else if (val ==2){
-            if(bitmap2==null){
+        } else if (val == 2) {
+            if (bitmap2 == null) {
                 Toast.makeText(getApplicationContext(), "Image photo is not yet set", Toast.LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 Matrix matrix = new Matrix();
                 imgBackPreview.setScaleType(ImageView.ScaleType.MATRIX);   //required
-                matrix.postRotate(-90,imgBackPreview.getDrawable().getBounds().width()/2,imgBackPreview.getDrawable().getBounds().height()/2);
-                Bitmap bmp=Bitmap.createBitmap(bitmap2, 0, 0,bitmap2.getWidth(), bitmap2.getHeight(), matrix, true);
+                matrix.postRotate(-90, imgBackPreview.getDrawable().getBounds().width() / 2, imgBackPreview.getDrawable().getBounds().height() / 2);
+                Bitmap bmp = Bitmap.createBitmap(bitmap2, 0, 0, bitmap2.getWidth(), bitmap2.getHeight(), matrix, true);
                 bitmap2.recycle();
-                bitmap2=bmp;
+                bitmap2 = bmp;
                 imgBackPreview.setImageBitmap(bitmap2);
                 textRecognizer(bitmap2);
             }
@@ -321,31 +330,29 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void rotation_right(int val) {
-        if(val==1){
-            if(bitmap1==null){
+        if (val == 1) {
+            if (bitmap1 == null) {
                 Toast.makeText(getApplicationContext(), "Image photo is not yet set", Toast.LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 Matrix matrix = new Matrix();
                 imgFrontPreview.setScaleType(ImageView.ScaleType.MATRIX);   //required
-                matrix.postRotate(90,imgFrontPreview.getDrawable().getBounds().width()/2,imgFrontPreview.getDrawable().getBounds().height()/2);
-                Bitmap bmp=Bitmap.createBitmap(bitmap1, 0, 0,bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
+                matrix.postRotate(90, imgFrontPreview.getDrawable().getBounds().width() / 2, imgFrontPreview.getDrawable().getBounds().height() / 2);
+                Bitmap bmp = Bitmap.createBitmap(bitmap1, 0, 0, bitmap1.getWidth(), bitmap1.getHeight(), matrix, true);
                 bitmap1.recycle();
-                bitmap1=bmp;
+                bitmap1 = bmp;
                 imgFrontPreview.setImageBitmap(bitmap1);
                 textRecognizer(bitmap1);
             }
-        } else if (val ==2){
-            if(bitmap2==null){
+        } else if (val == 2) {
+            if (bitmap2 == null) {
                 Toast.makeText(getApplicationContext(), "Image photo is not yet set", Toast.LENGTH_LONG).show();
-            }
-            else {
+            } else {
                 Matrix matrix = new Matrix();
                 imgBackPreview.setScaleType(ImageView.ScaleType.MATRIX);   //required
-                matrix.postRotate(90,imgBackPreview.getDrawable().getBounds().width()/2,imgBackPreview.getDrawable().getBounds().height()/2);
-                Bitmap bmp=Bitmap.createBitmap(bitmap2, 0, 0,bitmap2.getWidth(), bitmap2.getHeight(), matrix, true);
+                matrix.postRotate(90, imgBackPreview.getDrawable().getBounds().width() / 2, imgBackPreview.getDrawable().getBounds().height() / 2);
+                Bitmap bmp = Bitmap.createBitmap(bitmap2, 0, 0, bitmap2.getWidth(), bitmap2.getHeight(), matrix, true);
                 bitmap2.recycle();
-                bitmap2=bmp;
+                bitmap2 = bmp;
                 imgBackPreview.setImageBitmap(bitmap2);
                 textRecognizer(bitmap2);
             }
@@ -582,23 +589,21 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
                         "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
                         .show();
             }
-        }
-        else if (requestCode ==PICK_IMAGE_REQUEST && data != null) {
+        } else if (requestCode == PICK_IMAGE_REQUEST && data != null) {
             Uri selectedImage = data.getData();
 //            saveImage( );
             imgFrontPreview.setImageURI(selectedImage);
             pathToImage = selectedImage.getPath();
             try {
                 bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                Bitmap resizedbitmap=Bitmap.createBitmap(bitmap1, 0,0,200, 150);
+                Bitmap resizedbitmap = Bitmap.createBitmap(bitmap1, 0, 0, 200, 150);
                 textRecognizer(resizedbitmap);
                 flush_edt_fields();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             //stuff to do on click button upload cover??
-        }
-        else if (requestCode ==PICK_IMAGE2_REQUEST && data != null) {
+        } else if (requestCode == PICK_IMAGE2_REQUEST && data != null) {
             Uri selectedImage = data.getData();
 //            saveImage( );
             imgBackPreview.setImageURI(selectedImage);
@@ -660,18 +665,18 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
                 }).show();
     }
 
-    private void textRecognizer(Bitmap selectedImage){
+    private void textRecognizer(Bitmap selectedImage) {
         TextRecognizer textRecognizer = new TextRecognizer.Builder(getApplicationContext()).build();
 
-        if(!textRecognizer.isOperational()){
-            Toast.makeText(getApplicationContext(),"could not get the Text",Toast.LENGTH_SHORT).show();
+        if (!textRecognizer.isOperational()) {
+            Toast.makeText(getApplicationContext(), "could not get the Text", Toast.LENGTH_SHORT).show();
         } else {
             Frame frame = new Frame.Builder().setBitmap(selectedImage).build();
 
-            SparseArray<TextBlock> sparseArray =textRecognizer.detect(frame);
+            SparseArray<TextBlock> sparseArray = textRecognizer.detect(frame);
             stringBuilder = new StringBuilder();
 
-            for(int i = 0; i<sparseArray.size();i++){
+            for (int i = 0; i < sparseArray.size(); i++) {
                 TextBlock textBlock = sparseArray.valueAt(i);
                 stringBuilder.append(textBlock.getValue());
                 stringBuilder.append("\n");
@@ -682,31 +687,31 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //    public static void saveImage(Bitmap bitmap) {
-//        OutputStream output;
-//        String recentImageInCache;
-//        File filepath = Environment.getExternalStorageDirectory();
-//
-//        // Create a new folder in SD Card
-//        File dir = new File(filepath.getAbsolutePath()
-//                + "/YOUR_APP/profile");
-//        dir.mkdirs();
-//
-//        // Create a name for the saved image
-//        File file = new File(dir, username+".jpg");
-//        try {
-//
-//            output = new FileOutputStream(file);
-//
-//            // Compress into png format image from 0% - 100%
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
-//            output.flush();
-//            output.close();
-//        } catch (Exception e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//
-//    }
+    public static void saveImage(Bitmap bitmap) {
+        OutputStream output;
+        String recentImageInCache;
+        File filepath = Environment.getExternalStorageDirectory();
+
+        // Create a new folder in SD Card
+        File dir = new File(filepath.getAbsolutePath()
+                + "/YOUR_APP/profile");
+        dir.mkdirs();
+
+        // Create a name for the saved image
+        File file = new File(dir, edtname + ".jpg");
+        try {
+
+            output = new FileOutputStream(file);
+
+            // Compress into png format image from 0% - 100%
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
+            output.flush();
+            output.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
 
 }
