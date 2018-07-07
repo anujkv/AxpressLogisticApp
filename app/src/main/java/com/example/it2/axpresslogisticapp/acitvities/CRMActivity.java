@@ -47,7 +47,7 @@ public class CRMActivity extends AppCompatActivity {
 
     public static String[] gridViewStrings = {
             "Card Scan",
-            "QR Code Scanner",
+            "Card Scanner",
             "Saved Cards",
             "My Card Profile",
             "Card",
@@ -55,7 +55,7 @@ public class CRMActivity extends AppCompatActivity {
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_card_scanner,
-            R.drawable.icon_qrcode,
+            R.drawable.icon_scanning,
             R.drawable.icon_qrcode,
             R.drawable.icon_qrcode,
             R.drawable.icon_card_scanner,

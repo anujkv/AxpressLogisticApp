@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.it2.axpresslogisticapp.acitvities.CardActivity;
 import com.example.it2.axpresslogisticapp.acitvities.SavedCardActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -65,7 +66,7 @@ public class ScannerActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(getApplicationContext(),SavedCardActivity.class));
                 break;
             case R.id.my_cardbtn:
-                startActivity(new Intent(getApplicationContext(),ScannedDataActivity.class));
+                startActivity(new Intent(getApplicationContext(),CardActivity.class));
                 break;
         }
     }

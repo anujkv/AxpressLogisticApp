@@ -147,6 +147,7 @@
     <string name="scan_qrcode">Scan QRCode</string>
     <string name="saved_cards">Saved Cards</string>
     <string name="my_bcard">My Card</string>
+    <string name="scan_new_card">Scan New Card</string>
     <string-array name="status_arrays">
         <item>Select</item>
         <item>In Process</item>

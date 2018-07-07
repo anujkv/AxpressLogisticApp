@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".acitvities.SavedCardActivity">
-
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_toolbar"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/saved_card_recyclerview"
+        android:id="@+id/savedCardRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbarAlwaysDrawVerticalTrack="true">
+        android:layout_height="match_parent">
+
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
