@@ -1,4 +1,4 @@
-package com.example.it2.axpresslogisticapp;
+package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.it2.axpresslogisticapp.CameraActivity;
+import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.acitvities.CardActivity;
 import com.example.it2.axpresslogisticapp.acitvities.SavedCardActivity;
 import com.google.zxing.integration.android.IntentIntegrator;

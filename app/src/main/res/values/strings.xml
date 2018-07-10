@@ -148,6 +148,7 @@
     <string name="saved_cards">Saved Cards</string>
     <string name="my_bcard">My Card</string>
     <string name="scan_new_card">Scan New Card</string>
+    <string name="no_data_available">No Data Available</string>
     <string-array name="status_arrays">
         <item>Select</item>
         <item>In Process</item>

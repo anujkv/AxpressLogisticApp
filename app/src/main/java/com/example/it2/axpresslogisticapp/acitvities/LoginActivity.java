@@ -99,6 +99,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     JSONObject object = new JSONObject(response.toString());
                     String status = object.optString("Status");
                     String apiKEYresponse = object.optString("key");
+                    Log.e("status : ", status);
+                    Log.e("my apikey : ", apikey);
+                    Log.e("response apikey : ",apiKEYresponse );
 
                     if (status.equals("true")&& apikey.equals(apiKEYresponse)) {
                         username = object.optString("Employee_Name");
@@ -107,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         logindataIntent.putExtra("response", response.toString());
                         startActivity(logindataIntent);
                     } else {
-                        Toast.makeText(getApplicationContext(), "wrong credential.. ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), status+"wrong credential.. ", Toast.LENGTH_LONG).show();
                         invisibleProgressbar();
                     }
 

@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
-import com.example.it2.axpresslogisticapp.ScannerActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

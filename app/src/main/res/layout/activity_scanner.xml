@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ScannerActivity"
+    tools:context=".acitvities.ScannerActivity"
     tools:layout_editor_absoluteY="25dp">
 
     <include
@@ -19,6 +19,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="120dp"
         android:src="@drawable/icon_camera"
+        android:background="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/qrcodebtn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +39,7 @@
 
     <ImageButton
         android:id="@+id/qrcodebtn"
+        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="64dp"
@@ -64,6 +66,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="52dp"
+        android:background="@color/white"
         android:src="@drawable/icon_business_card"
         app:layout_constraintEnd_toStartOf="@+id/my_cardbtn"
         app:layout_constraintHorizontal_bias="0.01"
@@ -87,6 +90,7 @@
         android:layout_marginEnd="64dp"
         android:layout_marginTop="52dp"
         android:src="@drawable/icon_my_bcard"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/qrcodebtn" />
 

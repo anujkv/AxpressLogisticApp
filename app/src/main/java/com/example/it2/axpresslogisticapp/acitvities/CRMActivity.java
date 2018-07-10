@@ -21,10 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.it2.axpresslogisticapp.CameraActivity;
-import com.example.it2.axpresslogisticapp.CustomerVisitFormActivity;
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.ScannedDataActivity;
-import com.example.it2.axpresslogisticapp.ScannerActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -129,7 +127,7 @@ public class CRMActivity extends AppCompatActivity {
                         break;
                     case 5:
                         Intent intent_visit = new Intent(CRMActivity.this,
-                                CustomerVisitFormActivity.class);
+                                CustomerViewListActivity.class);
                         // passing array index
                         intent_visit.putExtra("id", position);
                         startActivity(intent_visit);

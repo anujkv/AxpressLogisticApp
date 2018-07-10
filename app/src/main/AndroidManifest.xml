@@ -23,6 +23,7 @@
         android:icon="@mipmap/ic_launcher24s"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher24s_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -98,7 +99,7 @@
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ScannerActivity"
+            android:name=".acitvities.ScannerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
@@ -130,17 +131,18 @@
         <activity
             android:name=".acitvities.CardActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
         <activity
-            android:name=".CustomerVisitFormActivity"
+            android:name=".acitvities.CustomerVisitFormActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
         <activity
             android:name=".acitvities.SavedCardActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
+        </activity>
+        <activity
+            android:name=".acitvities.CustomerViewListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

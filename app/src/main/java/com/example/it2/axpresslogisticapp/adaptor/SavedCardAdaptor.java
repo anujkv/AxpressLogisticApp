@@ -34,7 +34,7 @@ public class SavedCardAdaptor extends RecyclerView.Adapter<SavedCardAdaptor.Card
     @Override
     public CardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.savedcard_listview,parent,false);
+        View view = inflater.inflate(R.layout.savedcard_listview, parent, false);
         return new CardHolder(view);
     }
 
@@ -48,19 +48,16 @@ public class SavedCardAdaptor extends RecyclerView.Adapter<SavedCardAdaptor.Card
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,cardModel.getUsername() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, cardModel.getUsername(), Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(v.getContext(), CardActivity.class);
-                v.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, CardActivity.class);
-                        intent.putExtra("name",cardModel.getUsername());
-                        intent.putExtra("website",cardModel.getWebsite());
-                        intent.putExtra("email",cardModel.getEmail());
-                        context.startActivity(intent);
-                    }
-                });
+
+                Context context = v.getContext();
+                Intent intent = new Intent(context, CardActivity.class);
+                intent.putExtra("name", cardModel.getUsername());
+                intent.putExtra("website", cardModel.getWebsite());
+                intent.putExtra("email", cardModel.getEmail());
+                context.startActivity(intent);
+
             }
         });
 
@@ -72,10 +69,11 @@ public class SavedCardAdaptor extends RecyclerView.Adapter<SavedCardAdaptor.Card
         return saveCardModelList.size();
     }
 
-    public class CardHolder extends RecyclerView.ViewHolder  {
-        TextView txt_username,txt_website,txt_email;
+    public class CardHolder extends RecyclerView.ViewHolder {
+        TextView txt_username, txt_website, txt_email;
         ImageView image;
         CardView cardView;
+
         public CardHolder(View itemView) {
             super(itemView);
             txt_username = itemView.findViewById(R.id.txt_SC_username);

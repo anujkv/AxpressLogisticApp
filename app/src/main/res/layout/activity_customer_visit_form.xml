@@ -5,14 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CustomerVisitFormActivity">
+    tools:context=".acitvities.CustomerVisitFormActivity">
 
     <include
         android:id="@+id/app_bar"
         layout="@layout/mapapp_toolbar"/>
+    <LinearLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
     <include
         android:id="@+id/search_panalLayout"
         layout="@layout/search_panal"/>
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -122,8 +128,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
-                            android:autoSizeMaxTextSize="8dp"
-                            android:lines="1"
+                            android:ems="10"
+                            android:inputType="date"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -221,6 +227,7 @@
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
                             android:textColor="@color/primaryTextColor"
+                            android:inputType="phone"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -268,6 +275,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
+                            android:inputType="textEmailAddress"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -423,7 +431,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -497,8 +506,6 @@
                                     android:layout_alignParentEnd="true"
                                     android:layout_below="@+id/icon_rotate_rightFront"
                                     android:src="@drawable/icon_rotate_left" />
-
-
                             </RelativeLayout>
                         </LinearLayout>
 
