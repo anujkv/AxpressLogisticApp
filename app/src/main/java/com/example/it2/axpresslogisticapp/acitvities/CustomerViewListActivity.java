@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -46,11 +47,14 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         lable.setText("Visit Activities");
         backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         addbtn_toolbar = findViewById(R.id.mapbtn_toolbar);
-        recyclerViewVisit = findViewById(R.id.customerRecyclerView);
         txt_no_data_available = findViewById(R.id.no_data_available);
         backbtn_toolbar.setOnClickListener(this);
         addbtn_toolbar.setOnClickListener(this);
         addbtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+
+        recyclerViewVisit = findViewById(R.id.customerRecyclerView);
+        recyclerViewVisit.setHasFixedSize(true);
+        recyclerViewVisit.setLayoutManager(new LinearLayoutManager(this));
         visitModelList = new ArrayList<>();
         showVisitFormList();
     }
@@ -70,16 +74,17 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                 progressDialog.dismiss();
                 try {
                     JSONObject object = new JSONObject(response);
+                    JSONArray jsonArray = object.getJSONArray("forms");
+
                     String status = object.optString("status");
                     String apiKeyResponse = object.optString("key");
 
                     if(status.equals("true")){
 //                        recyclerViewVisit.setVisibility(View.VISIBLE);
                         txt_no_data_available.setVisibility(View.GONE);
-                        JSONArray jsonArray = object.getJSONArray("forms");
                         Log.e("response : ",response);
                         Log.e("jsonArray : ",jsonArray.toString());
-                        for(int i = 0; i<response.length(); i++){
+                        for(int i = 0; i<jsonArray.length(); i++){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             Log.e("value of i : "+i+ " ", jsonObject.toString());
                             VisitModel visitModel = new VisitModel(

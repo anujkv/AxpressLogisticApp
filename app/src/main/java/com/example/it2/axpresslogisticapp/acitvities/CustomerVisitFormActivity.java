@@ -375,7 +375,8 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     }
 
     private String uniqueVisitID() {
-        String comp = (String) str_customer_name.subSequence(0,2);
+//        String comp = str_customer_name.substring(0,2);
+//        Log.e("substring company :",comp);
         String SALTCHARS = "1234567890";
         StringBuilder visitkey = new StringBuilder();
         Random rnd = new Random();
@@ -383,7 +384,8 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             int index = (int) (rnd.nextFloat() * SALTCHARS.length());
             visitkey.append(SALTCHARS.charAt(index));
         }
-        String visitStr = comp + visitkey.toString();
+//        String visitStr = comp + visitkey.toString();
+        String visitStr = visitkey.toString();
         return visitStr;
 
     }

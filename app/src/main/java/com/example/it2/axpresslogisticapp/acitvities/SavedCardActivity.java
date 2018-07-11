@@ -74,7 +74,6 @@ public class SavedCardActivity extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     JSONObject object1 = object.getJSONObject("cards");
                     JSONArray jsonArray = object1.getJSONArray("card_no");
-                    Log.e("jsonARRAY====",jsonArray.toString());
 
                     for (int i = 0; i<jsonArray.length(); i++){
                         JSONObject object2 = jsonArray.getJSONObject(i);
