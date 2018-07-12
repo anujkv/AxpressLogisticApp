@@ -2,6 +2,7 @@ package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +47,9 @@ import java.util.Timer;
 import static android.icu.util.Calendar.getInstance;
 
 public class CustomerVisitFormActivity extends AppCompatActivity implements View.OnClickListener {
-    String url = "";
+    String URL_ADD_NEW = "http://webapi.axpresslogistics.com/api/Operations/customer_visit";
+    String URL_FOLLOW = "http://webapi.axpresslogistics.com/api/Operations/customer_search";
+    String URL_SEARCH = "https://api.myjson.com/bins/1b3nue";
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_search_panal, edt_customer_name, edt_visitdate, edtContactPerson, edtContactNo, edtEmail, edtAddress,
             edt_product_name, edtRemark, edt_other_employee_name;
@@ -58,10 +62,13 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     CheckBox check_new, check_followUp;
     String saved = "Saved", notSaved = "data not saved", method;
     String compVisitID;
+
     EmpProfileActivity empProfileActivity;
+//    String empid = empProfileActivity.strEmpCode;
+    String empid = "1853";
     private DatePicker datePicker;
     private Calendar calendar;
-    private int year, month, day, hh,mm,sec;
+    private int year, month, day;
     private DatePickerDialog.OnDateSetListener myDateListener = new
             DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -195,20 +202,21 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 });
                 break;
             case R.id.check_new:
-                Toast.makeText(getApplicationContext(), "new", Toast.LENGTH_SHORT).show();
                 if (check_new.isChecked()) {
                     search_panalLayout.setVisibility(View.GONE);
                     check_followUp.setChecked(false);
                 }
                 break;
             case R.id.check_followUp:
-                Toast.makeText(getApplicationContext(), "follow", Toast.LENGTH_SHORT).show();
                 if (check_followUp.isChecked()) {
                     search_panalLayout.setVisibility(View.VISIBLE);
                     check_new.setChecked(false);
                     edt_search_panal.setFocusable(true);
                 }
                 break;
+//            case R.id.edt_search_panal:
+//                hitSearchAPi();
+//                break;
 
             case R.id.add_new_card:
                 show_front_cardLayout.setVisibility(View.VISIBLE);
@@ -234,33 +242,21 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         String formattedDate = df.format(currentTime.getTime());
         showDate(formattedDate);
 
-
-//        Date date = new Date();
-//        String strDateFormat = "hh:mm:ss a";
-//        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
-//        str_visitdate= dateFormat.format(date);
-//        System.out.println("Current time of the day using Date - 12 hour format: " + str_visitdate);
-
-
-
     }
 
     private void showDate(String formattedDate) {
         edt_visitdate.setText(formattedDate);
     }
 
-    private void showDate(int year, int i, int day, Date currentTime) {
-        edt_visitdate.setText(new StringBuilder().append(year).append("-")
-                .append(month).append("-").append(day).append("  ").append(currentTime));
-        str_visitdate = edt_visitdate.getText().toString().trim();
-    }
+//    private void showDate(int year, int i, int day, Date currentTime) {
+//        edt_visitdate.setText(new StringBuilder().append(year).append("-")
+//                .append(month).append("-").append(day).append("  ").append(currentTime));
+//        str_visitdate = edt_visitdate.getText().toString().trim();
+//    }
 
     @SuppressWarnings("deprecation")
     public void setDate(View view) {
         showDialog(999);
-        Toast.makeText(getApplicationContext(), "ca",
-                Toast.LENGTH_SHORT)
-                .show();
     }
 
     @Override
@@ -282,20 +278,17 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     private void save() {
         if (check_new.isChecked() || check_followUp.isChecked()) {
             if (check_new.isChecked()) {
-                compVisitID = uniqueVisitID();
+//                compVisitID = uniqueVisitID();
+                compVisitID = "xx123456";
                 String businessType = "customer_visit_add";
                 method = businessType;
-                pushonDB(compVisitID);
+                pushonDBNew(compVisitID);
 //                pushonLocalDB();
-                Toast.makeText(getApplicationContext(),
-                        "Saved", Toast.LENGTH_SHORT).show();
-            } else {
+            } else if(check_followUp.isChecked()) {
                 String businessType = "customer_visit_follow";
                 method = businessType;
-                pushonDB(compVisitID);
+                pushonDBNew(compVisitID);
 //                pushonLocalDB();
-                Toast.makeText(getApplicationContext(),
-                        "Saved", Toast.LENGTH_SHORT).show();
             }
 
         } else {
@@ -306,34 +299,87 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 
     }
 
-    private void pushonLocalDB() {
+    private void hitSearchAPi() {
+        ApiKey apiKey = new ApiKey();
+        final String apikey = apiKey.saltStr();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SEARCH,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject object =  new JSONObject(response);
+                            JSONArray array = object.getJSONArray("search_list");
+
+                            for (int i = 0; i<array.length(); i++){
+                                JSONObject jsonObject = array.getJSONObject(i);
+//                                jsonObject.getString()
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.toString().equals("com.android.volley.ServerError")) {
+                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("method", method);
+                params.put("key", apikey.trim());
+                params.put("input",str_search);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void pushonDBFollow(String compVisitID) {
 
     }
 
-    private void pushonDB(String compVisitID) {
+    private void pushonDBNew(String compVisitID) {
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
         final String compvisitID = compVisitID;
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_NEW,
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONObject object = new JSONObject(response);
-                    String status = object.optString("Status");
-                    String apikeyResponse = object.optString("key");
+                if(response!= null && response.length() >0){
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        String status = object.optString("status");
+                        String apkKeyResponse = object.optString("key");
 
-                    if (status.equals("true") && apikeyResponse.equals(apikey)) {
-                        Toast.makeText(getApplicationContext(), saved, Toast.LENGTH_SHORT).show();
-                        //activity finished for return back to CustomervisitListActivity after saving details...
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), notSaved, Toast.LENGTH_SHORT).show();
+                        if (status.equals("true") ) {
+                            Toast.makeText(getApplicationContext(), saved, Toast.LENGTH_SHORT).show();
+                            //activity finished for return back to CustomervisitListActivity after saving details...
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), notSaved, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "<<<<<"+e.toString(), Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    Toast.makeText(getApplicationContext(), "<<<<Response: "+response.toString(), Toast.LENGTH_SHORT).show();
+                    Log.e("<<<<Response: ",response.toString());
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -343,30 +389,48 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "====="+error.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         }) {
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("method", method);
-                params.put("key", apikey.trim());
-                params.put("empId",empProfileActivity.strEmpCode);
-                params.put("uniqueVisitID", compvisitID);
-                params.put("str_customer_name", str_customer_name);
-                params.put("str_visitdate", str_visitdate);
-                params.put("str_visit_for", str_visit_for);
-                params.put("str_visit_type", str_visit_type);
-                params.put("strContactPerson", strContactPerson);
-                params.put("strContactNo", strContactNo);
-                params.put("strEmail", strEmail);
-                params.put("strAddress", strAddress);
-                params.put("str_product_name", str_product_name);
-                params.put("str_scope", str_scope);
-                params.put("strStatus", strStatus);
-                params.put("strRemark", strRemark);
-                params.put("employee_id", str_other_employee_name);
+                Log.e("method", method);
+                Log.e("key", apikey);
+                Log.e("emplid",empid);
+                Log.e("uniqueVisitID", compvisitID);
+                Log.e("customer", str_customer_name);
+                Log.e("visit_date", "2018-07-18 04:45:20");
+                Log.e("visit_for", "physicall");
+                Log.e("visit_type", "physicall");
+                Log.e("contact_person", strContactPerson);
+                Log.e("contact", strContactNo);
+                Log.e("email_id", strEmail);
+                Log.e("address", strAddress);
+                Log.e("product", str_product_name);
+                Log.e("scope", "physicall");
+                Log.e("status", "physicall");
+                Log.e("remark", strRemark);
+                Log.e("other_employee_name", str_other_employee_name);
+                params.put("method", "customer_visit_add");
+                params.put("key","");
+                params.put("emplid","1853");
+                params.put("uniqueVisitID", "axperp01");
+                params.put("customer", "axpress erp");
+                params.put("visit_date", "2018-07-18 04:45:20");
+                params.put("visit_for", "new business business follow operat");
+                params.put("visit_type", "physicall");
+                params.put("contact_person", "name");
+                params.put("contact", "9876543210");
+                params.put("email_id", "name@gmail.com");
+                params.put("address", "abcdef,ghijklmno-578900");
+                params.put("product", "product_type");
+                params.put("scope", "cargo");
+                params.put("status", "close");
+                params.put("remark", "next meeting on 30july with ");
+                params.put("other_employee_name", "Ramesh");
                 return params;
             }
         };
@@ -387,6 +451,76 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 //        String visitStr = comp + visitkey.toString();
         String visitStr = visitkey.toString();
         return visitStr;
+
+    }
+
+    public void selectedSearchValue(final String id) {
+        ApiKey apiKey = new ApiKey();
+        final String method = "customer_visit_follow";
+        final String apikey = apiKey.saltStr();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_FOLLOW,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject  jsonObject = new JSONObject(response);
+                            setData(jsonObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("method",method);
+                params.put("key",apikey);
+                params.put("customer_visit_search",id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void setData(JSONObject jsonObject) {
+//        str_customer_name = jsonObject.optString("customer");
+//        str_visitdate = jsonObject.optString("visit_date");
+//        str_visit_for = jsonObject.optString("visit_for");
+//        str_visit_type = jsonObject.optString("visit_type");
+//        strContactPerson = jsonObject.optString("contact_person");
+//        strContactNo = jsonObject.optString("contact");
+//        strEmail = jsonObject.optString("email_id");
+//        strAddress = jsonObject.optString("address");
+//        str_product_name = jsonObject.optString("product");
+//        strStatus = jsonObject.optString("status");
+//        str_scope = jsonObject.optString("scope");
+//        strRemark = jsonObject.optString("remark");
+//        str_other_employee_name = jsonObject.optString("other_employee_name");
+        //============================================
+        edt_customer_name.setText(jsonObject.optString("customer"));
+        edt_visitdate.setText(jsonObject.optString("visit_date"));
+        spinner_visit_for.setSelection(Integer.parseInt(jsonObject.optString("visit_for")));
+        spinner_visit_type.setSelection(Integer.parseInt(jsonObject.optString("visit_type")));
+
+        edtContactPerson.setText(jsonObject.optString("contact_person"));
+        edtContactNo.setText(jsonObject.optString("contact"));
+        edtEmail.setText(jsonObject.optString("email_id"));
+        edtAddress.setText(jsonObject.optString("address"));
+        edt_product_name.setText(jsonObject.optString("product"));
+
+        spinner_status.setSelection(Integer.parseInt(jsonObject.optString("status")));
+        spinner_scope.setSelection(Integer.parseInt(jsonObject.optString("scope")));
+
+        edtRemark.setText(jsonObject.optString("remark"));
+        edt_other_employee_name.setText(jsonObject.optString("other_employee_name"));
 
     }
 }

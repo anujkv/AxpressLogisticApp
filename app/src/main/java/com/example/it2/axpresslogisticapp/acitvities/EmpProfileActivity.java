@@ -273,7 +273,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(String response) {
                 try {
                     JSONObject object = new JSONObject(response);
-                    String status = object.optString("response");
+                        String status = object.optString("response");
                     String apiKeyResponse = object.optString("key");
                     String method = object.optString("method");
 

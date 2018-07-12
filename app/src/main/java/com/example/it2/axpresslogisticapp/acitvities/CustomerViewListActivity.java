@@ -32,7 +32,7 @@ import java.util.List;
 
 public class CustomerViewListActivity extends AppCompatActivity implements View.OnClickListener {
     TextView txt_no_data_available;
-    String url = "https://api.myjson.com/bins/167h6a";
+    String url = "https://api.myjson.com/bins/1ayplq";
     ImageButton backbtn_toolbar, addbtn_toolbar;
     RecyclerView recyclerViewVisit;
     List<VisitModel> visitModelList;
@@ -80,15 +80,12 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                     String apiKeyResponse = object.optString("key");
 
                     if(status.equals("true")){
-//                        recyclerViewVisit.setVisibility(View.VISIBLE);
                         txt_no_data_available.setVisibility(View.GONE);
-                        Log.e("response : ",response);
-                        Log.e("jsonArray : ",jsonArray.toString());
                         for(int i = 0; i<jsonArray.length(); i++){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            Log.e("value of i : "+i+ " ", jsonObject.toString());
+//                            Log.e("value of i : "+i+ " ", jsonObject.toString());
                             VisitModel visitModel = new VisitModel(
-                                    jsonObject.getString("company_unique_id"),
+                                    jsonObject.getString("uniqueVisitID"),
                                     jsonObject.getString("company_name"),
                                     jsonObject.getString("contact_person"),
                                     jsonObject.getString("mobile"));

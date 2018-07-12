@@ -12,6 +12,7 @@
         android:textSize="14sp"
         android:paddingLeft="20dp"
         android:background="@drawable/search_panal_background"
-        android:drawableRight="@android:drawable/ic_menu_search"/>
+        android:drawableRight="@android:drawable/ic_menu_search">
+    </EditText>
 
 </android.support.constraint.ConstraintLayout>
