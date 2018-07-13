@@ -2,7 +2,6 @@ package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,16 +32,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Timer;
 
 import static android.icu.util.Calendar.getInstance;
 
@@ -61,7 +55,8 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     Spinner spinner_visit_for, spinner_visit_type, spinner_scope, spinner_status;
     CheckBox check_new, check_followUp;
     String saved = "Saved", notSaved = "data not saved", method;
-    String compVisitID;
+    String businessType, compVisitID;
+
 
     EmpProfileActivity empProfileActivity;
 //    String empid = empProfileActivity.strEmpCode;
@@ -93,7 +88,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
 
         init();
-        getdata();
     }
 
     private void init() {
@@ -102,6 +96,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         edt_customer_name = findViewById(R.id.edt_customer_name);
         edt_visitdate = findViewById(R.id.edtVisitDate);
         edt_visitdate.setOnClickListener(this);
+
         edtContactPerson = findViewById(R.id.edtContactPerson);
         edtContactNo = findViewById(R.id.edtContactNo);
         edtEmail = findViewById(R.id.edtEmail);
@@ -129,13 +124,20 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         check_followUp.setOnClickListener(this);
     }
 
-    private void getdata() {
+    private void getdata(String compVisitID, String businessType) {
+        method = businessType;
+        this.compVisitID = compVisitID;
         str_customer_name = edt_customer_name.getText().toString().trim();
+        str_visitdate = edt_visitdate.getText().toString().trim();
+        str_visit_for = spinner_visit_for.getSelectedItem().toString();
+        str_visit_type = spinner_visit_type.getSelectedItem().toString();
         strContactPerson = edtContactPerson.getText().toString().trim();
         strContactNo = edtContactNo.getText().toString().trim();
         strEmail = edtEmail.getText().toString().trim();
         strAddress = edtAddress.getText().toString().trim();
         str_product_name = edt_product_name.getText().toString().trim();
+        strStatus = spinner_status.getSelectedItem().toString();
+        str_scope = spinner_scope.getSelectedItem().toString();
         strRemark = edtRemark.getText().toString().trim();
         str_other_employee_name = edt_other_employee_name.getText().toString().trim();
     }
@@ -272,24 +274,20 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     private void showDate(int year, int month, int day) {
         edt_visitdate.setText(new StringBuilder().append(year).append("-")
                 .append(month).append("-").append(day));
-        str_visitdate = edt_visitdate.getText().toString().trim();
+//        str_visitdate = edt_visitdate.getText().toString().trim();
     }
 
     private void save() {
         if (check_new.isChecked() || check_followUp.isChecked()) {
             if (check_new.isChecked()) {
-//                compVisitID = uniqueVisitID();
-                compVisitID = "xx123456";
-                String businessType = "customer_visit_add";
-                method = businessType;
-                pushonDBNew(compVisitID);
-//                pushonLocalDB();
+                compVisitID = uniqueVisitID();
+                businessType = "customer_visit_add";
+                pushonDBNew(compVisitID,businessType);
             } else if(check_followUp.isChecked()) {
-                String businessType = "customer_visit_follow";
-                method = businessType;
-                pushonDBNew(compVisitID);
-//                pushonLocalDB();
+                businessType = "customer_visit_follow";
+                pushonDBNew(compVisitID,businessType);
             }
+            getdata(compVisitID,businessType);
 
         } else {
             Toast.makeText(getApplicationContext(), "Kindly choose the business type new/follow",
@@ -347,7 +345,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 
     }
 
-    private void pushonDBNew(String compVisitID) {
+    private void pushonDBNew(String compVisitID, String businessType) {
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
         final String compvisitID = compVisitID;
@@ -361,9 +359,9 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     try {
                         JSONObject object = new JSONObject(response);
                         String status = object.optString("status");
-                        String apkKeyResponse = object.optString("key");
+                        String apiKeyResponse = object.optString("key");
 
-                        if (status.equals("true") ) {
+                        if (status.equals("true") && apiKeyResponse.equals(apikey)) {
                             Toast.makeText(getApplicationContext(), saved, Toast.LENGTH_SHORT).show();
                             //activity finished for return back to CustomervisitListActivity after saving details...
                             finish();
@@ -379,7 +377,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     Toast.makeText(getApplicationContext(), "<<<<Response: "+response.toString(), Toast.LENGTH_SHORT).show();
                     Log.e("<<<<Response: ",response.toString());
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -402,35 +399,36 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 Log.e("emplid",empid);
                 Log.e("uniqueVisitID", compvisitID);
                 Log.e("customer", str_customer_name);
-                Log.e("visit_date", "2018-07-18 04:45:20");
-                Log.e("visit_for", "physicall");
-                Log.e("visit_type", "physicall");
+                Log.e("visit_date", str_visitdate);
+                Log.e("visit_for", str_visit_for);
+                Log.e("visit_type", str_visit_type);
                 Log.e("contact_person", strContactPerson);
                 Log.e("contact", strContactNo);
                 Log.e("email_id", strEmail);
                 Log.e("address", strAddress);
                 Log.e("product", str_product_name);
-                Log.e("scope", "physicall");
-                Log.e("status", "physicall");
+                Log.e("scope", str_scope);
+                Log.e("status", strStatus);
                 Log.e("remark", strRemark);
                 Log.e("other_employee_name", str_other_employee_name);
-                params.put("method", "customer_visit_add");
-                params.put("key","");
-                params.put("emplid","1853");
-                params.put("uniqueVisitID", "axperp01");
-                params.put("customer", "axpress erp");
-                params.put("visit_date", "2018-07-18 04:45:20");
-                params.put("visit_for", "new business business follow operat");
-                params.put("visit_type", "physicall");
-                params.put("contact_person", "name");
-                params.put("contact", "9876543210");
-                params.put("email_id", "name@gmail.com");
-                params.put("address", "abcdef,ghijklmno-578900");
-                params.put("product", "product_type");
-                params.put("scope", "cargo");
-                params.put("status", "close");
-                params.put("remark", "next meeting on 30july with ");
-                params.put("other_employee_name", "Ramesh");
+
+                params.put("method", method);
+                params.put("key",apikey);
+                params.put("emplid",empid);
+                params.put("uniqueVisitID", "asd234234");
+                params.put("customer", str_customer_name);
+                params.put("visit_date",str_visitdate);
+                params.put("visit_for", str_visit_for);
+                params.put("visit_type", str_visit_type);
+                params.put("contact_person", strContactPerson);
+                params.put("contact",strContactNo);
+                params.put("email_id", strEmail);
+                params.put("address", strAddress);
+                params.put("product", str_product_name);
+                params.put("scope", str_scope);
+                params.put("status", strStatus);
+                params.put("remark", strRemark);
+                params.put("other_employee_name",str_other_employee_name);
                 return params;
             }
         };
@@ -450,6 +448,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         }
 //        String visitStr = comp + visitkey.toString();
         String visitStr = visitkey.toString();
+        Log.e("uniqueID===",visitStr);
         return visitStr;
 
     }

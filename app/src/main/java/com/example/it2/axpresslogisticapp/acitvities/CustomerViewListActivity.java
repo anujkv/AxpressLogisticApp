@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,11 +29,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerViewListActivity extends AppCompatActivity implements View.OnClickListener {
     TextView txt_no_data_available;
-    String url = "https://api.myjson.com/bins/1ayplq";
+    String url = "http://webapi.axpresslogistics.com/api/Operations/saved_list";
     ImageButton backbtn_toolbar, addbtn_toolbar;
     RecyclerView recyclerViewVisit;
     List<VisitModel> visitModelList;
@@ -63,27 +66,26 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         final ProgressDialog progressDialog = new ProgressDialog(this);
 
         ApiKey apiKey = new ApiKey();
-        final String method = "visit_list";
+        final String method = "saved_visit_form";
         final String apikey = apiKey.saltStr();
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progressDialog.dismiss();
                 try {
                     JSONObject object = new JSONObject(response);
-                    JSONArray jsonArray = object.getJSONArray("forms");
+                    JSONArray jsonArray = object.getJSONArray("saved_list");
 
                     String status = object.optString("status");
                     String apiKeyResponse = object.optString("key");
-
-                    if(status.equals("true")){
+                    Log.e("Status : ",status);
+                    if(status.equals("true") && apiKeyResponse.equals(apikey)){
                         txt_no_data_available.setVisibility(View.GONE);
                         for(int i = 0; i<jsonArray.length(); i++){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                            Log.e("value of i : "+i+ " ", jsonObject.toString());
                             VisitModel visitModel = new VisitModel(
                                     jsonObject.getString("uniqueVisitID"),
                                     jsonObject.getString("company_name"),
@@ -101,16 +103,22 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                     e.printStackTrace();
                     progressDialog.dismiss();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
                 progressDialog.dismiss();
-
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("method",method);
+                params.put("key",apikey);
+                return params;
+            }
+        };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
@@ -124,5 +132,12 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
             case R.id.mapbtn_toolbar:
                 startActivity(new Intent(getApplicationContext(),CustomerVisitFormActivity.class));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+//        showVisitFormList();
     }
 }
