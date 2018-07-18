@@ -131,17 +131,25 @@
         <activity
             android:name=".acitvities.CardActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
         <activity
             android:name=".acitvities.CustomerVisitFormActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
         <activity
             android:name=".acitvities.SavedCardActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
         <activity
             android:name=".acitvities.CustomerViewListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".acitvities.ApplyLeaveActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

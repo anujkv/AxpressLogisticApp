@@ -98,11 +98,14 @@ public class HrmsActivity extends AppCompatActivity {
                     case 1:
                         Intent intent_hrms = new Intent(HrmsActivity.this, LeaveInfoActivity.class);
                         // passing array index
-                        intent_hrms.putExtra("id", position);
+                        intent_hrms.putExtra("response", jObj.toString());
                         startActivity(intent_hrms);
                         break;
                     case 2:
-                        Toast.makeText(getApplicationContext(), "Apply Leave " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Intent intent_leaveApply = new Intent(HrmsActivity.this, ApplyLeaveActivity.class);
+                        // passing array index
+                        intent_leaveApply.putExtra("response", jObj.toString());
+                        startActivity(intent_leaveApply);
                         break;
                     case 3:
                         startActivity(new Intent(HrmsActivity.this,AttendanceSummaryActivity.class));

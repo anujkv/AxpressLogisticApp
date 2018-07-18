@@ -2,6 +2,7 @@ package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,7 +55,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     LinearLayout show_front_cardLayout, show_back_cardLayout, search_panalLayout;
     Spinner spinner_visit_for, spinner_visit_type, spinner_scope, spinner_status;
     CheckBox check_new, check_followUp;
-    String saved = "Saved", notSaved = "data not saved", method;
+    String saved = "Saved", notSaved = "Data Not Saved",dataNotFatched = "Data Not Found", method, input;
     String businessType, compVisitID;
 
 
@@ -88,6 +89,16 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
 
         init();
+        Intent intent = getIntent();
+        String companyUniqueIDF = intent.getStringExtra("companyUniqueID");
+        String methodF = intent.getStringExtra("method");
+//        Boolean followChecked = Boolean.valueOf(intent.getStringExtra("followChecked"));
+        input = intent.getStringExtra("input");
+
+        if(companyUniqueIDF != null && methodF.equals("customer_visit_search")){
+            check_followUp.setChecked(true);
+            pushonDBFollow(companyUniqueIDF,methodF,input);
+        }
     }
 
     private void init() {
@@ -284,8 +295,8 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 businessType = "customer_visit_add";
                 pushonDBNew(compVisitID,businessType);
             } else if(check_followUp.isChecked()) {
-                businessType = "customer_visit_follow";
-                pushonDBNew(compVisitID,businessType);
+                businessType = "customer_visit_search";
+                pushonDBFollow(compVisitID,businessType,input);
             }
             getdata(compVisitID,businessType);
 
@@ -341,14 +352,76 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         requestQueue.add(stringRequest);
     }
 
-    private void pushonDBFollow(String compVisitID) {
+    private void pushonDBFollow(final String compVisitID, final String businessType, final String input) {
+        ApiKey apiKey = new ApiKey();
+        final String apikey = apiKey.saltStr();
+        final String compvisitID = compVisitID;
+        this.businessType = businessType;
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_FOLLOW,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response!= null && response.length() >0){
+                            try {
+                                JSONObject object = new JSONObject(response);
+                                String status = object.optString("status");
+                                String apiKeyResponse = object.optString("key");
+                                Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
+
+                                if (status.equals("true") && apiKeyResponse.equals(apikey)) {
+                                    Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
+                                    setData(object);
+                                    savebtn_toolbar.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            pushonDBNew(compVisitID, businessType);
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getApplicationContext(), dataNotFatched, Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getApplicationContext(), "<<<<<"+e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "<<<<Response: "+response.toString(), Toast.LENGTH_SHORT).show();
+                            Log.e("<<<<Response: ",response.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("response======", "" + error.toString());
+                if (error.toString().equals("com.android.volley.ServerError")) {
+                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "====="+error.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("method", businessType);
+                params.put("key",apikey);
+                params.put("uniqueVisitID", compvisitID);
+                params.put("input", input);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     private void pushonDBNew(String compVisitID, String businessType) {
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
         final String compvisitID = compVisitID;
+
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_NEW,
@@ -394,24 +467,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                Log.e("method", method);
-                Log.e("key", apikey);
-                Log.e("emplid",empid);
-                Log.e("uniqueVisitID", compvisitID);
-                Log.e("customer", str_customer_name);
-                Log.e("visit_date", str_visitdate);
-                Log.e("visit_for", str_visit_for);
-                Log.e("visit_type", str_visit_type);
-                Log.e("contact_person", strContactPerson);
-                Log.e("contact", strContactNo);
-                Log.e("email_id", strEmail);
-                Log.e("address", strAddress);
-                Log.e("product", str_product_name);
-                Log.e("scope", str_scope);
-                Log.e("status", strStatus);
-                Log.e("remark", strRemark);
-                Log.e("other_employee_name", str_other_employee_name);
-
                 params.put("method", method);
                 params.put("key",apikey);
                 params.put("emplid",empid);
@@ -448,7 +503,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         }
 //        String visitStr = comp + visitkey.toString();
         String visitStr = visitkey.toString();
-        Log.e("uniqueID===",visitStr);
+        Log.e("uniqueID===", visitStr);
         return visitStr;
 
     }
@@ -473,7 +528,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.e("Volley", error.toString());
             }
         }){
             @Override
@@ -490,24 +545,15 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     }
 
     private void setData(JSONObject jsonObject) {
-//        str_customer_name = jsonObject.optString("customer");
-//        str_visitdate = jsonObject.optString("visit_date");
-//        str_visit_for = jsonObject.optString("visit_for");
-//        str_visit_type = jsonObject.optString("visit_type");
-//        strContactPerson = jsonObject.optString("contact_person");
-//        strContactNo = jsonObject.optString("contact");
-//        strEmail = jsonObject.optString("email_id");
-//        strAddress = jsonObject.optString("address");
-//        str_product_name = jsonObject.optString("product");
-//        strStatus = jsonObject.optString("status");
-//        str_scope = jsonObject.optString("scope");
-//        strRemark = jsonObject.optString("remark");
-//        str_other_employee_name = jsonObject.optString("other_employee_name");
+        str_visit_for = jsonObject.optString("visit_for");
+        str_visit_type = jsonObject.optString("visit_type");
+        strStatus = jsonObject.optString("status");
+        str_scope = jsonObject.optString("scope");
         //============================================
         edt_customer_name.setText(jsonObject.optString("customer"));
         edt_visitdate.setText(jsonObject.optString("visit_date"));
-        spinner_visit_for.setSelection(Integer.parseInt(jsonObject.optString("visit_for")));
-        spinner_visit_type.setSelection(Integer.parseInt(jsonObject.optString("visit_type")));
+//        spinner_visit_for.setSelection(Integer.parseInt(jsonObject.optString("visit_for")));
+//        spinner_visit_type.setSelection(Integer.parseInt(jsonObject.optString("visit_type")));
 
         edtContactPerson.setText(jsonObject.optString("contact_person"));
         edtContactNo.setText(jsonObject.optString("contact"));
@@ -515,8 +561,8 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         edtAddress.setText(jsonObject.optString("address"));
         edt_product_name.setText(jsonObject.optString("product"));
 
-        spinner_status.setSelection(Integer.parseInt(jsonObject.optString("status")));
-        spinner_scope.setSelection(Integer.parseInt(jsonObject.optString("scope")));
+//        spinner_status.setSelection(Integer.parseInt(jsonObject.optString("followup_status")));
+//        spinner_scope.setSelection(Integer.parseInt(jsonObject.optString("scope")));
 
         edtRemark.setText(jsonObject.optString("remark"));
         edt_other_employee_name.setText(jsonObject.optString("other_employee_name"));

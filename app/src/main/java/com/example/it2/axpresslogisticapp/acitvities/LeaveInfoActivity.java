@@ -1,6 +1,8 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.app.VoiceInteractor;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,171 +36,66 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class LeaveInfoActivity extends AppCompatActivity {
-
-    ArrayList<String> datafetchlist = new ArrayList<>();
-    EditText input_editText;
-    Button search_btn;
-    String input_text = "";
-    LinearLayout info;
-
-    TextView empName, empId, branch, department, designation, contact, error_msg;
-    String name,empid,branchname,dept,desig,contactno,errormsg;
-    ImageView empImg;
+public class LeaveInfoActivity extends AppCompatActivity  implements View.OnClickListener{
 
     String url = "https://api.myjson.com/bins/9sp2i";
-    RequestQueue requestQueue;
+    CalendarView calendarView;
+    String jsonString, emplid;
+    JSONObject jObj;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leave_info);
-        Toolbar toolbar =  findViewById(R.id.app_bar);
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText("Docket/Invoice Enquiry");
-        ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
-        backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
+        lable.setText("Apply Leave");
+        ImageButton backbtn_toolbar, savebtn_toolbar;
+        backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
+        savebtn_toolbar = findViewById(R.id.mapbtn_toolbar);
+        backbtn_toolbar.setOnClickListener(this);
+        savebtn_toolbar.setOnClickListener(this);
+        savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
+
+        init();
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                String date = year + "-" + month+ "-" + dayOfMonth;
             }
         });
-
-        info = findViewById(R.id.info);
-
-        input_editText = findViewById(R.id.input_edit_text_id);
-        search_btn = findViewById(R.id.btn_search);
-        error_msg = findViewById(R.id.employee_not_found_text_Id);
-
-        empName = findViewById(R.id.user_nameId);
-        empId = findViewById(R.id.user_id);
-        branch = findViewById(R.id.branch_id);
-        department = findViewById(R.id.department_id);
-        designation = findViewById(R.id.designation_id);
-        contact = findViewById(R.id.contact_id);
-
-        requestQueue = Volley.newRequestQueue(this);
-
-        search_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (input_editText.getText().toString().trim().toLowerCase().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Enter the input!", Toast.LENGTH_SHORT).show();
-                    error_msg.setVisibility(View.INVISIBLE);
-                    info.setVisibility(View.INVISIBLE);
-                } else {
-                    input_text = input_editText.getText().toString().toLowerCase().trim();
-                    //jsonfunction calling...
-                    sendJsonRequest(input_text);
-
-//                    get_data(input_text);
-                    input_editText.setText("");
-                }
-//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            }
-        });
-    }
-
-    public void sendJsonRequest(String input_text) {
-
-
-        boolean VISIABLE_FLAG = false;
-        boolean VISIABLITY_ERROR_FLAG  = false;
-        this.input_text = input_text;
-        info.setVisibility(View.VISIBLE);
-
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    System.out.println(response);
-
-                    name = response.getString("name");
-                    empid = response.getString("empid");
-                    branchname = response.getString("branch");
-                    dept = response.getString("department");
-                    desig = response.getString("designation");
-                    contactno = response.getString("contact");
-
-
-                    empName.setText(name);
-                    empId.setText(empid);
-                    branch.setText(branchname);
-                    department.setText(dept);
-                    designation.setText(desig);
-                    contact.setText(contactno);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-    }
-
-    public void get_data(String input_text) {
-        boolean VISIABLE_FLAG = false;
-        boolean VISIABLITY_ERROR_FLAG  = false;
-        this.input_text = input_text;
-        String json = null;
-        JSONObject jsonObject = null;
 
         try {
-            InputStream inputStream = getAssets().open("employeedetails.json");
-            byte[] buffer = new byte[inputStream.available()];
-
-            inputStream.read(buffer);
-            inputStream.close();
-
-            json = new String(buffer, "UTF-8");
-            JSONArray jsonArray = new JSONArray(json);
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObject = jsonArray.getJSONObject(i);
-
-                if (jsonObject.getString("name").toLowerCase().equals(input_text) ||
-                        jsonObject.getString("empid").toLowerCase().equals(input_text)) {
-                    empId.setText(jsonObject.getString("empid"));
-                    empName.setText(jsonObject.getString("name"));
-                    branch.setText(jsonObject.getString("branch"));
-                    department.setText(jsonObject.getString("department"));
-                    designation.setText(jsonObject.getString("designation"));
-                    contact.setText(jsonObject.getString("contact"));
-                    VISIABLE_FLAG = true;
-
-                }
-
-            }
-            if(VISIABLE_FLAG == true){
-                info.setVisibility(View.VISIBLE);
-                error_msg.setVisibility(View.INVISIBLE);
-            }
-            else{
-                if(input_text.isEmpty()){
-                    error_msg.setText(R.string.blank_field_error);
-                    error_msg.setVisibility(View.VISIBLE);
-                    info.setVisibility(View.INVISIBLE);
-                }
-                else {
-                    error_msg.setText(R.string.employee_not_found);
-                    error_msg.setVisibility(View.VISIBLE);
-                    info.setVisibility(View.INVISIBLE);
-                }
-            }
+            intent = getIntent();
+            jsonString = intent.getStringExtra("response");
+            jObj = new JSONObject(jsonString);
+            emplid = jObj.optString("Emplid");
 
 
-
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private void init() {
+        calendarView = findViewById(R.id.calendarView);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backbtn_toolbar:
+                finish();
+                break;
+            case R.id.mapbtn_toolbar:
+                applied();
+                break;
+        }
+    }
+
+    private void applied() {
+
+    }
 }

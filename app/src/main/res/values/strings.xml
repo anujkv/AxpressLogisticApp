@@ -150,11 +150,28 @@
     <string name="scan_new_card">Scan New Card</string>
     <string name="no_data_available">No Data Available</string>
     <string name="unique_compId">com2343545</string>
+    <string name="days">Days</string>
+    <string name="leave_reason_edt">Reason</string>
+    <string name="Leave_type">Leave type</string>
     <string-array name="status_arrays">
         <item>Select</item>
         <item>In Process</item>
         <item>Converted</item>
         <item>Drop</item>
         <item>Close</item>
+    </string-array>
+
+    //string for leave_type...
+    <string name="Leave_prompt">Select</string>
+    <string-array name="leave_arrays">
+        <item>Select</item>
+        <item>Casual Leave</item>
+        <item>Sick Leave</item>
+        <item>Earned Leave</item>
+        <item>Loss of Pay</item>
+        <item>On Duty</item>
+        <item>Maternity Leave</item>
+        <item>Compensatory Off</item>
+        <item>Credit Off</item>
     </string-array>
 </resources>
