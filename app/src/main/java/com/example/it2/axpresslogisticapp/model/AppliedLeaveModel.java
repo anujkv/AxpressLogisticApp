@@ -1,19 +1,21 @@
 package com.example.it2.axpresslogisticapp.model;
 
 public class AppliedLeaveModel {
-    String from,reason,days,type;
-    String to,pin_no;
+    String from,reason,days,type,to,pin_no,applied_date,leave_status;
 
     public AppliedLeaveModel() {
     }
 
-    public AppliedLeaveModel(String from, String reason, String days, String type, String to, String pin_no) {
+    public AppliedLeaveModel(String from, String reason, String days, String type, String to,
+                             String pin_no, String applied_date, String leave_status) {
         this.from = from;
         this.reason = reason;
         this.days = days;
         this.type = type;
         this.to = to;
         this.pin_no = pin_no;
+        this.applied_date = applied_date;
+        this.leave_status = leave_status;
     }
 
     public String getFrom() {
@@ -62,5 +64,21 @@ public class AppliedLeaveModel {
 
     public void setPin_no(String pin_no) {
         this.pin_no = pin_no;
+    }
+
+    public String getApplied_date() {
+        return applied_date;
+    }
+
+    public void setApplied_date(String applied_date) {
+        this.applied_date = applied_date;
+    }
+
+    public String getLeave_status() {
+        return leave_status;
+    }
+
+    public void setLeave_status(String leave_status) {
+        this.leave_status = leave_status;
     }
 }

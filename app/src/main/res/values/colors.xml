@@ -13,7 +13,8 @@
     <color name="editTextColor">#eceff1</color>
 
     <color name="btn_pressedColor">#536DFE</color>
-    <color name="btn_enabledColor">#03A9F4</color>
+    <color name="btn_enabledColor">#2196f3</color>
+    <color name="currentDateColor">#2196f3</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

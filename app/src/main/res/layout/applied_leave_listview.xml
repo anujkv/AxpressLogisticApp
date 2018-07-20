@@ -25,7 +25,12 @@
                 android:textSize="20dp" />
             <TextView
                 android:id="@+id/txtpin_no"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/txtleave_status"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center"/>
 
@@ -65,8 +70,16 @@
                         android:text="  to  "
                         android:textSize="12sp"/>
                     <TextView
-                        android:id="@+id/txttodate"
-                        android:layout_width="wrap_content"
+                    android:id="@+id/txttodate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:text="16 th july 2018"
+                    android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtappliedDate"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginTop="5dp"
                         android:text="16 th july 2018"

@@ -408,7 +408,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 Map<String, String> params = new HashMap<>();
                 params.put("method", businessType);
                 params.put("key",apikey);
-                params.put("uniqueVisitID", compvisitID);
+                params.put("ref_no", compvisitID);
                 params.put("input", input);
                 return params;
             }
@@ -470,7 +470,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 params.put("method", method);
                 params.put("key",apikey);
                 params.put("emplid",empid);
-                params.put("uniqueVisitID", "asd234234");
                 params.put("customer", str_customer_name);
                 params.put("visit_date",str_visitdate);
                 params.put("visit_for", str_visit_for);

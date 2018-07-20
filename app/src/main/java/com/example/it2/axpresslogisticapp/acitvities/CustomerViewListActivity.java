@@ -87,7 +87,7 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                         for(int i = 0; i<jsonArray.length(); i++){
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             VisitModel visitModel = new VisitModel(
-                                    jsonObject.getString("uniqueVisitID"),
+                                    jsonObject.getString("ref_no"),
                                     jsonObject.getString("company_name"),
                                     jsonObject.getString("contact_person"),
                                     jsonObject.getString("mobile"));

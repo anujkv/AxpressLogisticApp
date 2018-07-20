@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -54,7 +55,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     String applied_url = "http://webapi.axpresslogistics.com/api/HRMS/leave_entry";
     String leave_info_url = "http://webapi.axpresslogistics.com/api/HRMS/leave_search";
     Intent intent;
-    String jsonString, emplid;
+    String jsonString, emplid, formattedDate;
     JSONObject jObj;
     CalendarView calendarView, calendarView1;
     String date2, date, fromDate, toDate, leaveReason, strleave_type, strPin_no, leaveType;
@@ -92,13 +93,15 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         recyclerView.setHasFixedSize(true);
         appliedLeaveModelList = new ArrayList<>();
         uploadleavelist();
-
+        calendarView.setWeekNumberColor(Color.RED);
+        calendarView.setWeekSeparatorLineColor(Color.GREEN);
+        calendarView.setFocusedMonthDateColor(Color.YELLOW);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, final int dayOfMonth) {
                 Date c = Calendar.getInstance().getTime();
-//                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-//                String formattedDate = df.format(c);
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss" );
+                formattedDate = df.format(c);
                 final int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
                 final int m = Calendar.getInstance().get(Calendar.MONTH);
                 final int y = Calendar.getInstance().get(Calendar.YEAR);
@@ -107,11 +110,11 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     Log.e("Current Date : ", d + " " + m + " " + y);
                     Log.e("applied Date : ", dayOfMonth + " " + month + " " + year);
 
-                    Log.e("Current Date===== : ", c.toString());
+                    Log.e("Current Date===== : ", formattedDate.toString());
                     dayfrom = dayOfMonth;
-                    monthfrom = month;
+                    monthfrom = month + 1;
                     yearfrom = year;
-                    date = dayOfMonth + "-" + month + "-" + year;
+                    date = dayOfMonth + "-" + monthfrom + "-" + year;
 //                dateAPI = year + "-" + month+ "-" + dayOfMonth;
                     LayoutInflater inflater = getLayoutInflater();
                     final View alertLayout = inflater.inflate(R.layout.apply_leave_view, null);
@@ -136,9 +139,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     });
 
                     input_leave_from.setText(date);
-                    if (daysDifference > 0) {
-                        total_leave_days.setText(daysDifference);
-                    }
+//                    if (daysDifference > 0) {
+//                        total_leave_days.setText(daysDifference);
+//                    }
                     builderfrom = new AlertDialog.Builder(alertLayout.getContext());
                     builderfrom.setTitle("Apply Leave");
                     builderfrom.setView(alertLayout);
@@ -184,9 +187,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                                 @Override
                                 public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                                     dayto = dayOfMonth;
-                                    monthto = month;
+                                    monthto = month +1;
                                     yearto = year;
-                                    date2 = dayOfMonth + "-" + month + "-" + year;
+                                    date2 = dayOfMonth + "-" + monthto + "-" + year;
                                 }
                             });
 
@@ -216,13 +219,12 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
 //            }
         });
 
+
         try {
             intent = getIntent();
             jsonString = intent.getStringExtra("response");
             jObj = new JSONObject(jsonString);
             emplid = jObj.optString("Emplid");
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -260,13 +262,17 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                                             jsonObject.getString("days"),
                                             jsonObject.getString("type"),
                                             jsonObject.getString("to"),
-                                            jsonObject.getString("pin_no"));
+                                            jsonObject.getString("pin_no"),
+                                            jsonObject.getString("applied_date"),
+                                            jsonObject.getString("leave_status"));
                                     Log.e("from", jsonObject.getString("from"));
                                     Log.e("to", jsonObject.getString("to"));
                                     Log.e("days", jsonObject.getString("days"));
                                     Log.e("reason", jsonObject.getString("reason"));
                                     Log.e("type", jsonObject.getString("type"));
                                     Log.e("pin_no", jsonObject.getString("pin_no"));
+                                    Log.e("applied_date", jsonObject.getString("applied_date"));
+                                    Log.e("leave_status", jsonObject.getString("leave_status"));
                                     Log.e("=========", "==================");
                                     appliedLeaveModelList.add(appliedLeaveModel);
                                 }
@@ -514,6 +520,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 Log.e("reason", leaveReason);
                 Log.e("type", leaveType);
                 Log.e("pin_no", strPin_no);
+                Log.e("applied_date", formattedDate);
 
                 params.put("method", method);
                 params.put("key", apikey);
@@ -524,6 +531,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 params.put("to", toDate);
                 params.put("days", String.valueOf(daysDifference));
                 params.put("reason", leaveReason);
+                params.put("applied_date",formattedDate);
                 return params;
             }
         };

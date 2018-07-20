@@ -1,6 +1,7 @@
 package com.example.it2.axpresslogisticapp.adaptor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.acitvities.CustomerVisitFormActivity;
 import com.example.it2.axpresslogisticapp.model.AppliedLeaveModel;
 
 import java.util.List;
@@ -41,10 +43,17 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
         holder.type.setText(appliedLeaveModel.getType());
         holder.to.setText(appliedLeaveModel.getTo());
         holder.pin_no.setText(appliedLeaveModel.getPin_no());
+        holder.applied_date.setText(appliedLeaveModel.getApplied_date());
+        holder.leave_status.setText(appliedLeaveModel.getLeave_status());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Leave", Toast.LENGTH_SHORT).show();
+//                Context context = v.getContext();
+//                Intent intent = new Intent(context, LeavePopFragment.class);
+////                intent.putExtra("followChecked",true);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
             }
         });
     }
@@ -55,7 +64,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     }
 
     public class AppliedLeaveHolder extends RecyclerView.ViewHolder {
-        TextView from, to, reason, type, pin_no, day;
+        TextView from, to, reason, type, pin_no, day, applied_date,leave_status;
         CardView cardView;
 
         public AppliedLeaveHolder(View itemView) {
@@ -66,6 +75,8 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
             day = itemView.findViewById(R.id.days);
             type = itemView.findViewById(R.id.txttype);
             pin_no = itemView.findViewById(R.id.txtpin_no);
+            applied_date = itemView.findViewById(R.id.txtappliedDate);
+            leave_status = itemView.findViewById(R.id.txtleave_status);
             cardView = itemView.findViewById(R.id.leaveAppliedCardView);
         }
     }
