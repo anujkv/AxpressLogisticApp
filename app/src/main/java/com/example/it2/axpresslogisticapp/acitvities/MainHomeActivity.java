@@ -2,6 +2,9 @@ package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainHomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,LocationListener {
     public static String[] gridViewStrings = {
             "Operations",
             "HRMS",
@@ -57,6 +62,8 @@ public class MainHomeActivity extends AppCompatActivity
     Intent intent;
     String jsonString;
     JSONObject jObj;
+    LocationManager locationManager;
+    double lat,lon;
 
     public Bundle getBundle = null;
 
@@ -69,11 +76,19 @@ public class MainHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10,
+                    5, (LocationListener) this);
+
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
 
 
         try {
             intent = getIntent();
-            jsonString = intent.getStringExtra("response");
+            jsonString = Preferences.getPreference(MainHomeActivity.this,"response");
             jObj = new JSONObject(jsonString);
             employeeNAME = jObj.optString("Employee_Name");
             empEmail = jObj.optString("Employee_Email");
@@ -81,6 +96,10 @@ public class MainHomeActivity extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        employeeNAME= Preferences.getPreference(MainHomeActivity.this, CONSTANT.USER_NAME);
+        empEmail= Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMAIL);
+
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -199,7 +218,7 @@ public class MainHomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_profile) {
             Intent profiledataIntent = new Intent(getApplicationContext(),EmpProfileActivity.class);
-            profiledataIntent.putExtra("response", jObj.toString());
+            profiledataIntent.putExtra("response", Preferences.getPreference(MainHomeActivity.this,"response"));
             startActivity(profiledataIntent);
 //            startActivity(new Intent(getApplicationContext(),EmpProfileActivity.class));
         } else if (id == R.id.nav_operations) {
@@ -233,8 +252,33 @@ public class MainHomeActivity extends AppCompatActivity
     }
 
     private void logout() {
+
+        Preferences.removeAllPreference(MainHomeActivity.this);
+        Intent intent =new Intent(MainHomeActivity.this,LoginActivity.class);
+        startActivity(intent);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         finish();
     }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
+        lat = location.getLatitude();
+        lon= location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }

@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.android.gms:play-services-vision:15.0.2'
-    compile 'com.rmtheis:tess-two:6.2.0'
+    implementation 'com.rmtheis:tess-two:6.2.0'
     //crop image library...
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.3.0'
     //circular image view library...

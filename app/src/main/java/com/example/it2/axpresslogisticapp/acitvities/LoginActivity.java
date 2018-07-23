@@ -1,15 +1,22 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,13 +35,14 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-import com.example.it2.axpresslogisticapp.acitvities.ApiKey;
+
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,LocationListener {
     private String url = "http://webapi.axpresslogistics.com/api/HRMS/Get_Login";
     EditText employee_code, password;
     Button login_button;
@@ -42,7 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String employeeCodeValue, passwordValue, username;
     Bundle bundle;
     ProgressBar progressBar;
-
+    LocationManager locationManager;
+    double lat, lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +67,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //clickable events...
         login_button.setOnClickListener(this);
         forgetPassword.setOnClickListener(this);
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10,
+                    5, (LocationListener) this);
 
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        getLocationPermissionCheck();
+        if (Preferences.getPreference(LoginActivity.this,"APIKEY")!=""){
+
+            //username = object.optString("Employee_Name");
+            Toast.makeText(getApplicationContext(), "Welcome " + Preferences.getPreference(LoginActivity.this,CONSTANT.USER_NAME), LENGTH_SHORT).show();
+            Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
+          //  logindataIntent.putExtra("response", response.toString());
+            startActivity(logindataIntent);
+
+        }
+
+    }
+
+    private void getLocationPermissionCheck() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.
+                ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.
+                checkSelfPermission(getApplicationContext(), Manifest.permission.
+                        ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.
+                            ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    101);
+        }
     }
 
     @Override
@@ -99,15 +138,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     JSONObject object = new JSONObject(response.toString());
                     String status = object.optString("Status");
                     String apiKEYresponse = object.optString("key");
+                    Preferences.setPreference(LoginActivity.this,"APIKEY",apiKEYresponse);
                     Log.e("status : ", status);
                     Log.e("my apikey : ", apikey);
-                    Log.e("response apikey : ",apiKEYresponse );
+                    Log.e("response  : ",response.toString() );
 
                     if (status.equals("true")&& apikey.equals(apiKEYresponse)) {
                         username = object.optString("Employee_Name");
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_NAME,object.optString("Employee_Name"));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,object.optString("Employee_Email"));
                         Toast.makeText(getApplicationContext(), "Welcome " + username, LENGTH_SHORT).show();
                         Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
-                        logindataIntent.putExtra("response", response.toString());
+                      //  logindataIntent.putExtra("response", response.toString());
+                        Preferences.setPreference(LoginActivity.this,"response",response.toString());
+
                         startActivity(logindataIntent);
                     } else {
                         Toast.makeText(getApplicationContext(), status+"wrong credential.. ", Toast.LENGTH_LONG).show();
@@ -181,4 +225,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
+        lat = location.getLatitude();
+        lon = location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }
