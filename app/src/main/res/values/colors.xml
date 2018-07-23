@@ -16,6 +16,11 @@
     <color name="btn_enabledColor">#2196f3</color>
     <color name="currentDateColor">#2196f3</color>
 
+    <color name="foreground_full">#fff</color>
+    <color name="foreground_semi">#4fff</color>
+    <color name="foreground_today">#111</color>
+    <color name="background_today">#fff</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#757575</color>

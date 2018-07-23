@@ -112,6 +112,8 @@
     <string name="add_exist_card">Add Exist Card</string>
     <string name="contact_person">Contact Person</string>
 
+    <string name="previous_month">Previous month</string>
+    <string name="next_month">Next month</string>
 
     //string for visit for...
     <string name="visit_for_prompt">Select</string>
