@@ -497,7 +497,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                                 }
                                 leaveAdaptor = new AppliedLeaveAdaptor(ApplyLeaveActivity.this, appliedLeaveModelList);
                                 recyclerView.setAdapter(leaveAdaptor);
-                                leaveAdaptor.notifyDataSetChanged();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Could not load data!",
                                         Toast.LENGTH_SHORT).show();
@@ -506,7 +505,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             e.printStackTrace();
                             progressDialog.dismiss();
                         }
-                        leaveAdaptor.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
