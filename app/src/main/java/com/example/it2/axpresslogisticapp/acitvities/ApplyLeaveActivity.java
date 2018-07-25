@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.example.it2.axpresslogisticapp.adaptor.AppliedLeaveAdaptor;
 import com.example.it2.axpresslogisticapp.model.AppliedLeaveModel;
 
@@ -60,7 +61,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     String date2, date, fromDate, toDate, leaveReason, strleave_type, strPin_no, leaveType;
     EditText input_leave_from, input_leave_to;
     int dayfrom, monthfrom, yearfrom, dayto, monthto, yearto;
-    TextView total_leave_days;
+    TextView total_leave_days,txt_datanotfound;
     EditText editTextReason_of_leave;
     AlertDialog.Builder builderfrom, builderto;
     Spinner spinner_apply_leave;
@@ -90,19 +91,16 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         savebtn_toolbar = findViewById(R.id.mapbtn_toolbar);
         backbtn_toolbar.setOnClickListener(this);
         savebtn_toolbar.setOnClickListener(this);
-        savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
+        savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_refresh));
 
         calendarView = findViewById(R.id.calendarView);
         calendarView.setMinDate(System.currentTimeMillis());
-
+        txt_datanotfound =findViewById(R.id.txt_nofounddata);
         recyclerView = findViewById(R.id.leaveAppliedRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         appliedLeaveModelList = new ArrayList<>();
         uploadleavelist();
-        calendarView.setWeekNumberColor(Color.RED);
-        calendarView.setWeekSeparatorLineColor(Color.GREEN);
-        calendarView.setFocusedMonthDateColor(Color.YELLOW);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, final int dayOfMonth) {
@@ -368,6 +366,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             case R.id.backbtn_toolbar:
                 finish();
                 break;
+            case R.id.mapbtn_toolbar:
+                refreshAppliedList();
+                break;
         }
     }
 
@@ -481,6 +482,8 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             JSONArray array = object.optJSONArray("leave");
                             Log.e("JSONArray", response);
                             if (status.equals("true") && apikeyResponse.equals(apikey1)) {
+                                recyclerView.setVisibility(View.VISIBLE);
+                                txt_datanotfound.setVisibility(View.GONE);
                                 Log.e("ResponseforRecycle ", status);
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject jsonObject = array.getJSONObject(i);
@@ -498,12 +501,16 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                                 leaveAdaptor = new AppliedLeaveAdaptor(ApplyLeaveActivity.this, appliedLeaveModelList);
                                 recyclerView.setAdapter(leaveAdaptor);
                             } else {
+                                recyclerView.setVisibility(View.GONE);
+                                txt_datanotfound.setVisibility(View.VISIBLE);
                                 Toast.makeText(getApplicationContext(), "Could not load data!",
                                         Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             progressDialog.dismiss();
+                            recyclerView.setVisibility(View.GONE);
+                            txt_datanotfound.setVisibility(View.VISIBLE);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -511,7 +518,16 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
                 progressDialog.dismiss();
-
+                recyclerView.setVisibility(View.GONE);
+                txt_datanotfound.setVisibility(View.VISIBLE);
+                if(error.toString().equals("com.android.volley.ServerError")){
+                    txt_datanotfound.setText(CONSTANT.RESPONSEERROR);
+                    Toast.makeText(getApplicationContext(), CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error.toString().equals("com.android.volley.NoConnectionError")) {
+                    Toast.makeText(getApplicationContext(), CONSTANT.INTERNETERROR, Toast.LENGTH_LONG).show();
+                    txt_datanotfound.setText(CONSTANT.INTERNETERROR);
+                }
             }
         }) {
             @Override

@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:text="sick leave"
                     android:textSize="14sp"
+                    android:maxLines="2"
                     android:textStyle="bold" />
 
                 <LinearLayout

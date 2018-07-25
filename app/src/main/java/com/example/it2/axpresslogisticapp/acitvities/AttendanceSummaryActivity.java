@@ -56,7 +56,7 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
     AttendanceAdaptor attendanceAdaptor;
     AttendanceModel attendanceModel;
     String str_month, month;
-    int currentMonthPosition;
+    int currentMonthPosition,countmin,countmax;
     ImageView calendarBackBtm, calendarForewordBtn;
     TextView calendarMonth_TextView;
     String currentMonthINTEXT, currentYear;
@@ -197,7 +197,8 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
                         mapMonth(currentMonthPosition);
                         JSONArray jsonArray = jsonObject.getJSONArray("attendance");
                         Log.e("Status : ", status);
-                        Log.e(" ,Month : ", str_month);
+                        Log.e(" Month : ", str_month);
+                        Log.e(" Response : ", response);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             attendanceModel = new AttendanceModel(
@@ -282,12 +283,19 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
     private void setNextMonth() {
         try {
             if (attendanceModelList.size() > 0) {
-                attendanceModelList.clear();
-                attendance_summary_data(String.valueOf(currentMonthPosition));
-//                if(status.equals("false")){
-                    currentMonthPosition = currentMonthPosition++;
-//                }
+                currentMonthPosition = currentMonthPosition + 1;
+                setMonthData(currentMonthPosition);
+            }else{
+                if (currentMonthPosition > Integer.parseInt(str_month)){
+                    currentMonthPosition = --currentMonthPosition;
+                    setMonthData(currentMonthPosition);
+                }
+                else {
+                    currentMonthPosition = ++currentMonthPosition + 1;
+                    setMonthData(currentMonthPosition);
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -299,17 +307,23 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         try {
             if (attendanceModelList.size() > 0) {
                 currentMonthPosition = currentMonthPosition - 1;
-                attendanceModelList.clear();
-                attendance_summary_data(String.valueOf(currentMonthPosition));
-//                if(status.equals("false")){
-                    currentMonthPosition = currentMonthPosition--;
-//                }
+                setMonthData(currentMonthPosition);
+            }else if (currentMonthPosition> Integer.parseInt(str_month)){
+                currentMonthPosition = --currentMonthPosition -1;
+                setMonthData(currentMonthPosition);
+            }else{
+                currentMonthPosition = ++currentMonthPosition;
+                setMonthData(currentMonthPosition);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        Toast.makeText(getApplicationContext(),currentMonthPosition,Toast.LENGTH_SHORT).show();
         Log.e("Month==", String.valueOf(currentMonthPosition));
 
+    }
+
+    private void setMonthData(int currentMonthPosition) {
+        attendanceModelList.clear();
+        attendance_summary_data(String.valueOf(currentMonthPosition));
     }
 }

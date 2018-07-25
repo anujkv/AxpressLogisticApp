@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -139,11 +140,15 @@ public class DocketEnquiry extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d("response",""+error.toString());
                 if(error.toString().equals("com.android.volley.ServerError")){
-                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500",
+                    Toast.makeText(getApplicationContext(), CONSTANT.RESPONSEERROR,
                             Toast.LENGTH_LONG).show();
                     submit_docket_btn.setClickable(true);
                     progressBar.setVisibility(View.INVISIBLE);
-                } else{
+                } else if (error.toString().equals("com.android.volley.NoConnectionError")){
+                    Toast.makeText(getApplicationContext(), CONSTANT.INTERNETERROR, Toast.LENGTH_LONG).show();
+                    submit_docket_btn.setClickable(true);
+                    progressBar.setVisibility(View.INVISIBLE);
+                } else {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
                     submit_docket_btn.setClickable(true);
                     progressBar.setVisibility(View.INVISIBLE);

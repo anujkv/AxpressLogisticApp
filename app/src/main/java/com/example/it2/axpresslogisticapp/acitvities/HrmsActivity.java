@@ -25,7 +25,7 @@ public class HrmsActivity extends AppCompatActivity {
 
     public static String[] gridViewStrings = {
             "Mark Attendance",
-            "Leave Information",
+//            "Leave Information",
             "Apply Leave",
             "Attendence Summary",
             "Pay Slip",
@@ -34,7 +34,7 @@ public class HrmsActivity extends AppCompatActivity {
     public static int[] gridViewIcons = {
             R.drawable.icon_mark_attendance,
             R.drawable.icon_mark,
-            R.drawable.icon_crm,
+//            R.drawable.icon_crm,
             R.drawable.icon_activities,
             R.drawable.icon_financial,
             R.drawable.icon_scanning,
@@ -95,22 +95,22 @@ public class HrmsActivity extends AppCompatActivity {
                         intent_mark.putExtra("response", jObj.toString());
                         startActivity(intent_mark);
                         break;
+//                    case 1:
+//                        Intent intent_hrms = new Intent(HrmsActivity.this, LeaveInfoActivity.class);
+//                        // passing array index
+//                        intent_hrms.putExtra("response", jObj.toString());
+//                        startActivity(intent_hrms);
+//                        break;
                     case 1:
-                        Intent intent_hrms = new Intent(HrmsActivity.this, LeaveInfoActivity.class);
-                        // passing array index
-                        intent_hrms.putExtra("response", jObj.toString());
-                        startActivity(intent_hrms);
-                        break;
-                    case 2:
                         Intent intent_leaveApply = new Intent(HrmsActivity.this, ApplyLeaveActivity.class);
                         // passing array index
                         intent_leaveApply.putExtra("response", jObj.toString());
                         startActivity(intent_leaveApply);
                         break;
-                    case 3:
+                    case 2:
                         startActivity(new Intent(HrmsActivity.this,AttendanceSummaryActivity.class));
                         break;
-                    case 4:
+                    case 3:
                         Toast.makeText(getApplicationContext(), "Document Scanning " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                 }
