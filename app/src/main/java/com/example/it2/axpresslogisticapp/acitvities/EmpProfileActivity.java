@@ -118,7 +118,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     private void getValuesFromAPI() {
         strName = jObj.optString("Employee_Name");
         strEmpCode = jObj.optString("Emplid");
-
         strContactNo = jObj.optString("Employee_Contact");
 //        strContactAltNo = jObj.optString("Employee_Contact1");
 

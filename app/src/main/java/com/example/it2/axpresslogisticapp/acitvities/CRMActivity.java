@@ -24,6 +24,9 @@ import com.example.it2.axpresslogisticapp.CameraActivity;
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.ScannedDataActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -41,22 +44,24 @@ public class CRMActivity extends AppCompatActivity {
     private EditText obtainedText;
     private String phoneNumber;
     private String contactName;
-    private String contactEmail;
+    private String contactEmail,jsonString;
+    JSONObject jObj;
+    Intent intent;
 
     public static String[] gridViewStrings = {
-            "Card Scan",
-            "Card Scanner",
-            "Saved Cards",
-            "My Card Profile",
-            "Card",
+//            "Card Scan",
+//            "Card Scanner",
+//            "Saved Cards",
+//            "My Card Profile",
+//            "Card",
             "Visit Form"
     };
     public static int[] gridViewIcons = {
-            R.drawable.icon_card_scanner,
-            R.drawable.icon_scanning,
-            R.drawable.icon_qrcode,
-            R.drawable.icon_qrcode,
-            R.drawable.icon_card_scanner,
+//            R.drawable.icon_card_scanner,
+//            R.drawable.icon_scanning,
+//            R.drawable.icon_qrcode,
+//            R.drawable.icon_qrcode,
+//            R.drawable.icon_card_scanner,
             R.drawable.icon_visit,
     };
     GridView gridView;
@@ -79,6 +84,15 @@ public class CRMActivity extends AppCompatActivity {
         gridView = findViewById(R.id.gridhrms);
         gridView = findViewById(R.id.gridhrms);
 
+        try {
+            intent = getIntent();
+            jsonString = intent.getStringExtra("response");
+            jObj = new JSONObject(jsonString);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         GridViewHrms gridViewHrms = new GridViewHrms(CRMActivity.this, gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewHrms);
 
@@ -89,47 +103,47 @@ public class CRMActivity extends AppCompatActivity {
                 // Sending image id to FullScreenActivity
                 switch (position) {
 
+//                    case 0:
+////                        startCameraActivityIntent();
+//                        Intent intent_docket = new Intent(CRMActivity.this,
+//                                CameraActivity.class);
+//                        // passing array index
+////                        intent_docket.putExtra("id", position);
+//                        startActivity(intent_docket);
+//                        break;
+//                    case 1:
+//                        Intent intent_vea = new Intent(CRMActivity.this,
+//                                ScannerActivity.class);
+//                        // passing array index
+//                        intent_vea.putExtra("id", position);
+//                        startActivity(intent_vea);
+//                        break;
+//                    case 2:
+//                        Intent intent_addC = new Intent(CRMActivity.this,
+//                                CustomerVisitFormActivity.class);
+//                        // passing array index
+//                        intent_addC.putExtra("id", position);
+//                        startActivity(intent_addC);
+//                        break;
+//                    case 3:
+//                        Intent intent_qrcode = new Intent(CRMActivity.this,
+//                                ScannedDataActivity.class);
+//                        // passing array index
+//                        intent_qrcode.putExtra("id", position);
+//                        startActivity(intent_qrcode);
+//                        break;
+//                    case 4:
+//                        Intent intent_card = new Intent(CRMActivity.this,
+//                                CardActivity.class);
+//                        // passing array index
+//                        intent_card.putExtra("id", position);
+//                        startActivity(intent_card);
+//                        break;
                     case 0:
-//                        startCameraActivityIntent();
-                        Intent intent_docket = new Intent(CRMActivity.this,
-                                CameraActivity.class);
-                        // passing array index
-//                        intent_docket.putExtra("id", position);
-                        startActivity(intent_docket);
-                        break;
-                    case 1:
-                        Intent intent_vea = new Intent(CRMActivity.this,
-                                ScannerActivity.class);
-                        // passing array index
-                        intent_vea.putExtra("id", position);
-                        startActivity(intent_vea);
-                        break;
-                    case 2:
-                        Intent intent_addC = new Intent(CRMActivity.this,
-                                CustomerVisitFormActivity.class);
-                        // passing array index
-                        intent_addC.putExtra("id", position);
-                        startActivity(intent_addC);
-                        break;
-                    case 3:
-                        Intent intent_qrcode = new Intent(CRMActivity.this,
-                                ScannedDataActivity.class);
-                        // passing array index
-                        intent_qrcode.putExtra("id", position);
-                        startActivity(intent_qrcode);
-                        break;
-                    case 4:
-                        Intent intent_card = new Intent(CRMActivity.this,
-                                CardActivity.class);
-                        // passing array index
-                        intent_card.putExtra("id", position);
-                        startActivity(intent_card);
-                        break;
-                    case 5:
                         Intent intent_visit = new Intent(CRMActivity.this,
                                 CustomerViewListActivity.class);
                         // passing array index
-                        intent_visit.putExtra("id", position);
+//                        intent_visit.putExtra("response", jObj.toString());
                         startActivity(intent_visit);
                         break;
                 }

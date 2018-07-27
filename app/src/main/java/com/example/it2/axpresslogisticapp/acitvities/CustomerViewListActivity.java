@@ -60,11 +60,35 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         recyclerViewVisit.setLayoutManager(new LinearLayoutManager(this));
         visitModelList = new ArrayList<>();
         showVisitFormList();
+
+    }
+
+    private void refresh() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        final String method = "leave_info";
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        try {
+            if(visitModelList.size()>0){
+                visitModelList.clear();
+                showVisitFormList();
+            } else {
+                showVisitFormList();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        progressDialog.dismiss();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        refresh();
     }
 
     private void showVisitFormList() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
-
         ApiKey apiKey = new ApiKey();
         final String method = "saved_visit_form";
         final String apikey = apiKey.saltStr();
@@ -123,6 +147,7 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         requestQueue.add(stringRequest);
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -137,7 +162,5 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
     @Override
     protected void onResume() {
         super.onResume();
-
-//        showVisitFormList();
     }
 }

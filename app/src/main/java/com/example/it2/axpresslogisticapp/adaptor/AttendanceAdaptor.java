@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.DateConvertor;
 import com.example.it2.axpresslogisticapp.acitvities.AttendanceSummaryActivity;
 import com.example.it2.axpresslogisticapp.model.AttendanceModel;
 
@@ -34,10 +35,32 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
     AttendanceSummaryActivity summaryActivity;
     Dialog dialog;
     String outputText;
+    String getClickedDate;
+//    DateConvertor dateConvertor;
 
     public AttendanceAdaptor(Context context, List<AttendanceModel> attendanceModelList) {
         this.context = context;
         this.attendanceModelList = attendanceModelList;
+    }
+
+    public String convertDate_dd_MMM_yyyy(String date){
+        DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        DateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss", Locale.getDefault());
+        Date date1 = null;
+        String finaldate;
+        try {
+            date1 = inputFormat.parse(date.trim());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        finaldate = outputFormat.format(date1);
+        if (date1 != null) {
+            Log.e("Date1 : ",date1.toString());
+        }
+        Log.e("FinalOutput : ",finaldate);
+
+        return finaldate;
     }
 
     @NonNull
@@ -49,7 +72,7 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final AttendanceHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final AttendanceHolder holder, final int position) {
         final AttendanceModel attendanceModel = attendanceModelList.get(position);
         //date formate change...
         if (!attendanceModel.getDate().isEmpty()) {
@@ -129,30 +152,87 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
         holder.leavetype.setText(attendanceModel.getLeavetype());
 
         dialog = new Dialog(context);
-        dialog.setContentView(R.layout.attendance_popup);
+        dialog.setContentView(R.layout.attendance_summary_popup);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         holder.leaveAppliedCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView txt_leaveType, txt_clickedDate, txt_leaveReason, txt_fromDate, txt_toDate, txt_leaveStatus,
-                        txt_totalDays, txt_appliedDate;
-                txt_leaveType = dialog.findViewById(R.id.txt_leaveType);
-                txt_clickedDate = dialog.findViewById(R.id.txt_clickedDate);
-                txt_leaveReason = dialog.findViewById(R.id.txt_leaveReason);
-                txt_fromDate = dialog.findViewById(R.id.txt_fromDate);
-                txt_toDate = dialog.findViewById(R.id.txt_toDate);
-                txt_leaveStatus = dialog.findViewById(R.id.txt_leaveStatus);
-                txt_totalDays = dialog.findViewById(R.id.txt_totalDays);
-                txt_appliedDate = dialog.findViewById(R.id.txt_appliedDate);
-                txt_clickedDate.setVisibility(View.VISIBLE);
-                txt_clickedDate.setText(attendanceModel.getDate());
+                        txt_totalDays, txt_appliedDate,leaveType,leaveReason,fromDate,toDate,leaveStatus,
+                        totalDays,appliedDate;
+                txt_leaveType = dialog.findViewById(R.id.txtleaveType);
+                txt_clickedDate = dialog.findViewById(R.id.txtclickedDate);
+                txt_leaveReason = dialog.findViewById(R.id.txtleaveReason);
+                txt_fromDate = dialog.findViewById(R.id.txtfromDate);
+                txt_toDate = dialog.findViewById(R.id.txttoDate);
+                txt_leaveStatus = dialog.findViewById(R.id.txtleaveStatus);
+                txt_totalDays = dialog.findViewById(R.id.txttotalDays);
+                txt_appliedDate = dialog.findViewById(R.id.txtappliedDate);
 
-                txt_clickedDate.setVisibility(View.VISIBLE);
-                txt_clickedDate.setText(outputText);
-                if(attendanceModel.getDayStatus().equals("L")){
+                leaveType = dialog.findViewById(R.id.leaveType);
+                leaveReason = dialog.findViewById(R.id.leaveReason);
+                fromDate = dialog.findViewById(R.id.fromDate);
+                toDate = dialog.findViewById(R.id.toDate);
+                leaveStatus = dialog.findViewById(R.id.leaveStatus);
+                totalDays = dialog.findViewById(R.id.totalDays);
+                appliedDate = dialog.findViewById(R.id.appliedDate);
+
+                if (attendanceModel.getDayStatus().equals("P")){
+
+                    if(attendanceModel.getDayStatus().equals("P")){
+
+                        leaveType.setVisibility(View.VISIBLE);
+                        txt_leaveType.setTextSize(12);
+                        txt_leaveType.setTextColor(Color.DKGRAY);
+                        fromDate.setVisibility(View.VISIBLE);
+                        txt_fromDate.setVisibility(View.VISIBLE);
+                        toDate.setVisibility(View.VISIBLE);
+                        txt_toDate.setVisibility(View.VISIBLE);
+
+                        txt_clickedDate.setBackgroundColor(Color.YELLOW);
+                        txt_clickedDate.setTextColor(Color.BLACK);
+                        txt_clickedDate.setText(convertDate_dd_MMM_yyyy(attendanceModel.getDate()));
+                        leaveType.setText("Attendance");
+                        txt_leaveType.setText("Present");
+                        txt_leaveType.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                        fromDate.setText("In Time");
+                        txt_fromDate.setText(attendanceModel.getInTime());
+                        toDate.setText("Out Time");
+                        txt_toDate.setText(attendanceModel.getOutTime());
+                        leaveReason.setVisibility(View.GONE);
+                        txt_leaveReason.setVisibility(View.GONE);
+                        leaveStatus.setVisibility(View.GONE);
+                        txt_leaveStatus.setVisibility(View.GONE);
+                        totalDays.setVisibility(View.GONE);
+                        txt_totalDays.setVisibility(View.GONE);
+                        appliedDate.setVisibility(View.GONE);
+                        txt_appliedDate.setVisibility(View.GONE);
+                    }
+
+                }else if(attendanceModel.getDayStatus().equals("L")){
+
+                    leaveType.setVisibility(View.VISIBLE);
+                    txt_leaveType.setTextSize(12);
+                    txt_leaveType.setTextColor(Color.DKGRAY);
+                    fromDate.setVisibility(View.VISIBLE);
+                    txt_fromDate.setVisibility(View.VISIBLE);
+                    toDate.setVisibility(View.VISIBLE);
+                    txt_toDate.setVisibility(View.VISIBLE);
+                    txt_leaveStatus.setVisibility(View.VISIBLE);
+                    leaveStatus.setVisibility(View.VISIBLE);
+                    txt_totalDays.setVisibility(View.VISIBLE);
+                    totalDays.setVisibility(View.VISIBLE);
+                    txt_appliedDate.setVisibility(View.VISIBLE);
+                    appliedDate.setVisibility(View.VISIBLE);
+
+                    txt_clickedDate.setBackgroundColor(Color.GREEN);
+                    txt_clickedDate.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    txt_clickedDate.setTextColor(Color.WHITE);
+                    txt_clickedDate.setText(convertDate_dd_MMM_yyyy(attendanceModel.getDate()));
                     txt_leaveReason.setText(attendanceModel.getLeaveReason());
                     txt_leaveType.setText(attendanceModel.getLeavetype());
+                    txt_leaveType.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                     txt_fromDate.setVisibility(View.VISIBLE);
                     txt_fromDate.setText(attendanceModel.getInTime());
                     txt_toDate.setVisibility(View.VISIBLE);
@@ -161,23 +241,80 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
                     txt_leaveStatus.setText(attendanceModel.getApprovalFlag());
                     txt_totalDays.setText(attendanceModel.getDayStatus());
                     txt_appliedDate.setText(attendanceModel.getAppliedDate());
-                }else if (attendanceModel.getDayStatus().equals("A")){
-                    txt_fromDate.setVisibility(View.GONE);
-                    txt_toDate.setVisibility(View.GONE);
-                    txt_totalDays.setVisibility(View.GONE);
-                    txt_leaveType.setText("Absent");
-                    txt_leaveStatus.setText("Absent");
-                }else if (attendanceModel.getDayStatus().equals("P")){
-                    txt_leaveReason.setVisibility(View.GONE);
-                    txt_leaveType.setText("Present");
-                    txt_fromDate.setVisibility(View.VISIBLE);
-                    txt_fromDate.setText(attendanceModel.getInTime());
-                    txt_toDate.setVisibility(View.VISIBLE);
-                    txt_toDate.setText(attendanceModel.getOutTime());
-                    txt_leaveStatus.setVisibility(View.VISIBLE);
-                    txt_leaveStatus.setText(attendanceModel.getDayStatus());
-                    txt_totalDays.setVisibility(View.GONE);
-                    txt_appliedDate.setVisibility(View.GONE);
+                }else if (attendanceModel.getDayStatus().equals("A") ||
+                        attendanceModel.getDayStatus().equals("S")){
+                    if(attendanceModel.getDayStatus().equals("A")){
+                        txt_clickedDate.setBackgroundColor(Color.RED);
+                        txt_clickedDate.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        txt_clickedDate.setTextColor(Color.WHITE);
+                        txt_clickedDate.setText(convertDate_dd_MMM_yyyy(attendanceModel.getDate()));
+                        leaveType.setVisibility(View.GONE);
+                        txt_leaveType.setText("Absent");
+                        txt_leaveType.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        txt_leaveType.setTextSize(16);
+                        txt_leaveType.setTextColor(Color.RED);
+                        fromDate.setVisibility(View.GONE);
+                        txt_fromDate.setVisibility(View.GONE);
+                        toDate.setVisibility(View.GONE);
+                        txt_toDate.setVisibility(View.GONE);
+                        leaveReason.setVisibility(View.GONE);
+                        txt_leaveReason.setVisibility(View.GONE);
+                        leaveStatus.setVisibility(View.GONE);
+                        txt_leaveStatus.setVisibility(View.GONE);
+                        totalDays.setVisibility(View.GONE);
+                        txt_totalDays.setVisibility(View.GONE);
+                        appliedDate.setVisibility(View.GONE);
+                        txt_appliedDate.setVisibility(View.GONE);
+                    }else if(attendanceModel.getDayStatus().equals("S") &&
+                            attendanceModel.getInTime().equals("")){
+                        txt_clickedDate.setBackgroundColor(Color.RED);
+                        txt_clickedDate.setTextColor(Color.WHITE);
+                        txt_clickedDate.setText(convertDate_dd_MMM_yyyy(attendanceModel.getDate()));
+                        leaveType.setVisibility(View.GONE);
+                        txt_leaveType.setText("Sunday");
+                        txt_leaveType.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        txt_leaveType.setTextSize(16);
+                        txt_leaveType.setTextColor(Color.RED);
+                        fromDate.setVisibility(View.GONE);
+                        txt_fromDate.setVisibility(View.GONE);
+                        toDate.setVisibility(View.GONE);
+                        txt_toDate.setVisibility(View.GONE);
+                        leaveReason.setVisibility(View.GONE);
+                        txt_leaveReason.setVisibility(View.GONE);
+                        leaveStatus.setVisibility(View.GONE);
+                        txt_leaveStatus.setVisibility(View.GONE);
+                        totalDays.setVisibility(View.GONE);
+                        txt_totalDays.setVisibility(View.GONE);
+                        appliedDate.setVisibility(View.GONE);
+                        txt_appliedDate.setVisibility(View.GONE);
+                    }else if (attendanceModel.getDayStatus().equals("S") &&
+                            (!attendanceModel.getInTime().equals(""))){
+                        leaveType.setVisibility(View.VISIBLE);
+                        txt_leaveType.setTextSize(14);
+                        txt_leaveType.setTextColor(Color.BLACK);
+                        fromDate.setVisibility(View.VISIBLE);
+                        txt_fromDate.setVisibility(View.VISIBLE);
+                        toDate.setVisibility(View.VISIBLE);
+                        txt_toDate.setVisibility(View.VISIBLE);
+
+                        txt_clickedDate.setBackgroundColor(Color.YELLOW);
+                        txt_clickedDate.setTextColor(Color.BLACK);
+                        txt_clickedDate.setText(convertDate_dd_MMM_yyyy(attendanceModel.getDate()));
+                        leaveType.setText("Attendance");
+                        txt_leaveType.setText("Present");
+                        fromDate.setText("In Time");
+                        txt_fromDate.setText(attendanceModel.getInTime());
+                        toDate.setText("Out Time");
+                        txt_toDate.setText(attendanceModel.getOutTime());
+                        leaveReason.setVisibility(View.GONE);
+                        txt_leaveReason.setVisibility(View.GONE);
+                        leaveStatus.setText("Day");
+                        txt_leaveStatus.setText("Sunday");
+                        totalDays.setVisibility(View.GONE);
+                        txt_totalDays.setVisibility(View.GONE);
+                        appliedDate.setVisibility(View.GONE);
+                        txt_appliedDate.setVisibility(View.GONE);
+                    }
                 }
                 dialog.show();
             }

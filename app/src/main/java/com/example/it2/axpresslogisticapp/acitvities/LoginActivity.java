@@ -147,6 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         username = object.optString("Employee_Name");
                         Preferences.setPreference(LoginActivity.this, CONSTANT.USER_NAME,object.optString("Employee_Name"));
                         Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,object.optString("Employee_Email"));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPID,object.optString("Emplid"));
                         Toast.makeText(getApplicationContext(), "Welcome " + username, LENGTH_SHORT).show();
                         Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
                       //  logindataIntent.putExtra("response", response.toString());
@@ -154,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         startActivity(logindataIntent);
                     } else {
-                        Toast.makeText(getApplicationContext(), status+"wrong credential.. ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "wrong credential.. ", Toast.LENGTH_LONG).show();
                         invisibleProgressbar();
                     }
 

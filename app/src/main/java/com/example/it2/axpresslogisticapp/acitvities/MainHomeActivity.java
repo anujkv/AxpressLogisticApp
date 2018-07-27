@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,7 @@ public class MainHomeActivity extends AppCompatActivity
     JSONObject jObj;
     LocationManager locationManager;
     double lat,lon;
+    CustomerVisitFormActivity visitFormActivity;
 
     public Bundle getBundle = null;
 
@@ -92,13 +94,15 @@ public class MainHomeActivity extends AppCompatActivity
             jObj = new JSONObject(jsonString);
             employeeNAME = jObj.optString("Employee_Name");
             empEmail = jObj.optString("Employee_Email");
+            employeeID = jObj.optString("Emplid");
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         employeeNAME= Preferences.getPreference(MainHomeActivity.this, CONSTANT.USER_NAME);
         empEmail= Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMAIL);
+        employeeID = Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMPID);
 
 
         toolbar = findViewById(R.id.toolbar);

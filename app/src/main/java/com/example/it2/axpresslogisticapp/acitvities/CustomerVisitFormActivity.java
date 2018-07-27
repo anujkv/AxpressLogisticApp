@@ -28,6 +28,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static android.icu.util.Calendar.getInstance;
 
@@ -57,11 +58,13 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     CheckBox check_new, check_followUp;
     String saved = "Saved", notSaved = "Data Not Saved",dataNotFatched = "Data Not Found", method, input;
     String businessType, compVisitID;
+    Intent intent;
+    JSONObject jObj;
+    String jsonString,emplid,companyUniqueIDF = null;
 
 
     EmpProfileActivity empProfileActivity;
 //    String empid = empProfileActivity.strEmpCode;
-    String empid = "1853";
     private DatePicker datePicker;
     private Calendar calendar;
     private int year, month, day;
@@ -73,6 +76,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     showDate(arg1, arg2 + 1, arg3);
                 }
             };
+    CustomerViewListActivity customerViewListActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +94,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 
         init();
         Intent intent = getIntent();
-        String companyUniqueIDF = intent.getStringExtra("companyUniqueID");
+        companyUniqueIDF = intent.getStringExtra("ref_no");
         String methodF = intent.getStringExtra("method");
 //        Boolean followChecked = Boolean.valueOf(intent.getStringExtra("followChecked"));
         input = intent.getStringExtra("input");
@@ -291,12 +295,11 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     private void save() {
         if (check_new.isChecked() || check_followUp.isChecked()) {
             if (check_new.isChecked()) {
-                compVisitID = uniqueVisitID();
                 businessType = "customer_visit_add";
-                pushonDBNew(compVisitID,businessType);
+                pushonDBNew(businessType, companyUniqueIDF);
             } else if(check_followUp.isChecked()) {
                 businessType = "customer_visit_search";
-                pushonDBFollow(compVisitID,businessType,input);
+//                pushonDBFollow(companyUniqueIDF, businessType,input);
             }
             getdata(compVisitID,businessType);
 
@@ -304,8 +307,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             Toast.makeText(getApplicationContext(), "Kindly choose the business type new/follow",
                     Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private void hitSearchAPi() {
@@ -352,10 +353,10 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         requestQueue.add(stringRequest);
     }
 
-    private void pushonDBFollow(final String compVisitID, final String businessType, final String input) {
+    private void pushonDBFollow(final String companyUniqueIDF, final String businessType, final String input) {
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
-        final String compvisitID = compVisitID;
+        final String compvisitID = companyUniqueIDF;
         this.businessType = businessType;
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_FOLLOW,
@@ -368,6 +369,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                                 String status = object.optString("status");
                                 String apiKeyResponse = object.optString("key");
                                 Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
+                                Log.e("Response Follow :",response);
 
                                 if (status.equals("true") && apiKeyResponse.equals(apikey)) {
                                     Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
@@ -375,7 +377,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                                     savebtn_toolbar.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            pushonDBNew(compVisitID, businessType);
+                                            pushonDBNew(businessType, companyUniqueIDF);
                                         }
                                     });
                                 } else {
@@ -406,6 +408,11 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
+                Log.e("ref_no", companyUniqueIDF);
+                Log.e("method", businessType);
+                Log.e("key",apikey);
+                Log.e("input", input);
+
                 params.put("method", businessType);
                 params.put("key",apikey);
                 params.put("ref_no", compvisitID);
@@ -417,12 +424,10 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         requestQueue.add(stringRequest);
     }
 
-    private void pushonDBNew(String compVisitID, String businessType) {
+    private void pushonDBNew(final String businessType, final String companyUniqueIDF) {
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
-        final String compvisitID = compVisitID;
-
-
+        getdata(companyUniqueIDF,businessType);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_ADD_NEW,
                 new Response.Listener<String>() {
@@ -433,6 +438,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                         JSONObject object = new JSONObject(response);
                         String status = object.optString("status");
                         String apiKeyResponse = object.optString("key");
+                        Log.e("Response : ",response);
 
                         if (status.equals("true") && apiKeyResponse.equals(apikey)) {
                             Toast.makeText(getApplicationContext(), saved, Toast.LENGTH_SHORT).show();
@@ -467,44 +473,71 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("method", method);
-                params.put("key",apikey);
-                params.put("emplid",empid);
-                params.put("customer", str_customer_name);
-                params.put("visit_date",str_visitdate);
-                params.put("visit_for", str_visit_for);
-                params.put("visit_type", str_visit_type);
-                params.put("contact_person", strContactPerson);
-                params.put("contact",strContactNo);
-                params.put("email_id", strEmail);
-                params.put("address", strAddress);
-                params.put("product", str_product_name);
-                params.put("scope", str_scope);
-                params.put("status", strStatus);
-                params.put("remark", strRemark);
-                params.put("other_employee_name",str_other_employee_name);
-                return params;
+
+                if(businessType.equals("customer_visit_search") && companyUniqueIDF != null){
+                    Log.e("ref_no", companyUniqueIDF);
+                    Log.e("method", "customer_visit_update");
+                    Log.e("key",apikey);
+                    Log.e("emplid", Preferences.getPreference(CustomerVisitFormActivity.this, CONSTANT.EMPID));
+
+                    params.put("ref_no", companyUniqueIDF);
+                    params.put("method", "customer_visit_update");
+                    params.put("key",apikey);
+                    params.put("emplid", Preferences.getPreference(CustomerVisitFormActivity.this, CONSTANT.EMPID));
+                    params.put("customer", str_customer_name);
+                    params.put("visit_date",str_visitdate);
+                    params.put("visit_for", str_visit_for);
+                    params.put("visit_type", str_visit_type);
+                    params.put("contact_person", strContactPerson);
+                    params.put("contact",strContactNo);
+                    params.put("email_id", strEmail);
+                    params.put("address", strAddress);
+                    params.put("product", str_product_name);
+                    params.put("scope", str_scope);
+                    params.put("status", strStatus);
+                    params.put("remark", strRemark);
+                    params.put("other_employee_name",str_other_employee_name);
+                    return params;
+                } else{
+                    Log.e("method", businessType);
+                    Log.e("key",apikey);
+                    Log.e("emplid", Preferences.getPreference(CustomerVisitFormActivity.this, CONSTANT.EMPID));
+                    Log.e("customer", str_customer_name);
+                    Log.e("visit_date",str_visitdate);
+                    Log.e("visit_for", str_visit_for);
+                    Log.e("visit_type", str_visit_type);
+                    Log.e("contact_person", strContactPerson);
+                    Log.e("contact",strContactNo);
+                    Log.e("email_id", strEmail);
+                    Log.e("address", strAddress);
+                    Log.e("product", str_product_name);
+                    Log.e("scope", str_scope);
+                    Log.e("status", strStatus);
+                    Log.e("remark", strRemark);
+                    Log.e("other_employee_name",str_other_employee_name);
+
+                    params.put("method", method);
+                    params.put("key",apikey);
+                    params.put("emplid", Preferences.getPreference(CustomerVisitFormActivity.this, CONSTANT.EMPID));
+                    params.put("customer", str_customer_name);
+                    params.put("visit_date",str_visitdate);
+                    params.put("visit_for", str_visit_for);
+                    params.put("visit_type", str_visit_type);
+                    params.put("contact_person", strContactPerson);
+                    params.put("contact",strContactNo);
+                    params.put("email_id", strEmail);
+                    params.put("address", strAddress);
+                    params.put("product", str_product_name);
+                    params.put("scope", str_scope);
+                    params.put("status", strStatus);
+                    params.put("remark", strRemark);
+                    params.put("other_employee_name",str_other_employee_name);
+                    return params;
+                }
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
-
-    private String uniqueVisitID() {
-//        String comp = str_customer_name.substring(0,2);
-//        Log.e("substring company :",comp);
-        String SALTCHARS = "1234567890";
-        StringBuilder visitkey = new StringBuilder();
-        Random rnd = new Random();
-        while (visitkey.length() < 5) { // length of the random string.
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            visitkey.append(SALTCHARS.charAt(index));
-        }
-//        String visitStr = comp + visitkey.toString();
-        String visitStr = visitkey.toString();
-        Log.e("uniqueID===", visitStr);
-        return visitStr;
-
     }
 
     public void selectedSearchValue(final String id) {

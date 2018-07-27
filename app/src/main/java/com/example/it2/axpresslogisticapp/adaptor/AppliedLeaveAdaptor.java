@@ -27,6 +27,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     Context context;
     List<AppliedLeaveModel> appliedLeaveModelList;
     Dialog dialog;
+    AppliedLeaveAdaptor leaveAdaptor;
 
     public AppliedLeaveAdaptor(Context context, List<AppliedLeaveModel> appliedLeaveModelList) {
         this.context = context;
@@ -77,17 +78,15 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
                 TextView txt_leaveType, txt_clickedDate, txt_leaveReason, txt_fromDate, txt_toDate, txt_leaveStatus,
                         txt_totalDays, txt_appliedDate;
                 txt_leaveType = dialog.findViewById(R.id.txt_leaveType);
-                txt_clickedDate = dialog.findViewById(R.id.txt_clickedDate);
                 txt_leaveReason = dialog.findViewById(R.id.txt_leaveReason);
                 txt_fromDate = dialog.findViewById(R.id.txt_fromDate);
                 txt_toDate = dialog.findViewById(R.id.txt_toDate);
                 txt_leaveStatus = dialog.findViewById(R.id.txt_leaveStatus);
                 txt_totalDays = dialog.findViewById(R.id.txt_totalDays);
                 txt_appliedDate = dialog.findViewById(R.id.txt_appliedDate);
-                txt_clickedDate.setVisibility(View.GONE);
                 txt_leaveReason.setText(appliedLeaveModel.getReason().trim());
-                txt_fromDate.setText(appliedLeaveModel.getFrom());
-                txt_toDate.setText(appliedLeaveModel.getTo());
+                txt_fromDate.setText(dateConversion(appliedLeaveModel.getFrom()));
+                txt_toDate.setText(dateConversion(appliedLeaveModel.getTo()));
                 txt_leaveStatus.setText(appliedLeaveModel.getLeave_status());
                 if(appliedLeaveModel.getLeave_status().equals("approved")){
                     txt_leaveType.setBackgroundColor(Color.GREEN);

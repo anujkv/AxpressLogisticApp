@@ -20,7 +20,8 @@ import com.example.it2.axpresslogisticapp.model.VisitModel;
 
 import java.util.List;
 
-public class VisitAdaptor extends RecyclerView.Adapter<VisitAdaptor.VisitHolder> {
+public class
+VisitAdaptor extends RecyclerView.Adapter<VisitAdaptor.VisitHolder> {
 
     private Context context;
     private List<VisitModel> visitModelList;
@@ -45,25 +46,12 @@ public class VisitAdaptor extends RecyclerView.Adapter<VisitAdaptor.VisitHolder>
         holder.companyName.setText(visitModel.getCompanyName());
         holder.contactPersonName.setText(visitModel.getContactPersonName());
         holder.contactPersonNo.setText(visitModel.getPersonContactNo());
-//        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                Context context = v.getContext();
-//                Intent intent = new Intent(context, CustomerVisitFormActivity.class);
-//                intent.putExtra("ref_no", visitModel.getCompanyUniqueID());
-//                intent.putExtra("method", "customer_visit_update");
-////                intent.putExtra("followChecked",true);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-//                return false;
-//            }
-//        });
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, CustomerVisitFormActivity.class);
-                intent.putExtra("companyUniqueID", visitModel.getCompanyUniqueID());
+                intent.putExtra("ref_no", visitModel.getCompanyUniqueID());
                 intent.putExtra("method", "customer_visit_search");
                 intent.putExtra("input", visitModel.getCompanyName());
 //                intent.putExtra("followChecked",true);
