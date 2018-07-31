@@ -22,16 +22,16 @@ public class OperationActivity extends AppCompatActivity {
     public static String[] gridViewStrings = {
             "Docket / Invoice Enquiry",
             "Vehicle Enquiry",
-            "New Customer",
-            "QR Code Scanner",
-            "Document Scanning",
+//            "New Customer",
+//            "QR Code Scanner",
+//            "Document Scanning",
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_operation,
             R.drawable.icon_vehical,
-            R.drawable.icon_add_customer,
-            R.drawable.icon_qrcode,
-            R.drawable.icon_scanning,
+//            R.drawable.icon_add_customer,
+//            R.drawable.icon_qrcode,
+//            R.drawable.icon_scanning,
     };
     GridView gridView;
     Toolbar toolbar;

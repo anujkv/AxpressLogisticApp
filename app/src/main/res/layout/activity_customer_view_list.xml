@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/app_bar"
-        layout="@layout/mapapp_toolbar" />
+        layout="@layout/search_toolbar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/customerRecyclerView"

@@ -140,67 +140,71 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         }
         if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long
                 >= lon && lon >= nearbycompany_min_long)) {
-            ApiKey apiKey = new ApiKey();
-            final String method = "Attendance";
-            final String apikey = apiKey.saltStr();
-            Log.d("apikey : ", apikey);
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.
-                    Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject object = new JSONObject(response.toString());
-                        String status = object.optString("response");
-                        String apiKEYresponse = object.optString("key");
-
-                        if (status.equals("Marked") && apikey.equals(apiKEYresponse)) {
-                            Toast.makeText(getApplicationContext(), "Attendance Marked!",
-                                    LENGTH_SHORT).show();
-                            enable_button();
-                        } else if (status.equals("Already Marked")) {
-                            Toast.makeText(getApplicationContext(), "Attendance Already Marked!",
-                                    LENGTH_SHORT).show();
-                            enable_button();
-                        } else if (status.equals("failed")) {
-                            Toast.makeText(getApplicationContext(), "Something went wrong, " +
-                                    "Kindly contact HR Dept.", Toast.LENGTH_LONG).show();
-                            enable_button();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        enable_button();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.
-                            LENGTH_LONG).show();
-                    enable_button();
-
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("employee_id", jObj.optString("Emplid"));
-                    params.put("date_time", formattedDate);
-                    params.put("method", method);
-                    params.put("key", apikey.trim());
-                    return params;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
-
+            pushAttendance();
         }
         else {
             String lat_long = "Latitude = " + lat + " Longitude = " + lon;
             Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_SHORT).show();
             enable_button();
         }
+    }
+
+    private void pushAttendance() {
+        ApiKey apiKey = new ApiKey();
+        final String method = "Attendance";
+        final String apikey = apiKey.saltStr();
+        Log.d("apikey : ", apikey);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.
+                Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response.toString());
+                    String status = object.optString("response");
+                    String apiKEYresponse = object.optString("key");
+
+                    if (status.equals("Marked") && apikey.equals(apiKEYresponse)) {
+                        Toast.makeText(getApplicationContext(), "Attendance Marked!",
+                                LENGTH_SHORT).show();
+                        enable_button();
+                    } else if (status.equals("Already Marked")) {
+                        Toast.makeText(getApplicationContext(), "Attendance Already Marked!",
+                                LENGTH_SHORT).show();
+                        enable_button();
+                    } else if (status.equals("failed")) {
+                        Toast.makeText(getApplicationContext(), "Something went wrong, " +
+                                "Kindly contact HR Dept.", Toast.LENGTH_LONG).show();
+                        enable_button();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    enable_button();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.
+                        LENGTH_LONG).show();
+                enable_button();
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("employee_id", jObj.optString("Emplid"));
+                params.put("date_time", formattedDate);
+                params.put("method", method);
+                params.put("key", apikey.trim());
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
     }
 
     private void init() {

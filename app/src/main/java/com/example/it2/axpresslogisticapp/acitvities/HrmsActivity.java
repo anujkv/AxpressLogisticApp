@@ -28,16 +28,16 @@ public class HrmsActivity extends AppCompatActivity {
 //            "Leave Information",
             "Apply Leave",
             "Attendence Summary",
-            "Pay Slip",
-            "Document Scanning",
+//            "Pay Slip",
+//            "Document Scanning",
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_mark_attendance,
             R.drawable.icon_mark,
 //            R.drawable.icon_crm,
             R.drawable.icon_activities,
-            R.drawable.icon_financial,
-            R.drawable.icon_scanning,
+//            R.drawable.icon_financial,
+//            R.drawable.icon_scanning,
     };
     CollapsingToolbarLayout collapsingToolbarLayout;
     CoordinatorLayout coordinatorLayout;
@@ -114,7 +114,6 @@ public class HrmsActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Document Scanning " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                 }
-
             }
         });
     }

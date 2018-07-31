@@ -76,8 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
         getLocationPermissionCheck();
-        if (Preferences.getPreference(LoginActivity.this,"APIKEY")!=""){
-
+        if (!Preferences.getPreference(LoginActivity.this, "APIKEY").equals("")){
             //username = object.optString("Employee_Name");
             Toast.makeText(getApplicationContext(), "Welcome " + Preferences.getPreference(LoginActivity.this,CONSTANT.USER_NAME), LENGTH_SHORT).show();
             Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);

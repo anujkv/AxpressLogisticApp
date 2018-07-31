@@ -106,10 +106,6 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
         });
     }
 
-    private void init() {
-
-    }
-
     private String dateConversion(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd");
