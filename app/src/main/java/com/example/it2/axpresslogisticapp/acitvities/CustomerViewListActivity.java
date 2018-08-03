@@ -75,36 +75,30 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         recyclerViewVisit.setHasFixedSize(true);
         recyclerViewVisit.setLayoutManager(new LinearLayoutManager(this));
         visitModelList = new ArrayList<>();
-        showVisitFormList();
 
         search_recyclerView = findViewById(R.id.customerRecyclerView);
         search_recyclerView.setHasFixedSize(true);
         search_recyclerView.setLayoutManager(new LinearLayoutManager(this));
         inputListModelList = new ArrayList<>();
+
+        showVisitFormList();
     }
 
-    private void refresh() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        final String method = "leave_info";
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+    private void  refresh() {
         try {
-            if(visitModelList.size()>0){
+            if(visitModelList.size()>0 && inputListModelList.size()>0){
                 visitModelList.clear();
-                showVisitFormList();
-            } else {
-                showVisitFormList();
+                inputListModelList.clear();
+            } else if(visitModelList.size()>0 || inputListModelList.size()>0) {
+                if(visitModelList.size()>0){
+                    visitModelList.clear();
+                }else {
+                    inputListModelList.clear();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        progressDialog.dismiss();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        refresh();
     }
 
     private void showVisitFormList() {
@@ -114,6 +108,9 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         final String apikey = apiKey.saltStr();
         progressDialog.setMessage("Loading...");
         progressDialog.show();
+        if(!visitModelList.isEmpty()){
+            visitModelList.clear();
+        }
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -204,29 +201,31 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
         final String method = "search";
-
+//        refresh();
+        visitModelList.clear();
+        inputListModelList.clear();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SEARCH,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("Response", response);
+                        Log.e("Response>>>>", response);
                         try {
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("search");
                             String status = object.optString("status");
                             String apikeyResponse = object.optString("key");
                             if (status.equals("true")) {
-
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject jsonObject = array.getJSONObject(i);
                                     SearchInputListModel inputListModel = new SearchInputListModel(
                                             jsonObject.getString("ref_no"),
-                                            jsonObject.getString("company_name"));
+                                            jsonObject.getString("company_name"),
+                                            jsonObject.getString("contact_person"),
+                                            jsonObject.getString("mobile_no"));
                                     inputListModelList.add(inputListModel);
                                 }
-                                Log.e("inputListModelList", inputListModelList.toString());
-                                checksetList();
+                                visitModelList.clear();
                                 setAdapter = new SearchInputListAdaptor(getApplicationContext(), inputListModelList);
                                 search_recyclerView.setAdapter(setAdapter);
                             }
@@ -258,22 +257,11 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
         requestQueue.add(stringRequest);
     }
 
-    private void checksetList() {
-        tempVisitModelList = visitModelList;
-//        inputListModelList;
-        visitModelList.clear();
-        for (int i =0; i<visitModelList.size();i++){
-            Log.e("visitModelList", String.valueOf(visitModelList));
-        }
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         searchedt_toolbar.setText("");
         title_toolbar.setVisibility(View.VISIBLE);
         searchedt_toolbar.setVisibility(View.GONE);
-
     }
 }

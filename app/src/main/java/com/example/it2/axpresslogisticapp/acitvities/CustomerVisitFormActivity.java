@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -37,7 +38,9 @@ import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 import com.example.it2.axpresslogisticapp.adaptor.SearchInputListAdaptor;
+import com.example.it2.axpresslogisticapp.adaptor.VisitHistoryAdaptor;
 import com.example.it2.axpresslogisticapp.model.SearchInputListModel;
+import com.example.it2.axpresslogisticapp.model.VisitHistoryModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,22 +58,29 @@ import static android.icu.util.Calendar.getInstance;
 public class CustomerVisitFormActivity extends AppCompatActivity implements View.OnClickListener {
     String URL_ADD_NEW = "http://webapi.axpresslogistics.com/api/Operations/customer_visit";
     String URL_FOLLOW = "http://webapi.axpresslogistics.com/api/Operations/customer_search";
+    String VISIT_HISTORY_URL = "";
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_customer_name, edt_visitdate, edtContactPerson, edtContactNo, edtEmail, edtAddress,
             edt_product_name, edtRemark, edt_other_employee_name;
     String str_search, str_customer_name, str_visitdate, strContactPerson, strContactNo, strEmail, strAddress,
             str_product_name, strStatus, strRemark, str_other_employee_name, str_visit_for,
             str_visit_type, str_scope;
-    TextView add_new_card, add_exist_card;
+    TextView add_new_card, add_exist_card,txt_show_history;
     LinearLayout show_front_cardLayout, show_back_cardLayout, search_panalLayout;
     Spinner spinner_visit_for, spinner_visit_type, spinner_scope, spinner_status;
     String saved = "Saved", notSaved = "Data Not Saved", dataNotFatched = "Data Not Found", method, input;
     String businessType, compVisitID;
     Intent intent;
     JSONObject jObj;
+    Boolean FLAG = false;
+    LinearLayout linearLayout;
     String jsonString, emplid, companyUniqueIDF = null;
     RecyclerView search_recyclerView;
+    int MAX_LENGTH =10;
 
+    VisitHistoryAdaptor historyAdaptor;
+    RecyclerView visitHistoryrecyclerview;
+    List<VisitHistoryModel> visitHistoryModels;
 
     EmpProfileActivity empProfileActivity;
     CustomerViewListActivity customerViewListActivity;
@@ -115,10 +125,68 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 //        }
         if (companyUniqueIDF != null && methodF.equals("customer_visit_search")) {
             pushonDBFollow(companyUniqueIDF, methodF, input);
+            loadHistory(companyUniqueIDF);
+
+        }else{
+            txt_show_history.setVisibility(View.GONE);
         }
     }
 
+    private void loadHistory(String companyUniqueIDF) {
+        final String method = "show_visit_details";
+        ApiKey apiKey = new ApiKey();
+        final String key = apiKey.saltStr();
+        final String ref_no = companyUniqueIDF;
+
+
+        StringRequest  stringRequest = new StringRequest(Request.Method.POST, VISIT_HISTORY_URL,
+                new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String statusResponse = object.optString("status");
+                    String methodResponse = object.optString("method");
+                    String keyResponse = object.optString("key");
+
+                    if(statusResponse.equals("true") && methodResponse.equals(method)){
+                        JSONArray array = object.getJSONArray("history");
+                        for (int i = 0; i<array.length();i++){
+                            JSONObject jsonObject = array.getJSONObject(i);
+                            VisitHistoryModel visitHistoryModel = new VisitHistoryModel(
+                                    jsonObject.getString("customer"),
+                                    jsonObject.getString("visit_date"),
+                                    jsonObject.getString("visit_for"),
+                                    jsonObject.getString("visit_type"),
+                                    jsonObject.getString("ref_no"));
+                            visitHistoryModels.add(visitHistoryModel);
+                        }
+                        historyAdaptor = new VisitHistoryAdaptor(getApplicationContext(),visitHistoryModels);
+                        visitHistoryrecyclerview.setAdapter(historyAdaptor);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("method",method);
+                params.put("key",key);
+                params.put("ref_no",ref_no);
+                return super.getParams();
+            }
+        };
+    }
+
     private void init() {
+        linearLayout = findViewById(R.id.customerVisitLayout);
         search_panalLayout = findViewById(R.id.layout_search);
         edt_customer_name = findViewById(R.id.edt_customer_name);
         edt_visitdate = findViewById(R.id.edtVisitDate);
@@ -126,11 +194,14 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 
         edtContactPerson = findViewById(R.id.edtContactPerson);
         edtContactNo = findViewById(R.id.edtContactNo);
+        edtContactNo.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_LENGTH)});
         edtEmail = findViewById(R.id.edtEmail);
         edtAddress = findViewById(R.id.edtAddress);
         edt_product_name = findViewById(R.id.edt_product_name);
         edtRemark = findViewById(R.id.edtRemark);
         edt_other_employee_name = findViewById(R.id.edt_other_employee_name);
+        txt_show_history = findViewById(R.id.txt_show_history);
+        txt_show_history.setOnClickListener(this);
 
         add_new_card = findViewById(R.id.add_new_card);
         add_exist_card = findViewById(R.id.add_exist_card);
@@ -232,6 +303,18 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             case R.id.add_exist_card:
                 show_front_cardLayout.setVisibility(View.VISIBLE);
                 show_back_cardLayout.setVisibility(View.VISIBLE);
+                break;
+            case R.id.txt_show_history:
+                if (FLAG.equals(false)) {
+                    visitHistoryrecyclerview.setVisibility(View.VISIBLE);
+                    txt_show_history.setText("Show History");
+                    FLAG = true;
+                } else if (FLAG.equals(true)) {
+                    visitHistoryrecyclerview.setVisibility(View.GONE);
+                    txt_show_history.setText("Hide History");
+                    linearLayout.invalidate();
+                    FLAG = false;
+                }
                 break;
         }
     }

@@ -25,6 +25,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 import com.example.it2.axpresslogisticapp.adaptor.AttendanceAdaptor;
 import com.example.it2.axpresslogisticapp.model.AttendanceModel;
 
@@ -252,7 +254,7 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
                 params.put("key", apikey);
                 params.put("method", method);
                 params.put("month", str_month);
-                params.put("emplid", "1853");
+                params.put("emplid", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
                 return params;
             }
         };

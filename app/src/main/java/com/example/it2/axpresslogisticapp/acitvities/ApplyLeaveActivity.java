@@ -128,7 +128,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
 //            }
         });
 
-
         try {
             intent = getIntent();
             jsonString = intent.getStringExtra("response");
@@ -187,6 +186,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(final DialogInterface dialog, int which) {
                 applied();
+                refreshAppliedList();
             }
 
 

@@ -33,6 +33,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
@@ -64,6 +66,8 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
     Intent intent;
     Boolean FLAG = true;
     ProgressBar progressBar;
+    String LocationId = "Emplid";
+    String locationPref = "1962";
 
     //Longitude and latitude Information...
     double company_lat = 28.4995993;
@@ -124,7 +128,6 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
                 }
             });
         }
-
     }
 
     private void markAttendance() {
@@ -141,10 +144,13 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long
                 >= lon && lon >= nearbycompany_min_long)) {
             pushAttendance();
+        }else if(jObj.optString(LocationId).equals(locationPref)){
+            pushAttendance();
         }
         else {
             String lat_long = "Latitude = " + lat + " Longitude = " + lon;
-            Toast.makeText(getApplicationContext(), lat_long, Toast.LENGTH_SHORT).show();
+            String NOT_IN_LOCATION = "You are not in Office Location";
+            Toast.makeText(getApplicationContext(), NOT_IN_LOCATION, Toast.LENGTH_SHORT).show();
             enable_button();
         }
     }
@@ -189,14 +195,14 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
                 Toast.makeText(getApplicationContext(), "Something went wrong", Toast.
                         LENGTH_LONG).show();
                 enable_button();
-
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("employee_id", jObj.optString("Emplid"));
+                params.put("employee_id", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
                 params.put("date_time", formattedDate);
+                Log.e("date_time",formattedDate);
                 params.put("method", method);
                 params.put("key", apikey.trim());
                 return params;

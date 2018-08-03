@@ -138,15 +138,15 @@ public class MainHomeActivity extends AppCompatActivity
                         startActivity(intent_crm);
                         break;
                     case 3:
-                        Toast.makeText(getApplicationContext(), "No Activity " +
+                        Toast.makeText(getApplicationContext(), "Activities " +
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                     case 4:
-                        Toast.makeText(getApplicationContext(), "No Activity " +
+                        Toast.makeText(getApplicationContext(), "Financial " +
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                     case 5:
-                        Toast.makeText(getApplicationContext(), "No Activity " +
+                        Toast.makeText(getApplicationContext(), "My Tickets " +
                                 String.valueOf(position), Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -226,13 +226,19 @@ public class MainHomeActivity extends AppCompatActivity
             startActivity(profiledataIntent);
 //            startActivity(new Intent(getApplicationContext(),EmpProfileActivity.class));
         } else if (id == R.id.nav_operations) {
-//            startActivity(new Intent(getApplicationContext(),OperationActivity.class));
+            Intent intent_opt = new Intent(MainHomeActivity.this,
+                    OperationActivity.class);
+            startActivity(intent_opt);
 
         } else if (id == R.id.nav_hrms) {
-//            startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
+           Intent intent_hrms = new Intent(MainHomeActivity.this,HrmsActivity.class);
+                        intent_hrms.putExtra("response", jObj.toString());
+                        startActivity(intent_hrms);
 
         } else if (id == R.id.nav_crm) {
-
+            Intent intent_crm = new Intent(MainHomeActivity.this,CRMActivity.class);
+            intent_crm.putExtra("response", jObj.toString());
+            startActivity(intent_crm);
         } else if (id == R.id.nav_activities) {
 //            startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
 
@@ -242,8 +248,6 @@ public class MainHomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_Logout) {
             logout();
-
-
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
