@@ -103,7 +103,7 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
 
     private void showVisitFormList() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
-        ApiKey apiKey = new ApiKey();
+        final ApiKey apiKey = new ApiKey();
         final String method = "saved_visit_form";
         final String apikey = apiKey.saltStr();
         progressDialog.setMessage("Loading...");
@@ -119,7 +119,6 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                 try {
                     JSONObject object = new JSONObject(response);
                     JSONArray jsonArray = object.getJSONArray("saved_list");
-
                     String status = object.optString("status");
                     String apiKeyResponse = object.optString("key");
                     Log.e("response : ",response);
@@ -177,6 +176,7 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                 title_toolbar.setVisibility(View.GONE);
                 searchedt_toolbar.setVisibility(View.VISIBLE);
                 searchedt_toolbar.setTextColor(Color.WHITE);
+                searchedt_toolbar.setFocusable(true);
                 searchedt_toolbar.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -190,6 +190,8 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                     @Override
                     public void afterTextChanged(Editable s) {
                         Log.e("ATCs : ", s.toString());
+                        inputListModelList.clear();
+                        visitModelList.clear();
                         hitSearchAPi(s.toString());
                     }
                 });

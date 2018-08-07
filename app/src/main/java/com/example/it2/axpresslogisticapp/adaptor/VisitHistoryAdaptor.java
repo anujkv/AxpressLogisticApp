@@ -37,8 +37,8 @@ public class VisitHistoryAdaptor extends RecyclerView.Adapter<VisitHistoryAdapto
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryHolder holder, int position) {
-        VisitHistoryModel visitHistoryModel = visitHistoryModels.get(position);
+    public void onBindViewHolder(@NonNull final HistoryHolder holder, int position) {
+        final VisitHistoryModel visitHistoryModel = visitHistoryModels.get(position);
         holder.customer.setText(visitHistoryModel.getCustomer());
         holder.visit_date.setText(visitHistoryModel.getVisit_date());
         holder.visit_for.setText(visitHistoryModel.getVisit_for());
@@ -53,13 +53,19 @@ public class VisitHistoryAdaptor extends RecyclerView.Adapter<VisitHistoryAdapto
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             EditText edt_coustomer_company,edt_visit_date,edt_visit_for,edt_visit_type,edt_contact_person,
             edt_contact_no,edt_email_id,edt_address,edt_product,edt_status,edt_scope,edt_remark,
-            edt_other_employee_name,ref_no;
+            edt_other_employee_name;
+            TextView ref_no;
             @Override
             public void onClick(View v) {
+                Toast.makeText(context,"Pressed ",Toast.LENGTH_SHORT).show();
                 edt_coustomer_company = dialog.findViewById(R.id.edt_customer_name);
+                edt_coustomer_company.setText(visitHistoryModel.getCustomer());
                 edt_visit_date = dialog.findViewById(R.id.edtVisitDate);
+                edt_visit_date.setText(visitHistoryModel.getVisit_date());
                 edt_visit_for = dialog.findViewById(R.id.edt_visit_for);
+                edt_visit_for.setText(visitHistoryModel.getVisit_for());
                 edt_visit_type = dialog.findViewById(R.id.edt_visit_type);
+                edt_visit_type.setText(visitHistoryModel.getVisit_type());
                 edt_contact_person = dialog.findViewById(R.id.edtContactPerson);
                 edt_contact_no = dialog.findViewById(R.id.edtContactNo);
                 edt_email_id = dialog.findViewById(R.id.edtEmail);

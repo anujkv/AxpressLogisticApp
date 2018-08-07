@@ -134,7 +134,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         disable_button();
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000,
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10,
                     5, (LocationListener) this);
 //            Toast.makeText(getApplicationContext(),"Location : "+latLong,Toast.LENGTH_LONG).show();
 
@@ -157,7 +157,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
 
     private void pushAttendance() {
         ApiKey apiKey = new ApiKey();
-        final String method = "Attendance";
+        final String method = "attendance";
         final String apikey = apiKey.saltStr();
         Log.d("apikey : ", apikey);
 

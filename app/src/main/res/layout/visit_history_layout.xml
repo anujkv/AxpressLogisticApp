@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="24dp"
+    android:layout_marginBottom="1dp"
     android:id="@+id/visit_history_layout">
 
     <LinearLayout
@@ -44,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".7"
                     android:maxLines="1"
+                    android:editable="false"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -69,6 +71,7 @@
                     android:maxLength="10"
                     android:inputType="date"
                     android:focusable="false"
+                    android:editable="false"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -94,6 +97,7 @@
                     android:layout_weight=".7"
                     android:autoSizeMaxTextSize="8dp"
                     android:maxLines="1"
+                    android:editable="false"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="14sp" />
 
@@ -120,6 +124,7 @@
                     android:layout_weight=".7"
                     android:autoSizeMaxTextSize="8dp"
                     android:maxLines="1"
+                    android:editable="false"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="14sp" />
             </LinearLayout>
