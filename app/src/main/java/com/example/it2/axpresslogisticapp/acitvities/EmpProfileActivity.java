@@ -2,6 +2,8 @@ package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -18,11 +20,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,8 +43,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
+
 public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener {
-    String update_url = "Type url update here";
+    String UPDATE_URL = URL + "HRMS/hr_approval";
+    String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
     Boolean FLAG = false;
     EditText edtName, edtEmpCode, edtContactNo, edtContactAltNo, edtDesignation, edtDept, edtBranch,
             edtBranchCode,
@@ -61,7 +75,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText("Profile");
+        lable.setText(CONSTANT.PROFILE);
         backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,24 +85,80 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         });
         //Set View with fields..
         setView();
+        strEmpCode = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID);
+        employee_profileApi();
 
-        try {
-            intent = getIntent();
-            jsonString = intent.getStringExtra("response");
-            jObj = new JSONObject(jsonString);
-            //get employee info from API's...
-            getValuesFromAPI();
-            //set employee info in field...
-            setValuesInFields();
+    }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    private void employee_profileApi() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        final String method = CONSTANT.EMPLOYEE_METHOD;
+        final ApiKey apiKey = new ApiKey();
+        final String apikey = apiKey.saltStr();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EMPLOYEE_PROFILE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        progressDialog.dismiss();
+                        Log.e("Response : ", response);
+
+                        try {
+                            jObj = new JSONObject(response);
+                            String status = jObj.optString(CONSTANT.STATUS);
+                            String employee_id = jObj.optString(CONSTANT.EMPID);
+
+                            if(status.equals(CONSTANT.TRUE) && employee_id.equals(strEmpCode)){
+                                getValuesFromAPI();
+                                setValuesInFields();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
+                }
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(CONSTANT.METHOD,method);
+                params.put(CONSTANT.KEY, apikey.trim());
+                params.put(CONSTANT.EMPID, Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     private void setValuesInFields() {
-        txtName.setText(strName.trim());
-        txtEmpId.setText(strEmpCode.trim().toString());
+        txtName.setText((strName.trim()));
+        txtEmpId.setText(strEmpCode.trim());
         //put employee info value..
         edtName.setText(strName.trim());
         edtEmpCode.setText(strEmpCode.trim());
@@ -117,7 +187,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
 
     private void getValuesFromAPI() {
         strName = jObj.optString("Employee_Name");
-        strEmpCode = jObj.optString("Emplid");
         strContactNo = jObj.optString("Employee_Contact");
 //        strContactAltNo = jObj.optString("Employee_Contact1");
 
@@ -195,14 +264,14 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 if (FLAG.equals(false)) {
                     String title = "Address";
                     method = "address";
-                    showChangeProfileDialog(title, strAddress, method);
+//                    showChangeProfileDialog(title, strAddress, method);
                 }
                 break;
             case R.id.edtImageButtonBankAccount:
                 if (FLAG.equals(false)) {
                     title = "Bank Account";
                     method = "bank_account";
-                    showChangeProfileDialog(title, strBankAccount, method);
+//                    showChangeProfileDialog(title, strBankAccount, method);
                 } else {
                     Toast.makeText(getApplicationContext(), "disable", Toast.LENGTH_SHORT).show();
                     edtBankAccount.setFocusable(false);
@@ -215,12 +284,12 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             case R.id.edtImageButtonbankName:
                 String title = "Bank Name";
                 method = "bank_name";
-                showChangeProfileDialog(title, strBankName, method);
+//                showChangeProfileDialog(title, strBankName, method);
                 break;
             case R.id.edtImageButtonBankIFSC:
                 title = "Bank IFSC Code";
                 method = "bank_ifsc";
-                showChangeProfileDialog(title, strBankIFSC, method);
+//                showChangeProfileDialog(title, strBankIFSC, method);
                 break;
         }
     }
@@ -234,7 +303,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         final EditText edt = (dialogView.findViewById(R.id.edtUpdateDialog));
         edt.setText(field_detail);
         dialogBuilder.setTitle(title);
-        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(CONSTANT.DONE, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 str = edt.getText().toString().trim();
                 //do something with edt.getText().toString();
@@ -251,7 +320,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(CONSTANT.CANCEL, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 edt.setText(field_detail);
             }
@@ -267,16 +336,16 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         final String apikey = apiKey.saltStr();
         final String arrlist[] = {"address", "bank_name", "bank_account", "bank_ifsc"};
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, update_url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPDATE_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject object = new JSONObject(response);
-                        String status = object.optString("response");
-                    String apiKeyResponse = object.optString("key");
-                    String method = object.optString("method");
+                        String status = object.optString(CONSTANT.RESPNOSE);
+                    String apiKeyResponse = object.optString(CONSTANT.KEY);
+                    String method = object.optString(CONSTANT.METHOD);
 
-                    if (status.equals("verified") && apiKeyResponse.equals(apikey)) {
+                    if (status.equals(CONSTANT.VERIFIED) && apiKeyResponse.equals(apikey)) {
 //                        for (int i = 0; i < arrlist.length; i++) {
                             if (method.equals("address")) {
                                 txt_address_update_status.setText("Verified");
@@ -288,8 +357,8 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                                 txt_bank_account_update_status.setText("Verified");
                             }
 //                        }
-                    } else if(status.equals("not_verified") && apiKeyResponse.equals(apikey)){
-                        txt_address_update_status.setText("Not verified,contact to HR");
+                    } else if(status.equals(CONSTANT.NOT_VERIFIED) && apiKeyResponse.equals(apikey)){
+                        txt_address_update_status.setText(CONSTANT.PENDING);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -299,10 +368,21 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("response======", "" + error.toString());
-                if (error.toString().equals("com.android.volley.ServerError")) {
-                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }) {
@@ -315,5 +395,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 return params;
             }
         };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 }

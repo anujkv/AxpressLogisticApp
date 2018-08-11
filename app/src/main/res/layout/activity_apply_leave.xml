@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".acitvities.ApplyLeaveActivity"
-    android:background="@color/secondaryTextColor">
+    android:background="@color/white">
 
     <include
         android:id="@+id/app_bar"
@@ -25,6 +25,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/gray"
         android:id="@+id/leaveAppliedRecyclerView">
 
     </android.support.v7.widget.RecyclerView>

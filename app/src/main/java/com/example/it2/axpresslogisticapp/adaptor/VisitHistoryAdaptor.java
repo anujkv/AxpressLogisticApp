@@ -76,7 +76,7 @@ public class VisitHistoryAdaptor extends RecyclerView.Adapter<VisitHistoryAdapto
                 edt_remark = dialog.findViewById(R.id.edtRemark);
                 edt_other_employee_name = dialog.findViewById(R.id.edt_other_employee_name);
                 ref_no = dialog.findViewById(R.id.ref_no_id);
-                dialog.show();
+//                dialog.show();
             }
         });
     }

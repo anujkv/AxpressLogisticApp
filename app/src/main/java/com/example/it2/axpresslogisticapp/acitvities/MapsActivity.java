@@ -17,13 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +46,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,View.OnClickListener {
-    private String url = "http://webapi.axpresslogistics.com/api/Operations/map";
+    private String url = CONSTANT.URL + "Operations/map";
+//    private String url = "http://192.168.1.7/webapi.axpresslogistics.com/api/Operations/map";
+
     private GoogleMap mMap;
     ImageButton backbtn_toolbar,mapbtn_toolbar;
     Intent intent;
@@ -115,11 +123,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("response",""+error.toString());
-                if(error.toString().equals("com.android.volley.ServerError")){
-                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500",
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
                             Toast.LENGTH_LONG).show();
-                } else{
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }){

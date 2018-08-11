@@ -16,9 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
@@ -33,8 +38,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
+
 public class DocketEnquiry extends AppCompatActivity {
-    private String url = "http://webapi.axpresslogistics.com/api/Operations/Docket_Invoice";
+    private String url = URL + "Operations/Docket_Invoice";
     Boolean FLAG = false;
     RadioGroup radio_group_id;
     RadioButton radio_btn_id;
@@ -53,7 +60,7 @@ public class DocketEnquiry extends AppCompatActivity {
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
         progressBar = findViewById(R.id.progressBar);
-        lable.setText("Docket/Invoice Enquiry");
+        lable.setText(CONSTANT.DOCKET_INVOICE);
         ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +79,7 @@ public class DocketEnquiry extends AppCompatActivity {
                 if (radio_btn_id != null) {
                     method = radio_btn_id.toString();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Choose the search type.",
+                    Toast.makeText(getApplicationContext(), CONSTANT.CHOOSE_THE_SEARCH_TYPE,
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -84,11 +91,11 @@ public class DocketEnquiry extends AppCompatActivity {
                 strInput_editSearch_text = input_editSearch_text_id.getText().toString().trim();
 
                 if (radio_btn_id==null) {
-                    Toast.makeText(getApplicationContext(), "Choose the search type.",
+                    Toast.makeText(getApplicationContext(), CONSTANT.CHOOSE_THE_SEARCH_TYPE,
                             Toast.LENGTH_SHORT).show();
 
-                } else if (strInput_editSearch_text.isEmpty() || strInput_editSearch_text == null) {
-                    Toast.makeText(getApplicationContext(), "Enter the Docket/Invoice No.",
+                } else if (strInput_editSearch_text.isEmpty() || strInput_editSearch_text.equals("")) {
+                    Toast.makeText(getApplicationContext(), CONSTANT.ENTER_THE_DOCKET_INVOICE_NO,
                             Toast.LENGTH_SHORT).show();
                 } else {
                     dataJsonFunction();
@@ -102,7 +109,7 @@ public class DocketEnquiry extends AppCompatActivity {
         submit_docket_btn.setClickable(false);
 //        final String method;
         ApiKey apiKey = new ApiKey();
-        final String method = "docket";
+        final String method = CONSTANT.DOCKET;
         final String apikey = apiKey.saltStr();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.
@@ -112,21 +119,21 @@ public class DocketEnquiry extends AppCompatActivity {
 
                 try {
                     JSONObject object = new JSONObject(response.toString());
-                    String status = object.optString("status");
-                    String apkKeyResponse = object.optString("key");
+                    String status = object.optString(CONSTANT.STATUS);
+                    String apkKeyResponse = object.optString(CONSTANT.KEY);
 
-                    if (status.equals("true")) {
+                    if (status.equals(CONSTANT.TRUE)) {
                         Intent intent = new Intent(getApplicationContext(), DocketTracking.class);
-                        intent.putExtra("response", response.toString());
+                        intent.putExtra(CONSTANT.RESPNOSE, response);
                         startActivity(intent);
-                    } else if (status.equals("false")){
-                        Toast.makeText(getApplicationContext(),method + " not found!",
+                    } else if (status.equals(CONSTANT.FALSE)){
+                        Toast.makeText(getApplicationContext(),method + CONSTANT.NOT_FOUND,
                                 Toast.LENGTH_SHORT).show();
                         submit_docket_btn.setClickable(true);
                         progressBar.setVisibility(View.INVISIBLE);
                     }
                     else{
-                        Toast.makeText(getApplicationContext(),"something went wrong!",
+                        Toast.makeText(getApplicationContext(),CONSTANT.SOMETHING_WENT_WRONG,
                                 Toast.LENGTH_SHORT).show();
                         submit_docket_btn.setClickable(true);
                         progressBar.setVisibility(View.INVISIBLE);
@@ -139,28 +146,32 @@ public class DocketEnquiry extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("response",""+error.toString());
-                if(error.toString().equals("com.android.volley.ServerError")){
-                    Toast.makeText(getApplicationContext(), CONSTANT.RESPONSEERROR,
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
                             Toast.LENGTH_LONG).show();
-                    submit_docket_btn.setClickable(true);
-                    progressBar.setVisibility(View.INVISIBLE);
-                } else if (error.toString().equals("com.android.volley.NoConnectionError")){
-                    Toast.makeText(getApplicationContext(), CONSTANT.INTERNETERROR, Toast.LENGTH_LONG).show();
-                    submit_docket_btn.setClickable(true);
-                    progressBar.setVisibility(View.INVISIBLE);
-                } else {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    submit_docket_btn.setClickable(true);
-                    progressBar.setVisibility(View.INVISIBLE);
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
                 }
+                submit_docket_btn.setClickable(true);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("docket_no", strInput_editSearch_text);
-                params.put("method", method);
-                params.put("key", apikey);
+                params.put(CONSTANT.DOCKET_NO, strInput_editSearch_text);
+                params.put(CONSTANT.METHOD, method);
+                params.put(CONSTANT.KEY, apikey);
                 return params;
             }
         };

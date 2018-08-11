@@ -26,9 +26,14 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -51,9 +56,10 @@ import java.util.Map;
 import java.util.Random;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class MarkAttendanceActivity extends AppCompatActivity implements LocationListener {
-    private String url = "http://webapi.axpresslogistics.com/api/HRMS/Attendance";
+    private String url = URL + "HRMS/Attendance";
     static final int REQUEST_LOCATION = 1;
     public static TextView txtUsername, txtUserId, txtDateTime, txtDept, txtBranch, txtDesignation;
     String strUsername, strUserId, strDateTime, strDept, strBranch, strDesignation, formattedDate;
@@ -61,12 +67,9 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
     Button attendance_btn;
     Location location;
     LocationManager locationManager;
-    String jsonString;
-    JSONObject jObj;
     Intent intent;
     Boolean FLAG = true;
     ProgressBar progressBar;
-    String LocationId = "Emplid";
     String locationPref = "1962";
 
     //Longitude and latitude Information...
@@ -87,7 +90,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText("Mark Attendance");
+        lable.setText(CONSTANT.MARK_ATTENDANCE);
         ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,25 +102,14 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000,
                     5, (LocationListener) this);
-//            Toast.makeText(getApplicationContext(),"Location : "+latLong,Toast.LENGTH_LONG).show();
 
         } catch (SecurityException e) {
             e.printStackTrace();
         }
 
         init();
-        try {
-            intent = getIntent();
-            jsonString = intent.getStringExtra("response");
-            jObj = new JSONObject(jsonString);
-            getValuesFromAPI();
-            setValuesInFields();
-            date_time();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        getValuesFromPref();
+        setValuesInFields();
         getLocationPermissionCheck();
         if (FLAG.equals(true)) {
             attendance_btn.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +128,6 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10,
                     5, (LocationListener) this);
-//            Toast.makeText(getApplicationContext(),"Location : "+latLong,Toast.LENGTH_LONG).show();
 
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -144,7 +135,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long
                 >= lon && lon >= nearbycompany_min_long)) {
             pushAttendance();
-        }else if(jObj.optString(LocationId).equals(locationPref)){
+        }else if(strUserId.equals(locationPref)){
             pushAttendance();
         }
         else {
@@ -160,6 +151,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         final String method = "attendance";
         final String apikey = apiKey.saltStr();
         Log.d("apikey : ", apikey);
+        date_time();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.
                 Listener<String>() {
@@ -191,9 +183,22 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.
-                        LENGTH_LONG).show();
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
+                }
                 enable_button();
             }
         }) {
@@ -202,7 +207,6 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
                 Map<String, String> params = new HashMap<>();
                 params.put("employee_id", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
                 params.put("date_time", formattedDate);
-                Log.e("date_time",formattedDate);
                 params.put("method", method);
                 params.put("key", apikey.trim());
                 return params;
@@ -225,21 +229,21 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
 
     }
 
-    private void getValuesFromAPI() {
-        strUsername = jObj.optString("Employee_Name");
-        strUserId = jObj.optString("Emplid");
-        strDesignation = jObj.optString("Employee_Designation");
-        strDept = jObj.optString("Employee_Department");
-        strBranch = jObj.optString("Employee_Branch");
+    private void getValuesFromPref() {
+        strUsername = Preferences.getPreference(getApplicationContext(),CONSTANT.USER_NAME);
+        strUserId = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID);
+        strDesignation = Preferences.getPreference(getApplicationContext(),CONSTANT.BRANCH.trim());
+        strDept = Preferences.getPreference(getApplicationContext(),CONSTANT.DESIGNATION.trim());
+        strBranch = Preferences.getPreference(getApplicationContext(),CONSTANT.DEPT.trim());
     }
 
     private void setValuesInFields() {
         txtUsername.setText(strUsername.trim());
         txtUserId.setText(strUserId.trim());
         txtBranch.setText(strBranch.trim());
-        txtDesignation.setText(strDesignation.trim());
+        txtDesignation.setText(strDept.trim());
+        txtDept.setText(strDesignation.trim());
         attendance_btn.setText("Submit Attendance");
-        txtDept.setText(strDept.trim());
     }
 
     private void date_time() {
@@ -264,18 +268,9 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
 
     @Override
     public void onLocationChanged(Location location) {
-//        locationText.setText("Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude());
         String latLong = location.toString();
         lat = location.getLatitude();
         lon = location.getLongitude();
-//
-//        try {
-//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-////            locationText.setText(locationText.getText() + "\n"+addresses.get(0).getAddressLine(0)+", "+
-////                    addresses.get(0).getAddressLine(1)+", "+addresses.get(0).getAddressLine(2));
-//        } catch (Exception e) {
-//        }
 
     }
 

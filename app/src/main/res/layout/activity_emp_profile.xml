@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Employee Name"
+                    android:text="Username"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -52,8 +52,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="A1234"
                     android:textAlignment="center"
+                    android:text="@string/employee_id"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     android:textStyle="italic" />
@@ -130,7 +130,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="A1234"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -155,7 +154,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="9876543210"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -204,7 +202,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="Android Developer"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -229,7 +226,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="IT-Development"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -256,7 +252,6 @@
                             android:autoSizeMaxTextSize="8dp"
                             android:editable="false"
                             android:textSize="14sp"
-                            android:text="Gurgaon corporate office"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
 
@@ -279,7 +274,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="GGN-CO"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -305,7 +299,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="anuj@axpress.com"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -359,7 +352,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:textSize="14sp"
-                            android:text="Rajendra Prasad"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
@@ -383,7 +375,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="1 jan 2000"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -408,7 +399,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="Aligarh"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -433,7 +423,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="10 Jan 2015"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -457,7 +446,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="B.Tech-IT"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -482,7 +470,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="664455332211"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -508,7 +495,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text=""
                             android:editable="false"
                             android:textSize="14sp"
                             android:textColor="@color/primaryTextColor" />
@@ -527,7 +513,7 @@
                             android:id="@+id/txt_address_update_status"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="verifing to HR"
+                            android:text="pending"
                             android:textColor="@color/colorAccent"
                             android:textSize="12sp"
                             android:gravity="right"

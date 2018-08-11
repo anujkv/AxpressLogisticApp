@@ -18,9 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -44,26 +49,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
+
 public class AttendanceSummaryActivity extends AppCompatActivity implements View.OnClickListener {
 
-    String attendance_summary_url = "http://webapi.axpresslogistics.com/api/HRMS/attendance_summary";
+    String attendance_summary_url = URL +"HRMS/attendance_summary";
     CalendarView calendarView;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM- yyyy", Locale.getDefault());
-    String date, TAG = "TAG : ";
     Intent intent;
-    String jsonString, emplid, formattedDate, status;
-    JSONObject jObj;
+    String status;
     RecyclerView recyclerView;
     List<AttendanceModel> attendanceModelList;
     AttendanceAdaptor attendanceAdaptor;
     AttendanceModel attendanceModel;
     String str_month, month;
-    int currentMonthPosition,countmin,countmax;
+    int currentMonthPosition;
     ImageView calendarBackBtm, calendarForewordBtn;
     TextView calendarMonth_TextView;
     String currentMonthINTEXT, currentYear;
-    ArrayList<String> monthlist = new ArrayList<String>(Arrays.asList("January", "February", "March", "April", "May",
-            "June", "July", "August", "September", "October", "November", "December"));
 
     @SuppressLint("ResourceType")
     @Override
@@ -91,16 +93,6 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         attendanceModelList = new ArrayList<>();
         attendance_summary_data(str_month);
 
-//        try {
-//            intent = getIntent();
-//            jsonString = intent.getStringExtra("response");
-//            jObj = new JSONObject(jsonString);
-//            emplid = jObj.optString("Emplid");
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-
         calendarView = findViewById(R.id.attCalendarView);
         calendarView.setWeekDayTextAppearance(R.color.colorPrimaryDark);
 
@@ -109,51 +101,8 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 str_month = String.valueOf(month + 1);
                 attendance_summary_data(str_month);
-
             }
         });
-    }
-
-    private void mapMonth(int i) {
-        switch (i) {
-            case 1:
-                calendarMonth_TextView.setText("January " + currentYear);
-                break;
-            case 2:
-                calendarMonth_TextView.setText("February " + currentYear);
-                break;
-            case 3:
-                calendarMonth_TextView.setText("March " + currentYear);
-                break;
-            case 4:
-                calendarMonth_TextView.setText("April " + currentYear);
-                break;
-            case 5:
-                calendarMonth_TextView.setText("May " + currentYear);
-                break;
-            case 6:
-                calendarMonth_TextView.setText("June " + currentYear);
-                break;
-            case 7:
-                calendarMonth_TextView.setText("July " + currentYear);
-                break;
-            case 8:
-                calendarMonth_TextView.setText("August " + currentYear);
-                break;
-            case 9:
-                calendarMonth_TextView.setText("September " + currentYear);
-                break;
-            case 10:
-                calendarMonth_TextView.setText("October " + currentYear);
-                break;
-            case 11:
-                calendarMonth_TextView.setText("November " + currentYear);
-                break;
-            case 12:
-                calendarMonth_TextView.setText("December " + currentYear);
-                break;
-
-        }
     }
 
     public void getCurrentMonth() {
@@ -169,10 +118,6 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         }
         currentMonthINTEXT = cm.format(c);
         currentYear = cy.format(c);
-
-        Log.e("Current Date = ", c.toString());
-        Log.e("Str Date = ", str_month);
-        Log.e("Date = ", month);
 
     }
 
@@ -193,14 +138,9 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
                     JSONObject jsonObject = new JSONObject(response);
                     status = jsonObject.optString("status");
                     String apikeyResponse = jsonObject.optString("key");
-                    String methodResp = jsonObject.optString("method");
 
                     if (status.equals("true") && apikeyResponse.equals(apikey)) {
-                        mapMonth(currentMonthPosition);
                         JSONArray jsonArray = jsonObject.getJSONArray("attendance");
-                        Log.e("Status : ", status);
-                        Log.e(" Month : ", str_month);
-                        Log.e(" Response : ", response);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             attendanceModel = new AttendanceModel(
@@ -214,16 +154,6 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
                                     object.getString("day_status"),
                                     object.getString("leave_type")
                             );
-                            Log.e("date", object.getString("date"));
-                            Log.e("day_status", object.getString("day_status"));
-                            Log.e("in_time", object.getString("in_time"));
-                            Log.e("out_time", object.getString("out_time"));
-                            Log.e("leave_type", object.getString("leave_type"));
-                            Log.e("pin_no", object.getString("pin_no"));
-                            Log.e("reason", object.getString("reason"));
-                            Log.e("applied_date", object.getString("applied_date"));
-                            Log.e("approval_flag", object.getString("approval_flag"));
-                            Log.e("=======", "==============");
                             attendanceModelList.add(attendanceModel);
                         }
                         attendanceAdaptor = new AttendanceAdaptor(AttendanceSummaryActivity.this,
@@ -231,8 +161,6 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
                         recyclerView.setAdapter(attendanceAdaptor);
 
                     } else {
-                        Log.e("Status : ", status);
-                        Log.e("Month : ", str_month);
                         Toast.makeText(getApplicationContext(), "Could not load data!",
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -245,6 +173,22 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
+                }
                 progressDialog.dismiss();
             }
         }) {
@@ -301,8 +245,6 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.e("Month==", String.valueOf(currentMonthPosition));
-
     }
 
     private void setPreviousMonth() {
@@ -320,8 +262,6 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.e("Month==", String.valueOf(currentMonthPosition));
-
     }
 
     private void setMonthData(int currentMonthPosition) {

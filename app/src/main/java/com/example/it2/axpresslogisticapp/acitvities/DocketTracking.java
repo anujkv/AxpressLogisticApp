@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.example.it2.axpresslogisticapp.adaptor.DocketTrackingAdaptor;
 
 import org.json.JSONArray;
@@ -32,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DocketTracking extends AppCompatActivity implements View.OnClickListener {
-    //    String url = "http://webapi.axpresslogistics.com/api/Operations/Docket_Invoice";
     TextView txtDocket_no, txtDocket_date, txtDocket_from, txtDocket_to, txtDocketConsignee,
             txtDocket_status, txtDRS_no, txtDRS_date, txtDRS_receiving, txtDRS_received_by, txtDRS_status;
     //TextView seprate for firstListofItems details...
@@ -67,7 +67,7 @@ public class DocketTracking extends AppCompatActivity implements View.OnClickLis
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText("Docket Tracking Details");
+        lable.setText(CONSTANT.DOCKET_TRACKING_DETAILS);
         backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         mapbtn_toolbar = findViewById(R.id.mapbtn_toolbar);
         backbtn_toolbar.setOnClickListener(this);
@@ -112,14 +112,13 @@ public class DocketTracking extends AppCompatActivity implements View.OnClickLis
         recyclerView = findViewById(R.id.challanRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(adapter);
         challanList = new ArrayList<com.example.it2.axpresslogisticapp.model.DocketTracking>();
     }
 
     private void getData() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(CONSTANT.LOADING_STATUS);
         progressDialog.show();
 
         setJsonDataOnDocketCardView();
@@ -132,11 +131,11 @@ public class DocketTracking extends AppCompatActivity implements View.OnClickLis
             public void onClick(View v) {
                 if (FLAG.equals(false)) {
                     recyclerView.setVisibility(View.VISIBLE);
-                    show_more_click_link.setText("Show Less");
+                    show_more_click_link.setText(CONSTANT.SHOW_LESS);
                     FLAG = true;
                 } else if (FLAG.equals(true)) {
                     recyclerView.setVisibility(View.GONE);
-                    show_more_click_link.setText("Show More");
+                    show_more_click_link.setText(CONSTANT.SHOW_MORE);
                     linearLayout.invalidate();
                     FLAG = false;
                 }
@@ -146,28 +145,25 @@ public class DocketTracking extends AppCompatActivity implements View.OnClickLis
 
 
     private void setJsonDataOnDocketCardView() {
-        strDocket_no = jObj.optString("docket_no");
-        strDocket_date = jObj.optString("docket_date");
-        strDocketConsignee = jObj.optString("consignee_name");
-        strDocket_from = jObj.optString("docket_from");
-        strDocket_to = jObj.optString("docket_to");
-        strDocket_status = jObj.optString("docket_status");
+        strDocket_no = jObj.optString(CONSTANT.DOCKET_NO);
+        strDocket_date = jObj.optString(CONSTANT.DOCKET_DATE);
+        strDocketConsignee = jObj.optString(CONSTANT.CONSIGNEE_NAME);
+        strDocket_from = jObj.optString(CONSTANT.DOCKET_FROM);
+        strDocket_to = jObj.optString(CONSTANT.DOCKET_TO);
+        strDocket_status = jObj.optString(CONSTANT.DOCKET_STATUS);
     }
 
     private void setJsonDataOnDRSCardView() {
         try {
-            JSONArray jsonArray = jObj.getJSONArray("DRS");
+            JSONArray jsonArray = jObj.getJSONArray(CONSTANT.DRS);
             no_of_drs = jsonArray.length();
-            Log.d("response>>>", jsonArray.toString());
             for (int i = 0; i < no_of_drs; i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
-                Log.d("response>>>", object.toString());
-
-                strDRS_date = object.optString("drs_date");
-                strDRS_receiving = object.optString("drs_received_date");
-                strDRS_received_by = object.optString("drs_received_by");
-                strDRS_status = object.optString("drs_status");
-                strDRS_no = object.optString("drs_no");
+                strDRS_date = object.optString(CONSTANT.DRS_DATE);
+                strDRS_receiving = object.optString(CONSTANT.DRS_RECIVED_DATE);
+                strDRS_received_by = object.optString(CONSTANT.DRS_RECIVED_BY);
+                strDRS_status = object.optString(CONSTANT.DRS_STATUS);
+                strDRS_no = object.optString(CONSTANT.DRS_NO);
             }
             progressDialog.dismiss();
         } catch (JSONException e) {
@@ -177,13 +173,13 @@ public class DocketTracking extends AppCompatActivity implements View.OnClickLis
 
     private void setChallanJsonDataCardView() {
         try {
-            JSONArray jsonArray = jObj.getJSONArray("Challan");
+            JSONArray jsonArray = jObj.getJSONArray(CONSTANT.CHALLAN);
             no_of_challan = jsonArray.length();
             for (int i = 0; i < no_of_challan; i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 if (i == 0) {
-                    str_challenFirst_no_ID = object.getString("challan_no");
-                    str_challenFirst_dateID = object.getString("challan_date");
+                    str_challenFirst_no_ID = object.getString(CONSTANT.CHALLAN_NO);
+                    str_challenFirst_dateID = object.getString(CONSTANT.CHALLAN_DATE);
                     str_challanFirst_fromID = object.getString("challan_from");
                     str_challanFirst_toID = object.getString("challan_to");
                     str_vehicalFirst_noID = object.getString("vehicle_no");

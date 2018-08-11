@@ -1,9 +1,8 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -11,27 +10,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class ResetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
-    String url = "http://webapi.axpresslogistics.com/api/HRMS/Reset_Pass";
+    String url = URL + "HRMS/Reset_Pass";
     EditText editTextResetEmail, editTextResetID, editTextDOBID;
     TextView textViewBackLinkId, textViewSubmitLinkId;
     String strEmail, strEmpId, strDOBID;
@@ -58,7 +61,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
 
     private void resetPassword() {
         ApiKey apiKey = new ApiKey();
-        final String method = "reset";
+        final String method = CONSTANT.RESET_PASSWORD_METHOD;
         final String apikey = apiKey.saltStr();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -67,16 +70,16 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
                 try {
                     JSONObject object = new JSONObject(response.toString());
                     String status = object.optString("Status");
-                    String apiKEYresponse = object.optString("key");
-                    Log.d("Response>>>", status);
+                    String apiKEYresponse = object.optString(CONSTANT.KEY);
 
-                    if (status.equals("true")) {
-                        Toast.makeText(getApplicationContext(), "Password is default, same as Employee ID!.", Toast.LENGTH_SHORT).show();
+                    if (status.equals(CONSTANT.TRUE)) {
+                        Toast.makeText(getApplicationContext(), CONSTANT.PASSWORD_DEFAULT_SET,
+                                Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
                         finish();
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "credential not match", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), CONSTANT.WRONG_CREDENTIAL, Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
 
                     }
@@ -87,27 +90,33 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("response======", "" + error.toString());
-                if (error.toString().equals("com.android.volley.ServerError")) {
-                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
-
-                } else {
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
                 }
+                progressBar.setVisibility(View.GONE);
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("employee_id", strEmpId);
-                params.put("employee_email", strEmail);
-                params.put("employee_dob", "");
-                params.put("method", method);
-                params.put("key", apikey.trim());
-                Log.d("employee_id", strEmpId);
-                Log.d("employee_email", strEmail);
+                params.put(CONSTANT.EMPLOYEE_ID, strEmpId);
+                params.put(CONSTANT.EMPLOYEE_EMAIL, strEmail);
+                params.put(CONSTANT.EMPLOYEE_DOB, CONSTANT.BLANK);
+                params.put(CONSTANT.METHOD, method);
+                params.put(CONSTANT.KEY, apikey.trim());
                 return params;
             }
         };
@@ -121,23 +130,20 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
             case R.id.textViewSubmitLinkId:
                 //Check Emp ID is empty or not...
                 if (editTextResetID.getText().toString().trim().isEmpty() &&
-                        editTextResetID.getText().toString().trim().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Enter the employee Id!",
+                        editTextResetID.getText().toString().trim().equals(CONSTANT.BLANK)) {
+                    Toast.makeText(getApplicationContext(), CONSTANT.ENTER_EMPLOYEE_ID,
                             LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     strEmpId = editTextResetID.getText().toString().trim();
                     if (editTextResetEmail.getText().toString().trim().isEmpty() &&
-                            editTextResetEmail.getText().toString().trim().equals("")) {
-                        Toast.makeText(getApplicationContext(), "Enter the email Id!",
+                            editTextResetEmail.getText().toString().trim().equals(CONSTANT.BLANK)) {
+                        Toast.makeText(getApplicationContext(), CONSTANT.ENTER_EMAIL_ID,
                                 LENGTH_SHORT).show();
                     } else {
                         strEmail = editTextResetEmail.getText().toString().trim();
                         progressBar.setVisibility(View.VISIBLE);
                         resetPassword();
-
                     }
-
                 }
                 break;
 

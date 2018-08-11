@@ -8,7 +8,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,13 +21,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
+import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,22 +42,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
-import com.example.it2.axpresslogisticapp.Utilities.Preferences;
-
-
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener,LocationListener {
-    private String url = "http://webapi.axpresslogistics.com/api/HRMS/Get_Login";
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
     EditText employee_code, password;
     Button login_button;
     TextView forgetPassword;
-    String employeeCodeValue, passwordValue, username;
+    String username;
     Bundle bundle;
     ProgressBar progressBar;
     LocationManager locationManager;
     double lat, lon;
+    private String url = URL + "HRMS/Get_Login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,20 +72,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgetPassword.setOnClickListener(this);
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10,
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10,
                     5, (LocationListener) this);
 
         } catch (SecurityException e) {
             e.printStackTrace();
         }
         getLocationPermissionCheck();
-        if (!Preferences.getPreference(LoginActivity.this, "APIKEY").equals("")){
-            //username = object.optString("Employee_Name");
-            Toast.makeText(getApplicationContext(), "Welcome " + Preferences.getPreference(LoginActivity.this,CONSTANT.USER_NAME), LENGTH_SHORT).show();
-            Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
-          //  logindataIntent.putExtra("response", response.toString());
-            startActivity(logindataIntent);
-
+        if (!Preferences.getPreference(LoginActivity.this, CONSTANT.APIKEY).equals(CONSTANT.BLANK)) {
+            Toast.makeText(getApplicationContext(), CONSTANT.WELCOME
+                            + Preferences.getPreference(LoginActivity.this, CONSTANT.USER_NAME),
+                    LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));
         }
 
     }
@@ -106,10 +107,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 hide_keyboard();
                 if (employee_code.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Enter the Employee ID.",
+                    Toast.makeText(getApplicationContext(), CONSTANT.ENTER_EMPLOYEE_ID,
                             Toast.LENGTH_LONG).show();
                 } else if (password.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Enter the Password",
+                    Toast.makeText(getApplicationContext(), CONSTANT.ENTER_PASSWORD,
                             Toast.LENGTH_LONG).show();
                 } else {
                     login();
@@ -126,35 +127,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar.setVisibility(View.VISIBLE);
         login_button.setClickable(false);
         ApiKey apiKey = new ApiKey();
-        final String method = "login";
+        final String method = CONSTANT.LOGIN_METHOD;
         final String apikey = apiKey.saltStr();
-        Log.d("apikey : ",apikey);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.e("Login Response : ",response);
                 try {
-                    JSONObject object = new JSONObject(response.toString());
-                    String status = object.optString("Status");
-                    String apiKEYresponse = object.optString("key");
-                    Preferences.setPreference(LoginActivity.this,"APIKEY",apiKEYresponse);
-                    Log.e("status : ", status);
-                    Log.e("my apikey : ", apikey);
-                    Log.e("response  : ",response.toString() );
+                    JSONObject object = new JSONObject(response);
+                    String status = object.optString(CONSTANT.STATUS);
+                    String apiKEYresponse = object.optString(CONSTANT.KEY);
+                    Preferences.setPreference(LoginActivity.this, CONSTANT.APIKEY, apiKEYresponse);
 
-                    if (status.equals("true")&& apikey.equals(apiKEYresponse)) {
-                        username = object.optString("Employee_Name");
-                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_NAME,object.optString("Employee_Name"));
-                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,object.optString("Employee_Email"));
-                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPID,object.optString("Emplid"));
-                        Toast.makeText(getApplicationContext(), "Welcome " + username, LENGTH_SHORT).show();
-                        Intent logindataIntent = new Intent(getApplicationContext(), MainHomeActivity.class);
-                      //  logindataIntent.putExtra("response", response.toString());
-                        Preferences.setPreference(LoginActivity.this,"response",response.toString());
-
-                        startActivity(logindataIntent);
+                    if (status.equals(CONSTANT.TRUE) && apikey.equals(apiKEYresponse)) {
+                        username = object.optString(CONSTANT.EMPLOYEE_NAME);
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_NAME,
+                                object.optString(CONSTANT.EMPLOYEE_NAME));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPID,
+                                object.optString("Emplid"));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,
+                                object.optString(CONSTANT.EMAIL));
+                        Toast.makeText(getApplicationContext(), CONSTANT.WELCOME + username,
+                                LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));
                     } else {
-                        Toast.makeText(getApplicationContext(), "wrong credential.. ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), CONSTANT.WRONG_CREDENTIAL,
+                                Toast.LENGTH_LONG).show();
                         invisibleProgressbar();
                     }
 
@@ -165,14 +164,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("response======",""+error.toString());
-                if(error.toString().equals("com.android.volley.ServerError")){
-                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500", Toast.LENGTH_LONG).show();
-                    invisibleProgressbar();
-                } else{
-                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    invisibleProgressbar();
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
                 }
+                invisibleProgressbar();
             }
         }) {
             @Override
@@ -180,8 +188,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Map<String, String> params = new HashMap<>();
                 params.put("username", employee_code.getText().toString().trim());
                 params.put("pwd", password.getText().toString().trim());
-                params.put("method", method);
-                params.put("key", apikey.trim());
+                params.put(CONSTANT.METHOD, method);
+                params.put(CONSTANT.KEY, apikey.trim());
                 return params;
             }
         };
@@ -219,9 +227,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_button.setClickable(true);
     }
 
-    private  void clearText(){
-        employee_code.setText("");
-        password.setText("");
+    private void clearText() {
+        employee_code.setText(CONSTANT.BLANK);
+        password.setText(CONSTANT.BLANK);
     }
 
 

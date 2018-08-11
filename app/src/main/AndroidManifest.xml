@@ -63,18 +63,6 @@
             android:label="@string/attendance_summary"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".acitvities.LeaveInfoActivity"
-            android:label="@string/leave_info"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.VehicalEnquiryActivity"
-            android:label="@string/vehical_enquiry"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.AddCustomerActivity"
-            android:label="@string/add_customer"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".acitvities.EmpProfileActivity"
             android:label="@string/editprofile"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -99,9 +87,6 @@
             android:name=".acitvities.MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.ScannerActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -114,33 +99,15 @@
         </provider>
 
         <activity
-            android:name=".ScannedDataActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".acitvities.CRMActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CameraActivity" />
-        <!--
-            <meta-data
-            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="ocr" />
-        -->
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
 
         <activity
-            android:name=".acitvities.CardActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
             android:name=".acitvities.CustomerVisitFormActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".acitvities.SavedCardActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

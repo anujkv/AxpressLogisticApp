@@ -25,14 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.it2.axpresslogisticapp.R;
 import com.example.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.example.it2.axpresslogisticapp.Utilities.Preferences;
 import com.example.it2.axpresslogisticapp.adaptor.AppliedLeaveAdaptor;
 import com.example.it2.axpresslogisticapp.model.AppliedLeaveModel;
 
@@ -50,13 +56,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
+
 
 public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClickListener {
-    String applied_url = "http://webapi.axpresslogistics.com/api/HRMS/leave_entry";
-    String leave_info_url = "http://webapi.axpresslogistics.com/api/HRMS/leave_search";
+    String applied_url = URL + "HRMS/leave_entry";
+    String leave_info_url = URL + "HRMS/leave_search";
     Intent intent;
-    String jsonString, emplid, formattedDate;
-    JSONObject jObj;
+    String formattedDate;
     CalendarView calendarView, calendarView1;
     String date2, date, fromDate, toDate, leaveReason, strleave_type, strPin_no, leaveType;
     EditText input_leave_from, input_leave_to;
@@ -121,21 +128,11 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-//                dateAPI = year + "-" + month+ "-" + dayOfMonth;
                 createDialogBox();
             }
 //                else {}
 //            }
         });
-
-        try {
-            intent = getIntent();
-            jsonString = intent.getStringExtra("response");
-            jObj = new JSONObject(jsonString);
-            emplid = jObj.optString("Emplid");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void createDialogBox() {
@@ -154,9 +151,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 Log.e("StrLeave_TYPE", strleave_type);
                 selectorInputCount = position;
                 mapLeaveCode(strleave_type);
-                Log.e("Spinner : ", String.valueOf(selectorInputCount));
-                Log.e("Reason : ", String.valueOf(inputResonCount));
-                Log.e("Date : ", String.valueOf(inputDateCount));
                 if (inputDateCount > 0 && inputResonCount > 0) {
                     validation(inputDateCount, inputResonCount, selectorInputCount);
                 }
@@ -373,6 +367,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void applied() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         leaveReason = editTextReason_of_leave.getText().toString();
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
@@ -382,6 +379,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onResponse(String response) {
                 if (response != null && response.length() > 0) {
+                    progressDialog.dismiss();
                     try {
                         JSONObject object = new JSONObject(response);
                         String status = object.optString("status");
@@ -392,24 +390,38 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             Toast.makeText(getApplicationContext(), applied, Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), notApplied, Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        progressDialog.dismiss();
                     }
                 } else {
                     Log.e("Response: ", response.toString());
+                    progressDialog.dismiss();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("response======", "" + error.toString());
-                if (error.toString().equals("com.android.volley.ServerError")) {
-                    Toast.makeText(getApplicationContext(), "Unexpected response code: 404/500",
+                Log.d("response======",""+error.toString());
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
                             Toast.LENGTH_LONG).show();
-                } else {
-                    Log.e("error: ", error.toString());
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
                 }
+                progressDialog.dismiss();
             }
         }) {
             @Override
@@ -418,18 +430,17 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
 
                 Log.e("method", method);
                 Log.e("key", apikey);
-                Log.e("emplid", emplid);
+                Log.e("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
                 Log.e("from", fromDate);
                 Log.e("to", toDate);
                 Log.e("days", String.valueOf(daysDifference));
                 Log.e("reason", leaveReason);
                 Log.e("type", leaveType);
                 Log.e("pin_no", strPin_no);
-                Log.e("applied_date", formattedDate);
 
                 params.put("method", method);
                 params.put("key", apikey);
-                params.put("emplid", emplid);
+                params.put("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
                 params.put("pin_no", strPin_no);
                 params.put("type", leaveType);
                 params.put("from", fromDate);
@@ -520,13 +531,24 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 progressDialog.dismiss();
                 recyclerView.setVisibility(View.GONE);
                 txt_datanotfound.setVisibility(View.VISIBLE);
-                if(error.toString().equals("com.android.volley.ServerError")){
-                    txt_datanotfound.setText(CONSTANT.RESPONSEERROR);
-                    Toast.makeText(getApplicationContext(), CONSTANT.RESPONSEERROR,
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
                             Toast.LENGTH_LONG).show();
-                } else if (error.toString().equals("com.android.volley.NoConnectionError")) {
-                    Toast.makeText(getApplicationContext(), CONSTANT.INTERNETERROR, Toast.LENGTH_LONG).show();
-                    txt_datanotfound.setText(CONSTANT.INTERNETERROR);
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                    txt_datanotfound.setText(CONSTANT.INTERNET_ERROR);
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
+                    txt_datanotfound.setText(CONSTANT.TIMEOUT_ERROR);
+
                 }
             }
         }) {
@@ -535,7 +557,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 Map<String, String> params = new HashMap<>();
                 params.put("method", method);
                 params.put("key", apikey1);
-                params.put("emplid", emplid);
+                params.put("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
                 return params;
             }
         };

@@ -51,23 +51,15 @@ public class MainHomeActivity extends AppCompatActivity
             R.drawable.icon_financial,
             R.drawable.icon_tickets
     };
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    CoordinatorLayout coordinatorLayout;
     GridView gridView;
     Toolbar toolbar;
-    Context context;
-    ArrayList arrayList;
     TextView empEmailId,empName;
     ImageView empImage;
     String employeeID,employeeNAME,empEmail;
     Intent intent;
-    String jsonString;
     JSONObject jObj;
     LocationManager locationManager;
     double lat,lon;
-    CustomerVisitFormActivity visitFormActivity;
-
-    public Bundle getBundle = null;
 
     @Override
     protected void onStart() {
@@ -87,19 +79,6 @@ public class MainHomeActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-
-        try {
-            intent = getIntent();
-            jsonString = Preferences.getPreference(MainHomeActivity.this,"response");
-            jObj = new JSONObject(jsonString);
-            employeeNAME = jObj.optString("Employee_Name");
-            empEmail = jObj.optString("Employee_Email");
-            employeeID = jObj.optString("Emplid");
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         employeeNAME= Preferences.getPreference(MainHomeActivity.this, CONSTANT.USER_NAME);
         empEmail= Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMAIL);
         employeeID = Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMPID);
@@ -108,7 +87,6 @@ public class MainHomeActivity extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gridView = findViewById(R.id.grid);
-//        Toast.makeText(getApplicationContext(),"I M IN MAIN: "+jsonString,Toast.LENGTH_SHORT).show();
         GridViewAdaptor gridViewAdaptor = new GridViewAdaptor(MainHomeActivity.this,
                 gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewAdaptor);
@@ -121,21 +99,13 @@ public class MainHomeActivity extends AppCompatActivity
                 switch (position) {
 
                     case 0:
-                        Intent intent_opt = new Intent(MainHomeActivity.this,
-                                OperationActivity.class);
-                        // passing array index
-                        intent_opt.putExtra("id", position);
-                        startActivity(intent_opt);
+                        startActivity(new Intent(getApplicationContext(),OperationActivity.class));
                         break;
                     case 1:
-                        Intent intent_hrms = new Intent(MainHomeActivity.this,HrmsActivity.class);
-                        intent_hrms.putExtra("response", jObj.toString());
-                        startActivity(intent_hrms);
+                        startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
                         break;
                     case 2:
-                        Intent intent_crm = new Intent(MainHomeActivity.this,CRMActivity.class);
-                        intent_crm.putExtra("response", jObj.toString());
-                        startActivity(intent_crm);
+                        startActivity(new Intent(getApplicationContext(),CRMActivity.class));
                         break;
                     case 3:
                         Toast.makeText(getApplicationContext(), "Activities " +
@@ -201,9 +171,6 @@ public class MainHomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
