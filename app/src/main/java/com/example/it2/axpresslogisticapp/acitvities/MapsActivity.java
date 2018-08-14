@@ -45,6 +45,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.TIMEOUT_ERROR;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,View.OnClickListener {
     private String url = CONSTANT.URL + "Operations/map";
 //    private String url = "http://192.168.1.7/webapi.axpresslogistics.com/api/Operations/map";
@@ -123,22 +125,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("response",""+error.toString());
-                if (error instanceof NetworkError) {
-                } else if (error instanceof ServerError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.RESPONSEERROR,
-                            Toast.LENGTH_LONG).show();
-                } else if (error instanceof AuthFailureError) {
-                } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
-                } else if (error instanceof TimeoutError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.TIMEOUT_ERROR,
-                            Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(getBaseContext(),
+                        CONSTANT.INFORMATION_NOT_AVAILABLE,
+                        Toast.LENGTH_LONG).show();
+                Log.e("VOLLEY_ERROR : ",TIMEOUT_ERROR);
             }
         }){
             @Override

@@ -148,6 +148,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 object.optString("Emplid"));
                         Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,
                                 object.optString(CONSTANT.EMAIL));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_BRANCH,
+                                object.optString(CONSTANT.EMPLOYEE_BRANCH));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DESIGNATION,
+                                object.optString(CONSTANT.EMPLOYEE_DESIGNATION));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DEPT,
+                                object.optString(CONSTANT.EMPLOYEE_DEPT));
                         Toast.makeText(getApplicationContext(), CONSTANT.WELCOME + username,
                                 LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));

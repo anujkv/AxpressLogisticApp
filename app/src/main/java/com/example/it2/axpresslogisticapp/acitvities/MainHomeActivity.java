@@ -108,16 +108,16 @@ public class MainHomeActivity extends AppCompatActivity
                         startActivity(new Intent(getApplicationContext(),CRMActivity.class));
                         break;
                     case 3:
-                        Toast.makeText(getApplicationContext(), "Activities " +
-                                String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Activities",
+                                Toast.LENGTH_SHORT).show();
                         break;
                     case 4:
-                        Toast.makeText(getApplicationContext(), "Financial " +
-                                String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Financial",
+                                Toast.LENGTH_SHORT).show();
                         break;
                     case 5:
-                        Toast.makeText(getApplicationContext(), "My Tickets " +
-                                String.valueOf(position), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "My Tickets",
+                                Toast.LENGTH_SHORT).show();
                         break;
                 }
 
@@ -162,25 +162,6 @@ public class MainHomeActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -193,22 +174,13 @@ public class MainHomeActivity extends AppCompatActivity
             startActivity(profiledataIntent);
 //            startActivity(new Intent(getApplicationContext(),EmpProfileActivity.class));
         } else if (id == R.id.nav_operations) {
-            Intent intent_opt = new Intent(MainHomeActivity.this,
-                    OperationActivity.class);
-            startActivity(intent_opt);
-
+            startActivity(new Intent(MainHomeActivity.this,OperationActivity.class));
         } else if (id == R.id.nav_hrms) {
-           Intent intent_hrms = new Intent(MainHomeActivity.this,HrmsActivity.class);
-                        intent_hrms.putExtra("response", jObj.toString());
-                        startActivity(intent_hrms);
-
+           startActivity(new Intent(MainHomeActivity.this,HrmsActivity.class));
         } else if (id == R.id.nav_crm) {
-            Intent intent_crm = new Intent(MainHomeActivity.this,CRMActivity.class);
-            intent_crm.putExtra("response", jObj.toString());
-            startActivity(intent_crm);
+            startActivity(new Intent(MainHomeActivity.this,CRMActivity.class));
         } else if (id == R.id.nav_activities) {
 //            startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
-
         } else if (id == R.id.nav_financial) {
 
         } else if (id == R.id.nav_mytickets) {

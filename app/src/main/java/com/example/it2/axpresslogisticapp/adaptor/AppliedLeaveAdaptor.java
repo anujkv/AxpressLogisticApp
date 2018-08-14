@@ -23,18 +23,12 @@ import java.util.Date;
 import java.util.List;
 
 public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdaptor.AppliedLeaveHolder> {
-    ApplyLeaveActivity applyLeaveActivity;
     Context context;
     List<AppliedLeaveModel> appliedLeaveModelList;
     Dialog dialog;
-    AppliedLeaveAdaptor leaveAdaptor;
 
     public AppliedLeaveAdaptor(Context context, List<AppliedLeaveModel> appliedLeaveModelList) {
         this.context = context;
-        this.appliedLeaveModelList = appliedLeaveModelList;
-    }
-
-    public void setItems(List<AppliedLeaveModel> appliedLeaveModelList) {
         this.appliedLeaveModelList = appliedLeaveModelList;
     }
 
@@ -47,7 +41,6 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
 
     @Override
     public void onBindViewHolder(@NonNull final AppliedLeaveHolder holder, int position) {
-//        AppliedLeaveModel appliedLeaveModel = new AppliedLeaveModel();
         final AppliedLeaveModel appliedLeaveModel = appliedLeaveModelList.get(position);
         String from = dateConversion(appliedLeaveModel.getFrom());
         holder.from.setText(from);

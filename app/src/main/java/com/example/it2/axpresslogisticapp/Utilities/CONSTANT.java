@@ -11,6 +11,9 @@ public class CONSTANT {
     public static final String LOGIN_METHOD = "login";
     public static final String EMPLOYEE_METHOD = "employee_info";
     public static final String DOCKET = "docket";
+    public static final String SHOW_VISIT_DETAILS = "show_visit_details";
+    public static final String SHOW_VISIT = "visit_date";
+    public static final String INVOICE_DETAILS_METHOD = "invoice_details";
 
     //SET LABLES:
     public static final String WELCOME = "Welcome ";
@@ -70,12 +73,21 @@ public class CONSTANT {
     public static final String CHALLAN = "Challan";
     public static final String CHALLAN_NO = "challan_no";
     public static final String CHALLAN_DATE = "challan_date";
+    public static final String HISTORY = "History";
+    public static final String DATA_NOT_FOUND = "data not found";
+    public static final String REF_NO = "ref_no";
+    public static final String VISIT_DATE = "visit_date";
+    public static final String INFORMATION_NOT_AVAILABLE = "Information not available!";
+    public static final String INVOICE_NO = "invoice_no";
     public static String USER_NAME="uname";
     public static String EMAIL="email";
     public static String EMPID="emplid";
     public static String DESIGNATION="designation";
     public static String BRANCH="branch";
     public static String DEPT="dept";
+    public static String EMPLOYEE_DESIGNATION="employee_designation";
+    public static String EMPLOYEE_BRANCH="employee_department";
+    public static String EMPLOYEE_DEPT="employee_branch";
 
     public static String UNEXPECTED_RESPONSE = "Kindly fill correct input format";
     public static String INTERNET_ERROR = "Internet Connection Issue,Kindly Check Your Connectivity";

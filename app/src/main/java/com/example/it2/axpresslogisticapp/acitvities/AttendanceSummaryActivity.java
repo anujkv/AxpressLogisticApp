@@ -41,12 +41,10 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import static com.example.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
@@ -92,7 +90,7 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         recyclerView.setHasFixedSize(true);
         attendanceModelList = new ArrayList<>();
         attendance_summary_data(str_month);
-
+        mapMonth(Integer.parseInt(str_month));
         calendarView = findViewById(R.id.attCalendarView);
         calendarView.setWeekDayTextAppearance(R.color.colorPrimaryDark);
 
@@ -118,7 +116,6 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         }
         currentMonthINTEXT = cm.format(c);
         currentYear = cy.format(c);
-
     }
 
     private void attendance_summary_data(final String str_month) {
@@ -140,6 +137,7 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
                     String apikeyResponse = jsonObject.optString("key");
 
                     if (status.equals("true") && apikeyResponse.equals(apikey)) {
+                        mapMonth(currentMonthPosition);
                         JSONArray jsonArray = jsonObject.getJSONArray("attendance");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
@@ -231,14 +229,17 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
             if (attendanceModelList.size() > 0) {
                 currentMonthPosition = currentMonthPosition + 1;
                 setMonthData(currentMonthPosition);
+
             }else{
                 if (currentMonthPosition > Integer.parseInt(str_month)){
                     currentMonthPosition = --currentMonthPosition;
                     setMonthData(currentMonthPosition);
+
                 }
                 else {
                     currentMonthPosition = ++currentMonthPosition + 1;
                     setMonthData(currentMonthPosition);
+
                 }
             }
 
@@ -247,11 +248,13 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
         }
     }
 
+
     private void setPreviousMonth() {
         try {
             if (attendanceModelList.size() > 0) {
                 currentMonthPosition = currentMonthPosition - 1;
                 setMonthData(currentMonthPosition);
+
             }else if (currentMonthPosition> Integer.parseInt(str_month)){
                 currentMonthPosition = --currentMonthPosition -1;
                 setMonthData(currentMonthPosition);
@@ -263,6 +266,48 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
             e.printStackTrace();
         }
     }
+
+    private void mapMonth(int i) {
+        switch (i) {
+            case 1:
+                calendarMonth_TextView.setText("January " + currentYear);
+                break;
+            case 2:
+                calendarMonth_TextView.setText("February " + currentYear);
+                break;
+            case 3:
+                calendarMonth_TextView.setText("March " + currentYear);
+                break;
+            case 4:
+                calendarMonth_TextView.setText("April " + currentYear);
+                break;
+            case 5:
+                calendarMonth_TextView.setText("May " + currentYear);
+                break;
+            case 6:
+                calendarMonth_TextView.setText("June " + currentYear);
+                break;
+            case 7:
+                calendarMonth_TextView.setText("July " + currentYear);
+                break;
+            case 8:
+                calendarMonth_TextView.setText("August " + currentYear);
+                break;
+            case 9:
+                calendarMonth_TextView.setText("September " + currentYear);
+                break;
+            case 10:
+                calendarMonth_TextView.setText("October " + currentYear);
+                break;
+            case 11:
+                calendarMonth_TextView.setText("November " + currentYear);
+                break;
+            case 12:
+                calendarMonth_TextView.setText("December " + currentYear);
+                break;
+        }
+    }
+
 
     private void setMonthData(int currentMonthPosition) {
         attendanceModelList.clear();

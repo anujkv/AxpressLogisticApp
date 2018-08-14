@@ -1,6 +1,7 @@
 package com.example.it2.axpresslogisticapp.acitvities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -82,6 +83,7 @@ public class DocketEnquiry extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), CONSTANT.CHOOSE_THE_SEARCH_TYPE,
                             Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -98,7 +100,33 @@ public class DocketEnquiry extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), CONSTANT.ENTER_THE_DOCKET_INVOICE_NO,
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    dataJsonFunction();
+                    Log.e("ElSE = ",radio_btn_id.toString());
+                    switch (radio_btn_id.toString()) {
+                        case "radiobtn_docket_id":
+                            Log.e("IF = ", radio_btn_id.toString());
+
+                            if (strInput_editSearch_text.length() == 7) {
+                                Log.e("DATAPUSH = ", radio_btn_id.toString());
+
+                                dataJsonFunction();
+                            } else {
+                                Log.e("ERROR = ", radio_btn_id.toString());
+
+                                input_editSearch_text_id.setHint("Wrong Docket No.");
+                                input_editSearch_text_id.setHintTextColor(Color.RED);
+                            }
+                            break;
+                        case "radiobtn_invoice_id":
+                            Log.e("INTENT = ", radio_btn_id.toString());
+
+                            Intent intent = new Intent(DocketEnquiry.this, InvoiceDocketActivityList.class);
+                            intent.putExtra("invoice_no", strInput_editSearch_text);
+                            startActivity(intent);
+                            break;
+                        default:
+                            Log.e("ElSE WRONG = ", radio_btn_id.toString());
+                            break;
+                    }
                 }
             }
         });

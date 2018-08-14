@@ -264,14 +264,14 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 if (FLAG.equals(false)) {
                     String title = "Address";
                     method = "address";
-//                    showChangeProfileDialog(title, strAddress, method);
+                    showChangeProfileDialog(title, strAddress, method);
                 }
                 break;
             case R.id.edtImageButtonBankAccount:
                 if (FLAG.equals(false)) {
                     title = "Bank Account";
                     method = "bank_account";
-//                    showChangeProfileDialog(title, strBankAccount, method);
+                    showChangeProfileDialog(title, strBankAccount, method);
                 } else {
                     Toast.makeText(getApplicationContext(), "disable", Toast.LENGTH_SHORT).show();
                     edtBankAccount.setFocusable(false);
@@ -284,12 +284,12 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             case R.id.edtImageButtonbankName:
                 String title = "Bank Name";
                 method = "bank_name";
-//                showChangeProfileDialog(title, strBankName, method);
+                showChangeProfileDialog(title, strBankName, method);
                 break;
             case R.id.edtImageButtonBankIFSC:
                 title = "Bank IFSC Code";
                 method = "bank_ifsc";
-//                showChangeProfileDialog(title, strBankIFSC, method);
+                showChangeProfileDialog(title, strBankIFSC, method);
                 break;
         }
     }

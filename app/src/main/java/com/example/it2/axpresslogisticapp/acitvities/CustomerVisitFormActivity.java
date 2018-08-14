@@ -152,7 +152,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                                             object.getString("ref_no"));
                                     visitHistoryModels.add(visitHistoryModel);
                                 }
-                                historyAdaptor = new VisitHistoryAdaptor(getApplicationContext(), visitHistoryModels);
+                                historyAdaptor = new VisitHistoryAdaptor(CustomerVisitFormActivity.this, visitHistoryModels);
                                 visitHistoryrecyclerview.setAdapter(historyAdaptor);
                             } else {
                                 Toast.makeText(getApplicationContext(), NO_HISTORY_AVAILABLE, Toast.LENGTH_SHORT).show();
@@ -256,7 +256,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 finish();
                 break;
             case R.id.mapbtn_toolbar:
-                save(businessType);
+                save();
                 break;
             case R.id.edtVisitDate:
                 callDateDialogBox();
@@ -339,6 +339,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String s = df.format(now);
         showDate(s);
+        Log.e("DATE : ",s);
     }
 
     private void showDate(String formattedDate) {
@@ -346,10 +347,10 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         Log.e("Date : ",formattedDate);
     }
 
-    private void save(String businessType) {
+    private void save() {
 //        if(businessType.equals("customer_visit_search")){
             getdata(compVisitID, this.businessType);
-            validation(this.businessType);
+            validation();
 //            Log.e("search ===comVISIT_ID",companyUniqueIDF);
 //            Log.e("search ===businessType",businessType);
 //            pushonDBNew(businessType, companyUniqueIDF);
@@ -363,7 +364,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 
     }
 
-    private void validation(String businessType) {
+    private void validation() {
         if(str_customer_name == null || str_customer_name.equals("")){
             edt_customer_name.setHint("Mandatory *");
             edt_customer_name.setHintTextColor(Color.RED);
@@ -420,7 +421,9 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                                     savebtn_toolbar.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            pushonDBNew(businessType, companyUniqueIDF);
+                                            getdata(compVisitID, businessType);
+                                            validation();
+//                                            pushonDBNew(businessType, companyUniqueIDF);
                                         }
                                     });
                                 } else {
@@ -553,7 +556,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     params.put("key", apikey);
                     params.put("emplid", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
                     params.put("customer", str_customer_name);
-                    params.put("visit_date", str_visitdate);
+                    params.put("visit_date", "13-08-2018 14:10:32");
                     params.put("visit_for", str_visit_for);
                     params.put("visit_type", str_visit_type);
                     params.put("contact_person", strContactPerson);
@@ -569,7 +572,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                 } else {
                     Log.e("method",businessType);
                     Log.e("str_customer_name",str_customer_name);
-                    Log.e("str_visitdate",str_visitdate);
+                    Log.e("str_visitdate",str_visitdate.trim());
                     Log.e("str_visit_for",str_visit_for);
                     Log.e("str_visit_type",str_visit_type);
                     Log.e("strContactPerson",strContactPerson);
@@ -585,7 +588,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     params.put("key", apikey);
                     params.put("emplid", Preferences.getPreference(CustomerVisitFormActivity.this, CONSTANT.EMPID));
                     params.put("customer", str_customer_name);
-                    params.put("visit_date", str_visitdate);
+                    params.put("visit_date", "13-08-2018 14:10:32");
                     params.put("visit_for", str_visit_for);
                     params.put("visit_type", str_visit_type);
                     params.put("contact_person", strContactPerson);

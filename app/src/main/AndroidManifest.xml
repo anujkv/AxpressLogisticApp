@@ -108,19 +108,14 @@
 
         <activity
             android:name=".acitvities.CustomerVisitFormActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".acitvities.CustomerViewListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".acitvities.ApplyLeaveActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".acitvities.InvoiceDocketActivityList"></activity>
     </application>
 
 </manifest>

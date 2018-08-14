@@ -38,8 +38,7 @@
             android:gravity="center"
             android:textSize="16sp"
             android:textColor="@color/primaryTextColor"
-            android:textStyle="bold"
-            android:text="July 2018"/>
+            android:textStyle="bold"/>
         <ImageView
             android:id="@+id/calendarforwardbtn"
             android:layout_width="0dp"

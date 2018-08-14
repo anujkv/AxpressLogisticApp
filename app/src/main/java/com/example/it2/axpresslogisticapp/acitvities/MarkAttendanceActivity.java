@@ -232,9 +232,9 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
     private void getValuesFromPref() {
         strUsername = Preferences.getPreference(getApplicationContext(),CONSTANT.USER_NAME);
         strUserId = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID);
-        strDesignation = Preferences.getPreference(getApplicationContext(),CONSTANT.BRANCH.trim());
-        strDept = Preferences.getPreference(getApplicationContext(),CONSTANT.DESIGNATION.trim());
-        strBranch = Preferences.getPreference(getApplicationContext(),CONSTANT.DEPT.trim());
+        strDesignation = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPLOYEE_BRANCH.trim());
+        strDept = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPLOYEE_DESIGNATION.trim());
+        strBranch = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPLOYEE_DEPT.trim());
     }
 
     private void setValuesInFields() {
