@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.it2.axpresslogisticapp">
+    package="com.axpresslogistic.it2.axpresslogisticapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -108,14 +108,23 @@
 
         <activity
             android:name=".acitvities.CustomerVisitFormActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".acitvities.CustomerViewListActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".acitvities.ApplyLeaveActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".acitvities.InvoiceDocketActivityList"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".acitvities.InvoiceDocketActivityList"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

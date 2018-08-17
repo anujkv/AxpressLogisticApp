@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.it2.axpresslogisticapp.acitvities.DocketEnquiry">
+    android:id="@+id/docketEnquirylayout"
+    tools:context="com.axpresslogistic.it2.axpresslogisticapp.acitvities.DocketEnquiry">
 
     <include
         android:id="@+id/app_bar"
