@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "279818340290",
-    "firebase_url": "https://axpress-logistics.firebaseio.com",
-    "project_id": "axpress-logistics",
-    "storage_bucket": "axpress-logistics.appspot.com"
+    "project_number": "431349085650",
+    "firebase_url": "https://axpress-logistics-app-213910.firebaseio.com",
+    "project_id": "axpress-logistics-app-213910",
+    "storage_bucket": "axpress-logistics-app-213910.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:279818340290:android:1740400e6d2cb318",
+        "mobilesdk_app_id": "1:431349085650:android:bf483a1b723f63a3",
         "android_client_info": {
-          "package_name": "com.axpresslogistic.it2.axpresslogisticapp"
+          "package_name": "com.axpresslogistics.it2.axpresslogisticapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "279818340290-u9jt8enh9mletabjj7vjkg4go7cik3ki.apps.googleusercontent.com",
+          "client_id": "431349085650-g502o1tr9ig3rt2p3e1bvg3j4r2nnpvq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.axpresslogistics.it2.axpresslogisticapp",
+            "certificate_hash": "e8f58e1bd6fc430e46878513e0ccce6935474b77"
+          }
+        },
+        {
+          "client_id": "431349085650-p2b4v4r4norfurhuddjdb1mvhhul40qm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDzSsP7MuKPOilZobZ76D7B6vEMK8E6S6c"
+          "current_key": "AIzaSyB-bM-Z0h8nkJvxib85KqYZAWB4utLad44"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431349085650-p2b4v4r4norfurhuddjdb1mvhhul40qm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

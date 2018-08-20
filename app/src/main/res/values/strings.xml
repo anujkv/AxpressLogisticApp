@@ -82,6 +82,7 @@
     <string name="dateofbirth">Date of birth (YYYY/MM/DD)</string>
 
     <string name="google_maps_key">AIzaSyDnk7FNG5b6CKuA9hh3pWsD0PcOn4YKykY</string>
+    <string name="google_maps_keyReleased">AIzaSyBj9ZEu9lGRnQqVHcXhwFkPiz-Ua7nBfQw</string>
     <string name="Businesscard">Business Card Details</string>
     <string name="job_title">Job Title</string>
     <string name="company">Company</string>

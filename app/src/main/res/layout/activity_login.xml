@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.axpresslogistic.it2.axpresslogisticapp.acitvities.LoginActivity">
+    tools:context="com.axpresslogistics.it2.axpresslogisticapp.acitvities.LoginActivity">
 
     <LinearLayout
         android:id="@+id/login_LayoutView"

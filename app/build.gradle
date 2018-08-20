@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
     defaultConfig {
-        applicationId "com.axpresslogistic.it2.axpresslogisticapp"
+        applicationId "com.axpresslogistics.it2.axpresslogisticapp"
         minSdkVersion 23
         targetSdkVersion 27
         versionCode 1
@@ -41,7 +41,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 //    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation  'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
 //    implementation 'com.karumi:dexter:4.2.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
 //    //text recognition libraries

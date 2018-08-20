@@ -301,6 +301,7 @@
                             android:autoSizeMaxTextSize="8dp"
                             android:textSize="14sp"
                             android:editable="false"
+                            android:background="@color/white"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
                 </LinearLayout>
@@ -484,7 +485,7 @@
                             android:id="@+id/txtAddress"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight=".3"
                             android:text="Address"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
@@ -493,17 +494,18 @@
                             android:id="@+id/edtAddress"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".7"
+                            android:layout_weight=".4"
                             android:autoSizeMaxTextSize="8dp"
                             android:editable="false"
                             android:textSize="14sp"
                             android:textColor="@color/primaryTextColor" />
-                        <ImageButton
+
+                        <ImageView
                             android:id="@+id/edtImageButtonAddress"
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_mode_edit_black_24dp"/>
+                            android:src="@drawable/ic_mode_edit_black_24dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -633,7 +635,7 @@
                             android:id="@+id/txt_bankaccount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight=".3"
                             android:text="Bank Account No."
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
@@ -642,16 +644,16 @@
                             android:id="@+id/edtBankAccount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".7"
+                            android:layout_weight=".4"
                             android:editable="false"
                             android:textSize="14sp"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="1563 3654 8521 7896"
                             android:textColor="@color/primaryTextColor" />
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/edtImageButtonBankAccount"
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_mode_edit_black_24dp"/>
                     </LinearLayout>
@@ -679,7 +681,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight=".3"
                             android:text="Bank Name"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
@@ -688,16 +690,16 @@
                             android:id="@+id/edtBankName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".7"
+                            android:layout_weight=".4"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="ICICI BANK"
                             android:editable="false"
                             android:textSize="14sp"
                             android:textColor="@color/primaryTextColor" />
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/edtImageButtonbankName"
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_mode_edit_black_24dp"/>
                     </LinearLayout>
@@ -725,7 +727,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".5"
+                            android:layout_weight=".3"
                             android:text="IFSC Code"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
@@ -734,16 +736,16 @@
                             android:id="@+id/edtBankIFSC"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".7"
+                            android:layout_weight=".4"
                             android:autoSizeMaxTextSize="8dp"
                             android:text="ICIC006244"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
-                        <ImageButton
+                        <ImageView
                             android:id="@+id/edtImageButtonBankIFSC"
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_mode_edit_black_24dp"/>
                     </LinearLayout>

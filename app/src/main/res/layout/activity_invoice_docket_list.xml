@@ -9,7 +9,7 @@
     tools:context=".acitvities.InvoiceDocketActivityList">
     <include
         android:id="@+id/app_bar"
-        layout="@layout/mapapp_toolbar"/>
+        layout="@layout/app_toolbar"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/docketlistRecyclerView"
         android:layout_width="match_parent"
