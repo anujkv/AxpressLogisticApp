@@ -42,7 +42,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 //    implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-core:16.0.0'
-//    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.karumi:dexter:4.2.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
 //    //text recognition libraries
 //    implementation 'com.google.firebase:firebase-core:16.0.1'
@@ -52,7 +52,7 @@ dependencies {
 //    implementation 'com.google.android.gms:play-services-vision:15.0.2'
 //    implementation 'com.rmtheis:tess-two:6.2.0'
 //    //crop image library...
-//    implementation 'com.theartofdev.edmodo:android-image-cropper:2.3.0'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.3.0'
     //circular image view library...
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0'

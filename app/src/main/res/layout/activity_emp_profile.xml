@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteY="81dp">
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_toolbar"/>
+        layout="@layout/mapapp_toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,44 +21,77 @@
             android:background="@color/colorPrimary"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/proflie_cover_page_layoutId"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:background="@drawable/bluedesignbg"
                 android:orientation="vertical">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/user_imageId"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="30dp"
-                    android:background="@mipmap/ic_android_launcher_round_round" />
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@mipmap/ic_android_launcher_round_round"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/useredit_imageId"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_mode_edit_black_24dp"
+                    android:background="@drawable/circular_shape"
+                    app:layout_constraintBottom_toTopOf="@+id/user_nameId"
+                    app:layout_constraintStart_toStartOf="@+id/user_imageId"
+                    app:layout_constraintTop_toTopOf="@+id/user_imageId"
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
                     android:id="@+id/user_nameId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="Username"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_imageId" />
 
                 <TextView
                     android:id="@+id/user_empcodeId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:textAlignment="center"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="@string/employee_id"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16dp"
-                    android:textStyle="italic" />
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_nameId" />
 
-            </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardview_profile_detailsId"

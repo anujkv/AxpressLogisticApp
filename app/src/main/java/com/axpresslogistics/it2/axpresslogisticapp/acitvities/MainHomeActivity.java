@@ -1,5 +1,6 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -21,20 +22,43 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class MainHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,LocationListener {
+//    String USER_URL = URL + "HRMS/app_user";
+    String USER_URL = DEVELOPMENT_URL + "HRMS/app_user";
+
     public static String[] gridViewStrings = {
             "Operations",
             "HRMS",
@@ -57,9 +81,10 @@ public class MainHomeActivity extends AppCompatActivity
     ImageView empImage;
     String employeeID,employeeNAME,empEmail;
     Intent intent;
-    JSONObject jObj;
     LocationManager locationManager;
     double lat,lon;
+    ArrayList<String> list = new ArrayList<String>();
+
 
     @Override
     protected void onStart() {
@@ -91,6 +116,8 @@ public class MainHomeActivity extends AppCompatActivity
                 gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewAdaptor);
 
+        user_permission_checks();
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -99,13 +126,21 @@ public class MainHomeActivity extends AppCompatActivity
                 switch (position) {
 
                     case 0:
-                        startActivity(new Intent(getApplicationContext(),OperationActivity.class));
+                        check("Operations");
+//                        if(list.contains("Operations")){
+//                            startActivity(new Intent(getApplicationContext(),OperationActivity.class));
+//                        }else{
+//                            Toast.makeText(getApplicationContext(),"Sorry, you don't have permission!,contact with IT Department.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
                         break;
                     case 1:
-                        startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
+                        check("hrms");
+
                         break;
                     case 2:
-                        startActivity(new Intent(getApplicationContext(),CRMActivity.class));
+                        check("crm");
+
                         break;
                     case 3:
                         Toast.makeText(getApplicationContext(), "Activities",
@@ -147,6 +182,100 @@ public class MainHomeActivity extends AppCompatActivity
 
     }
 
+    private void check(String call) {
+        if(list.contains(call)){
+            if(call.equals("Operations")){
+                startActivity(new Intent(getApplicationContext(),OperationActivity.class));
+            }
+            else if(call.equals("hrms")){
+                    startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
+                }
+            else if(call.equals("crm")){
+                startActivity(new Intent(getApplicationContext(),CRMActivity.class));
+            }
+        }else{
+            Toast.makeText(getApplicationContext(),"Sorry, you don't have permission!,contact with IT Department.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void user_permission_checks() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        final ApiKey apiKey = new ApiKey();
+        final String key = apiKey.saltStr();
+        final String method = CONSTANT.APP_USER;
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, USER_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject object = new JSONObject(response);
+                    String status = object.optString("status");
+                    String apiResponse = object.optString("key");
+                    Log.e("Module : ",response);
+
+                    if(status.equals(CONSTANT.TRUE) && apiResponse.equals(key)){
+                        progressDialog.dismiss();
+
+                        JSONArray array = object.getJSONArray("Module");
+                        for(int i = 0;i<array.length();i++){
+                            JSONObject jsonObject = array.getJSONObject(i);
+                            String operation = jsonObject.getString("module");
+                            list.add(operation);
+                        }
+                        Log.e("list: ",list.toString());
+                    }else{
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),"credinital not found",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progressDialog.dismiss();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
+                }
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put(CONSTANT.METHOD,method);
+                params.put(CONSTANT.KEY,key);
+                params.put(CONSTANT.EMPID,Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
+                Log.e("method : ",method);
+                Log.e("key : ",key);
+                Log.e("EMPID : ",Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
+
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
 
 
     @Override
@@ -174,11 +303,11 @@ public class MainHomeActivity extends AppCompatActivity
             startActivity(profiledataIntent);
 //            startActivity(new Intent(getApplicationContext(),EmpProfileActivity.class));
         } else if (id == R.id.nav_operations) {
-            startActivity(new Intent(MainHomeActivity.this,OperationActivity.class));
+            check("Operations");
         } else if (id == R.id.nav_hrms) {
-           startActivity(new Intent(MainHomeActivity.this,HrmsActivity.class));
+           check("hrms");
         } else if (id == R.id.nav_crm) {
-            startActivity(new Intent(MainHomeActivity.this,CRMActivity.class));
+            check("crm");
         } else if (id == R.id.nav_activities) {
 //            startActivity(new Intent(getApplicationContext(),HrmsActivity.class));
         } else if (id == R.id.nav_financial) {

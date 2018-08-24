@@ -24,6 +24,7 @@ public class CONSTANT {
 
     //API's URLS:
     public static final String URL = "http://webapi.axpresslogistics.com/api/";
+    public static final String DEVELOPMENT_URL = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
 
     //STRINGS
     public static final String CHOOSE_THE_SEARCH_TYPE = "Choose the search type.";
@@ -79,6 +80,7 @@ public class CONSTANT {
     public static final String VISIT_DATE = "visit_date";
     public static final String INFORMATION_NOT_AVAILABLE = "Information not available!";
     public static final String INVOICE_NO = "invoice_no";
+    public static final String APP_USER = "app_user";
     public static String USER_NAME="uname";
     public static String EMAIL="email";
     public static String EMPID="emplid";

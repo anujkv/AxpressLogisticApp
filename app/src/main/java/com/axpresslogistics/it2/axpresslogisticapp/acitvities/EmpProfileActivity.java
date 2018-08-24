@@ -1,14 +1,10 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -16,7 +12,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,16 +43,20 @@ import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener {
     String UPDATE_URL = URL + "HRMS/hr_approval";
     String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
+
+//    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
+//    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
+
     Boolean FLAG = false;
     EditText edtName, edtEmpCode, edtContactNo, edtContactAltNo, edtDesignation, edtDept, edtBranch,
             edtBranchCode,
@@ -72,8 +72,15 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     Intent intent;
     String  title, method, str;
     JSONObject jObj;
-    ImageButton backbtn_toolbar;
-    private static int RESULT_LOAD_IMAGE = 1;
+    ImageButton backbtn_toolbar,refreshbtn_toolbar;
+    private static int PICK_IMAGE_REQUEST = 1;
+    private static String imageStoragePath;
+
+    public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
+    public static final String GALLERY_DIRECTORY_NAME = "axpress/camera";
+    public static final String IMAGE_EXTENSION = "jpg";
+    public static final int BITMAP_SAMPLE_SIZE = 8;
+    public static final int MEDIA_TYPE_IMAGE = 1;
     Dialog dialog;
 
     @Override
@@ -85,85 +92,67 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         TextView lable = findViewById(R.id.title_toolbar);
         lable.setText(CONSTANT.PROFILE);
         backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
-        backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backbtn_toolbar.setOnClickListener(this);
+        refreshbtn_toolbar = findViewById(R.id.mapbtn_toolbar);
+        refreshbtn_toolbar.setOnClickListener(this);
+        refreshbtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_refresh));
         //Set View with fields..
         setView();
         strEmpCode = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID);
         employee_profileApi();
-
-        userImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent i = new Intent(
-//                        Intent.ACTION_PICK,
-//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(i, RESULT_LOAD_IMAGE);
-                showimage();
-            }
-        });
-    }
-
-    private void showimage() {
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.user_imageview);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Window window = dialog.getWindow();
-        window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        image_view = dialog.findViewById(R.id.image_view);
-        editImage = dialog.findViewById(R.id.editImage);
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.
+                        EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryintent, PICK_IMAGE_REQUEST);
+
             }
         });
-//        userImageView.setText(jsonObject.optString("customer"));
-        dialog.show();
-
+        restoreFromBundle(savedInstanceState);
     }
 
     @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-//        if (requestCode == RESULT_LOAD_IMAGE && requestCode == RESULT_OK && null != intent) {
-//            Uri selectedImage = intent.getData();
-//            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//
-//            Cursor cursor = getContentResolver().query(selectedImage,
-//                    filePathColumn, null, null, null);
-//            cursor.moveToFirst();
-//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            String picturePath = cursor.getString(columnIndex);
-//            cursor.close();
-////            ImageView imageView = findViewById(R.id.user_imageId);
-//            userImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//            image_view.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//        }
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent){
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        if (requestCode == RESULT_LOAD_IMAGE ){
-//            if(null != intent){Log.e("IntentIF : ",intent.toString());}else{Log.e("IntentElse : ", String.valueOf(intent));}
-            Uri selectedImage = intent.getData();
-            String[] filePath = { MediaStore.Images.Media.DATA };
-            Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
-            c.moveToFirst();
-            int columnIndex = c.getColumnIndex(filePath[0]);
-            String picturePath = c.getString(columnIndex);
-            c.close();
-            Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                if(resultCode == RESULT_OK && imageReturnedIntent != null && imageReturnedIntent.getData() != null) {
+                    Uri uri = imageReturnedIntent.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                        userImageView.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+    }
 
-            userImageView.setImageBitmap(thumbnail);
-            image_view.setImageBitmap(thumbnail);
-//            userImageView.setImageBitmap(thumbnail);
-        } else {
-            userImageView.setBackgroundResource(R.drawable.bgimage);
+    private void restoreFromBundle(Bundle savedInstanceState) {
+        Log.e("restoreFromBundle","I M here");
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(KEY_IMAGE_STORAGE_PATH)) {
+                imageStoragePath = savedInstanceState.getString(KEY_IMAGE_STORAGE_PATH);
+                if (!TextUtils.isEmpty(imageStoragePath)) {
+                    if (imageStoragePath.substring(imageStoragePath.lastIndexOf(".")).equals("." + IMAGE_EXTENSION)) {
+                        Log.e("Show me","I M here");
+                        previewCapturedImage();
+                    }
+                }
+            }
+        }
+    }
+
+    private void previewCapturedImage() {
+        try {
+//            imageView.setVisibility(View.VISIBLE);
+
+            Bitmap bitmap = CameraUtils.optimizeBitmap(BITMAP_SAMPLE_SIZE, imageStoragePath);
+
+            userImageView.setImageBitmap(bitmap);
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -179,10 +168,8 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         progressDialog.dismiss();
                         Log.e("Response : ", response);
-
                         try {
                             jObj = new JSONObject(response);
                             String status = jObj.optString(CONSTANT.STATUS);
@@ -193,7 +180,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                                 setValuesInFields();
                                 checkPendingStatus();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -235,19 +221,27 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
 
     private void checkPendingStatus() {
         try {
-            if(jObj.getString("address_status") != null || !jObj.getString("address_status").equals("")){
+            if(jObj.getString("address_status").equals("Pending") ||
+                    jObj.getString("address_status").equals("Approved") ||
+                    jObj.getString("address_status").equals("Unapproved")){
                 txt_address_update_status.setText(jObj.getString("address_status"));
                 txt_address_update_status.setVisibility(View.VISIBLE);
             }else{txt_address_update_status.setVisibility(View.INVISIBLE);}
-            if(jObj.getString("ifsc_code_status") != null || !jObj.getString("ifsc_code_status").equals("")){
+            if(jObj.getString("ifsc_code_status").equals("Pending") ||
+                    jObj.getString("ifsc_code_status").equals("Approved") ||
+                    jObj.getString("ifsc_code_status").equals("Unapproved")){
                 txt_bank_ifsc_update_status.setText(jObj.getString("ifsc_code_status"));
                 txt_bank_ifsc_update_status.setVisibility(View.VISIBLE);
             }else{txt_bank_ifsc_update_status.setVisibility(View.INVISIBLE);}
-            if(jObj.getString("bank_name_status") != null || !jObj.getString("bank_name_status").equals("")){
+            if(jObj.getString("bank_name_status").equals("Pending") ||
+                    jObj.getString("bank_name_status").equals("Approved") ||
+                    jObj.getString("bank_name_status").equals("Unapproved")){
                 txt_bank_name_update_status.setText(jObj.getString("bank_name_status"));
                 txt_bank_name_update_status.setVisibility(View.VISIBLE);
             }else{txt_bank_name_update_status.setVisibility(View.INVISIBLE);}
-            if(jObj.getString("ban_acc_status") != null || !jObj.getString("ban_acc_status").equals("")){
+            if(jObj.getString("ban_acc_status").equals("Pending") ||
+                    jObj.getString("ban_acc_status").equals("Approved") ||
+                    jObj.getString("ban_acc_status").equals("Unapproved")){
                 txt_bank_account_update_status.setText(jObj.getString("ban_acc_status"));
                 txt_bank_account_update_status.setVisibility(View.VISIBLE);
             }else{txt_bank_account_update_status.setVisibility(View.INVISIBLE);}
@@ -288,35 +282,36 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void getValuesFromAPI() {
-        strName = jObj.optString("Employee_Name");
-        strContactNo = jObj.optString("Employee_Contact");
-//        strContactAltNo = jObj.optString("Employee_Contact1");
+        strName = jObj.optString("employee_name");
+        strContactNo = jObj.optString("employee_contact");
+//        strContactAltNo = jObj.optString("employee_contact1");
 
-        strDesignation = jObj.optString("Employee_Designation");
-        strDept = jObj.optString("Employee_Department");
-        strBranch = jObj.optString("Employee_Branch");
-        strBranchCode = jObj.optString("Employee_Branch");
-        strEmail = jObj.optString("Employee_Email");
+        strDesignation = jObj.optString("employee_designation");
+        strDept = jObj.optString("employee_department");
+        strBranch = jObj.optString("employee_branch");
+        strBranchCode = jObj.optString("employee_branch");
+        strEmail = jObj.optString("employee_email");
         //get employee personal info..
-        strFatherName = jObj.optString("Employee_Father_Name");
-        strDOB = jObj.optString("Employee_DOB");
-        strBOP = jObj.optString("Employee_birth_state");
-        strDOJ = jObj.optString("Employee_DOJ");
-        strQulification = jObj.optString("Employee_Qualification");
-        strAdharCard = jObj.optString("Employee_AdhaarNo");
-        strAddress = jObj.optString("Employee_Address");
+        strFatherName = jObj.optString("employee_father_name");
+        strDOB = jObj.optString("employee_dob");
+        strBOP = jObj.optString("employee_birth_state");
+        strDOJ = jObj.optString("employee_doj");
+        strQulification = jObj.optString("employee_qualification");
+        strAdharCard = jObj.optString("employee_aadharno");
+        strAddress = jObj.optString("employee_address");
         //get employee bank/imp info..
-        strPAN = jObj.optString("Employee_PanNo");
-        strUAN = jObj.optString("Employee_UanNO");
-        strESI = jObj.optString("Employee_EsicNo");
-        strBankAccount = jObj.optString("Employee_BanckAC");
-        strBankName = jObj.optString("Employee_BankName");
-        strBankIFSC = jObj.optString("Employee_IfscCode");
+        strPAN = jObj.optString("employee_panno");
+        strUAN = jObj.optString("employee_uanno");
+        strESI = jObj.optString("employee_esicno");
+        strBankAccount = jObj.optString("employee_bankacc");
+        strBankName = jObj.optString("employee_bankname");
+        strBankIFSC = jObj.optString("employee_ifsc");
     }
 
     private void setView() {
         userImageView = findViewById(R.id.user_imageId);
         userImageView.setOnClickListener(this);
+        editImage = findViewById(R.id.useredit_imageId);
         edtName = findViewById(R.id.edtname);
         edtEmpCode = findViewById(R.id.edtEmpCode);
         edtContactNo = findViewById(R.id.edtContactNo);
@@ -394,10 +389,85 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 method = "bank_ifsc";
                 showChangeProfileDialog(title, strBankIFSC, method);
                 break;
+            case R.id.backbtn_toolbar:
+                        finish();
+                break;
+            case R.id.mapbtn_toolbar:
+                refresh();
+                break;
+            case R.id.user_imageId:
+                showimage();
+                break;
         }
     }
 
+    private void showimage() {
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.user_imageview);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        image_view = dialog.findViewById(R.id.image_view);
+        dialog.show();
+    }
 
+//    @Override
+//    public void startActivityForResult(Intent intent, int requestCode) {
+//        super.startActivityForResult(intent, requestCode);
+////        if (requestCode == RESULT_LOAD_IMAGE && requestCode == RESULT_OK && null != intent) {
+////            Uri selectedImage = intent.getData();
+////            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+////
+////            Cursor cursor = getContentResolver().query(selectedImage,
+////                    filePathColumn, null, null, null);
+////            cursor.moveToFirst();
+////            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+////            String picturePath = cursor.getString(columnIndex);
+////            cursor.close();
+//////            ImageView imageView = findViewById(R.id.user_imageId);
+////            userImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+////            image_view.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+////        }
+//
+////        if (requestCode == RESULT_LOAD_IMAGE && null != intent){
+////            Log.e("Intent",intent.toString());
+////            Log.e("Request", String.valueOf(requestCode));
+////            Uri selectedImage = intent.getData();
+////            String[] filePath = { MediaStore.Images.Media.DATA };
+////
+////            assert selectedImage != null;
+////            Log.e("selectedImage",selectedImage.toString());
+////            Log.e("filePath", Arrays.toString(filePath));
+////            Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
+////            if (c != null) {
+////                c.moveToFirst();
+////                int columnIndex = c.getColumnIndex(filePath[0]);
+////                String picturePath = c.getString(columnIndex);
+////                c.close();
+////                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+////                userImageView.setImageBitmap(thumbnail);
+////                image_view.setImageBitmap(thumbnail);
+////            }
+////
+//////            userImageView.setImageBitmap(thumbnail);
+////        }
+//        if(requestCode==PICK_IMAGE_REQUEST && requestCode == RESULT_OK && null != intent) {
+//            Uri selectedImage = intent.getData();
+//            Bitmap bitmap = null;
+//            try {
+//                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+//                Log.e("Bitmap : ",bitmap.toString());
+//            } catch (FileNotFoundException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        }else{
+//            Toast.makeText(getApplicationContext(),"false",Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     public void showChangeProfileDialog(String title, final String field_detail, final String method) {
 
@@ -449,6 +519,11 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                         String status = object.optString(CONSTANT.RESPNOSE);
                     String apiKeyResponse = object.optString(CONSTANT.KEY);
                     String method = object.optString(CONSTANT.METHOD);
+                    Log.e("HR Approval: ",response);
+                    if(response.equals(CONSTANT.TRUE)){
+                        Log.e("response for test",response);
+                        refresh();
+                    }
 
                     if (status.equals(CONSTANT.VERIFIED) && apiKeyResponse.equals(apikey)) {
 //                        for (int i = 0; i < arrlist.length; i++) {
@@ -497,8 +572,12 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 params.put("method",method);
                 params.put("key",apikey);
                 params.put("emplid",strEmpCode);
-                params.put("string",str);
-                params.put("address_type","permanent");
+                params.put("data",str);
+                if(method.equals("address")){
+                    params.put("address_type","permanent");
+                }else{
+                    params.put("address_type","");
+                }
                 Log.e("method : ",method);
                 Log.e("strEmpCode : ",strEmpCode);
                 Log.e("String : ",str);
@@ -507,5 +586,9 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    private void refresh() {
+        employee_profileApi();
     }
 }
