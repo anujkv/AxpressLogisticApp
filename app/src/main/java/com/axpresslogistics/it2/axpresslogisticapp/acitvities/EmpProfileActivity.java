@@ -63,16 +63,18 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
     public static final String GALLERY_DIRECTORY_NAME = "axpress/camera";
 //    String PROFILE_IMAGE_UPLOAD_URL = URL + "HRMS/profile_image_upload";
-    public static final String IMAGE_EXTENSION = "jpg";
-    public static final int BITMAP_SAMPLE_SIZE = 8;
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    private static int PICK_IMAGE_REQUEST = 1;
-    private static String imageStoragePath;
     String UPDATE_URL = URL + "HRMS/hr_approval";
     String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
     //    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
 //    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
     String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/profile_image_upload";
+
+
+    public static final String IMAGE_EXTENSION = "jpg";
+    public static final int BITMAP_SAMPLE_SIZE = 8;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private static int PICK_IMAGE_REQUEST = 1;
+    private static String imageStoragePath;
     Boolean FLAG = false;
     EditText edtName, edtEmpCode, edtContactNo, edtContactAltNo, edtDesignation, edtDept, edtBranch,
             edtBranchCode,
@@ -226,12 +228,13 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
 
         File mypath = new File(directory, "profile.jpg");
         Log.e("mypath", mypath.toString());
-
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();

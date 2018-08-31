@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
-import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,6 +40,7 @@ public class BusinessCard extends AppCompatActivity implements View.OnClickListe
     android.app.AlertDialog dialog;
     private static final int CAMERA_REQUEST = 1888;
     private static final int CAMERA_PERMISSION_CODE = 100;
+    private static final int PICK_IMAGE_REQUEST =1;
 
 
 
@@ -96,6 +96,23 @@ public class BusinessCard extends AppCompatActivity implements View.OnClickListe
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                // Log.d(TAG, String.valueOf(bitmap));
+                Intent intent = new Intent(getApplicationContext(),BusinessCardView.class);
+                intent.putExtra("bitimage",bitmap);
+                startActivity(intent);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
@@ -161,6 +178,35 @@ public class BusinessCard extends AppCompatActivity implements View.OnClickListe
         imageView_camera = alertLayout.findViewById(R.id.imageview_camera);
         imageView_gallery = alertLayout.findViewById(R.id.imageview_gallery);
         imageview_qrcode = alertLayout.findViewById(R.id.imageview_qrcode);
+
+
+        builder = new android.app.AlertDialog.Builder(alertLayout.getContext());
+        builder.setTitle("CHOOSE IMAGE FROM");
+        builder.setView(alertLayout);
+        builder.setCancelable(false);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getBaseContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+            }
+        });
+
+//        checkEmptyFields();
+        dialog = builder.create();
+        dialog.show();
+        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+        ((android.app.AlertDialog) dialog).getButton(android.app.AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+
+
+//----------------------------------CAMERA----------------------------------------------------------
         imageView_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,46 +222,33 @@ public class BusinessCard extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        builder = new android.app.AlertDialog.Builder(alertLayout.getContext());
-        builder.setTitle("Choose image from.");
-        builder.setView(alertLayout);
-        builder.setCancelable(false);
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getBaseContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(final DialogInterface dialog, int which) {
-
-            }
-
-
-        });
-//        checkEmptyFields();
-        dialog = builder.create();
-        dialog.show();
-        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-        ((android.app.AlertDialog) dialog).getButton(android.app.AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-
-
+//----------------------------------GALLERY---------------------------------------------------------
         imageView_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO add gallery functionality...
                 Toast.makeText(getApplicationContext(),"gallery",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+// Show only images, no videos or anything else
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+// Always show the chooser (if there are multiple options available)
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            }
+        });
+//----------------------------------QR CODE---------------------------------------------------------
+        imageview_qrcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO add gallery functionality...
+                Toast.makeText(getApplicationContext(),"qrcode",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -246,15 +279,11 @@ public class BusinessCard extends AppCompatActivity implements View.OnClickListe
             case R.id.mapbtn_toolbar:
                 refresh();
                 break;
-//            case R.id.imageview_camera:
-//
-//                break;
-//            case R.id.imageview_gallery:
-//                break;
         }
     }
 
     private void refresh() {
         //TODO add refresh list here
+        Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
     }
 }

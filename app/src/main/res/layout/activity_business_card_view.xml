@@ -5,16 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".BusinessCardView">
+    tools:context=".acitvities.BusinessCardView">
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_toolbar"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/cardview_viewpager"
+            android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="200dp">
 
 
         </android.support.v4.view.ViewPager>
@@ -77,6 +80,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -101,6 +105,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -126,6 +131,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
 
@@ -149,6 +155,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -173,6 +180,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -197,6 +205,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -222,6 +231,7 @@
                             android:autoSizeMaxTextSize="8dp"
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -246,6 +256,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -270,6 +281,7 @@
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
                             android:maxLines="1"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -293,6 +305,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
+                            android:focusable="false"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>

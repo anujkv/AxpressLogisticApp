@@ -119,10 +119,11 @@
             android:name=".acitvities.InvoiceDocketActivityList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".acitvities.BusinessCard"
-            android:label="@string/title_activity_business_card"
+            android:name=".acitvities.BusinessCardView"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BusinessCardView" />
+        <activity
+            android:name=".acitvities.BusinessCard"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.EmployeeLeaveRequestActivity"
             android:theme="@style/AppTheme.NoActionBar"
