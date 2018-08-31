@@ -2,17 +2,20 @@ package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +40,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CameraUtils;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ImageConverter;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,12 +60,19 @@ import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEV
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
+    public static final String GALLERY_DIRECTORY_NAME = "axpress/camera";
+//    String PROFILE_IMAGE_UPLOAD_URL = URL + "HRMS/profile_image_upload";
+    public static final String IMAGE_EXTENSION = "jpg";
+    public static final int BITMAP_SAMPLE_SIZE = 8;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private static int PICK_IMAGE_REQUEST = 1;
+    private static String imageStoragePath;
     String UPDATE_URL = URL + "HRMS/hr_approval";
     String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
-
-//    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
+    //    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
 //    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
-
+    String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/profile_image_upload";
     Boolean FLAG = false;
     EditText edtName, edtEmpCode, edtContactNo, edtContactAltNo, edtDesignation, edtDept, edtBranch,
             edtBranchCode,
@@ -68,20 +84,13 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     String strName, strEmpCode, strContactNo, strContactAltNo, strDesignation, strDept, strBranch,
             strBranchCode, strEmail, strFatherName, strDOB, strBOP, strDOJ, strQulification, strAdharCard,
             strAddress, strPAN, strUAN, strESI, strBankAccount, strBankName, strBankIFSC;
-    ImageView edtAddressBtn, edtBankAccountBtn, edtBankNameBtn, edtIFSCBtn,userImageView,editImage,image_view;
+    ImageView edtAddressBtn, edtBankAccountBtn, edtBankNameBtn, edtIFSCBtn, userImageView, editImage, image_view;
     Intent intent;
-    String  title, method, str;
+    String title, method, str, profileImage;
     JSONObject jObj;
-    ImageButton backbtn_toolbar,refreshbtn_toolbar;
-    private static int PICK_IMAGE_REQUEST = 1;
-    private static String imageStoragePath;
-
-    public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
-    public static final String GALLERY_DIRECTORY_NAME = "axpress/camera";
-    public static final String IMAGE_EXTENSION = "jpg";
-    public static final int BITMAP_SAMPLE_SIZE = 8;
-    public static final int MEDIA_TYPE_IMAGE = 1;
+    ImageButton backbtn_toolbar, refreshbtn_toolbar;
     Dialog dialog;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +107,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         refreshbtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_refresh));
         //Set View with fields..
         setView();
-        strEmpCode = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID);
+        strEmpCode = Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID);
         employee_profileApi();
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,36 +115,143 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.
                         EXTERNAL_CONTENT_URI);
                 startActivityForResult(galleryintent, PICK_IMAGE_REQUEST);
-
             }
         });
         restoreFromBundle(savedInstanceState);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent){
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
 
-                if(resultCode == RESULT_OK && imageReturnedIntent != null && imageReturnedIntent.getData() != null) {
-                    Uri uri = imageReturnedIntent.getData();
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                        userImageView.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        final String method = "profile_image";
+        ApiKey apiKey = new ApiKey();
+        final String key = apiKey.saltStr();
+        final ImageConverter imageConverter = new ImageConverter();
+
+        if (resultCode == RESULT_OK && imageReturnedIntent != null && imageReturnedIntent.getData() != null) {
+            final ProgressDialog pDialog = new ProgressDialog(this);
+            pDialog.setMessage("Image uploading, Please wait...");
+            pDialog.show();
+            Uri uri = imageReturnedIntent.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+//                        profileImage = imageConverter.BitMapToString(bitmap);
+                profileImage = getStringImage(bitmap);
+                userImageView.setImageBitmap(bitmap);
+                saveToInternalStorage(bitmap);
+
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, PROFILE_IMAGE_UPLOAD_URL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.e("Response Profile", response);
+                                pDialog.dismiss();
+                                try {
+                                    JSONObject object = new JSONObject(response);
+                                    String encodedString = object.getString("profile_image");
+                                    String status = object.optString("status");
+                                    if (status.equals(CONSTANT.TRUE) && !encodedString.isEmpty()) {
+                                        Toast.makeText(getApplication(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplication(), "Some error occurred!", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("response======", "" + error.toString());
+                        if (error instanceof NetworkError) {
+                        } else if (error instanceof ServerError) {
+                            Toast.makeText(getBaseContext(),
+                                    CONSTANT.RESPONSEERROR,
+                                    Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                        } else if (error instanceof ParseError) {
+                        } else if (error instanceof NoConnectionError) {
+                            Toast.makeText(getBaseContext(),
+                                    CONSTANT.INTERNET_ERROR,
+                                    Toast.LENGTH_LONG).show();
+                        } else if (error instanceof TimeoutError) {
+                            Toast.makeText(getBaseContext(),
+                                    CONSTANT.TIMEOUT_ERROR,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        pDialog.dismiss();
                     }
-                }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("profile_image", profileImage);
+                        params.put(CONSTANT.EMPID, strEmpCode);
+                        params.put(CONSTANT.KEY, key);
+                        params.put(CONSTANT.METHOD, method);
+                        Log.e("profile_image", profileImage);
+                        Log.e("strEmpCode", strEmpCode);
+                        Log.e("key", key);
+                        Log.e("method", method);
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequest);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                pDialog.dismiss();
+            }
+        }
+    }
+
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        Log.e("bitmapImage", bitmapImage.toString());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        Log.e("directory", directory.toString());
+
+        File mypath = new File(directory, "profile.jpg");
+        Log.e("mypath", mypath.toString());
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
     }
 
     private void restoreFromBundle(Bundle savedInstanceState) {
-        Log.e("restoreFromBundle","I M here");
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_IMAGE_STORAGE_PATH)) {
                 imageStoragePath = savedInstanceState.getString(KEY_IMAGE_STORAGE_PATH);
                 if (!TextUtils.isEmpty(imageStoragePath)) {
                     if (imageStoragePath.substring(imageStoragePath.lastIndexOf(".")).equals("." + IMAGE_EXTENSION)) {
-                        Log.e("Show me","I M here");
                         previewCapturedImage();
                     }
                 }
@@ -145,12 +261,9 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
 
     private void previewCapturedImage() {
         try {
-//            imageView.setVisibility(View.VISIBLE);
-
             Bitmap bitmap = CameraUtils.optimizeBitmap(BITMAP_SAMPLE_SIZE, imageStoragePath);
-
             userImageView.setImageBitmap(bitmap);
-
+            Log.e("PREVIEW : ", bitmap.toString());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -175,7 +288,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                             String status = jObj.optString(CONSTANT.STATUS);
                             String employee_id = jObj.optString(CONSTANT.EMPID);
 
-                            if(status.equals(CONSTANT.TRUE) && employee_id.equals(strEmpCode)){
+                            if (status.equals(CONSTANT.TRUE) && employee_id.equals(strEmpCode)) {
                                 getValuesFromAPI();
                                 setValuesInFields();
                                 checkPendingStatus();
@@ -205,13 +318,13 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 }
                 progressDialog.dismiss();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put(CONSTANT.METHOD,method);
+                params.put(CONSTANT.METHOD, method);
                 params.put(CONSTANT.KEY, apikey.trim());
-                params.put(CONSTANT.EMPID, Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
+                params.put(CONSTANT.EMPID, Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
                 return params;
             }
         };
@@ -221,38 +334,45 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
 
     private void checkPendingStatus() {
         try {
-            if(jObj.getString("address_status").equals("Pending") ||
+            if (jObj.getString("address_status").equals("Pending") ||
                     jObj.getString("address_status").equals("Approved") ||
-                    jObj.getString("address_status").equals("Unapproved")){
+                    jObj.getString("address_status").equals("Unapproved")) {
                 txt_address_update_status.setText(jObj.getString("address_status"));
                 txt_address_update_status.setVisibility(View.VISIBLE);
-            }else{txt_address_update_status.setVisibility(View.INVISIBLE);}
-            if(jObj.getString("ifsc_code_status").equals("Pending") ||
+            } else {
+                txt_address_update_status.setVisibility(View.INVISIBLE);
+            }
+            if (jObj.getString("ifsc_code_status").equals("Pending") ||
                     jObj.getString("ifsc_code_status").equals("Approved") ||
-                    jObj.getString("ifsc_code_status").equals("Unapproved")){
+                    jObj.getString("ifsc_code_status").equals("Unapproved")) {
                 txt_bank_ifsc_update_status.setText(jObj.getString("ifsc_code_status"));
                 txt_bank_ifsc_update_status.setVisibility(View.VISIBLE);
-            }else{txt_bank_ifsc_update_status.setVisibility(View.INVISIBLE);}
-            if(jObj.getString("bank_name_status").equals("Pending") ||
+            } else {
+                txt_bank_ifsc_update_status.setVisibility(View.INVISIBLE);
+            }
+            if (jObj.getString("bank_name_status").equals("Pending") ||
                     jObj.getString("bank_name_status").equals("Approved") ||
-                    jObj.getString("bank_name_status").equals("Unapproved")){
+                    jObj.getString("bank_name_status").equals("Unapproved")) {
                 txt_bank_name_update_status.setText(jObj.getString("bank_name_status"));
                 txt_bank_name_update_status.setVisibility(View.VISIBLE);
-            }else{txt_bank_name_update_status.setVisibility(View.INVISIBLE);}
-            if(jObj.getString("ban_acc_status").equals("Pending") ||
+            } else {
+                txt_bank_name_update_status.setVisibility(View.INVISIBLE);
+            }
+            if (jObj.getString("ban_acc_status").equals("Pending") ||
                     jObj.getString("ban_acc_status").equals("Approved") ||
-                    jObj.getString("ban_acc_status").equals("Unapproved")){
+                    jObj.getString("ban_acc_status").equals("Unapproved")) {
                 txt_bank_account_update_status.setText(jObj.getString("ban_acc_status"));
                 txt_bank_account_update_status.setVisibility(View.VISIBLE);
-            }else{txt_bank_account_update_status.setVisibility(View.INVISIBLE);}
+            } else {
+                txt_bank_account_update_status.setVisibility(View.INVISIBLE);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void setValuesInFields()
-    {
+    private void setValuesInFields() {
         txtName.setText((strName.trim()));
         txtEmpId.setText(strEmpCode.trim());
         //put employee info value..
@@ -390,7 +510,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 showChangeProfileDialog(title, strBankIFSC, method);
                 break;
             case R.id.backbtn_toolbar:
-                        finish();
+                finish();
                 break;
             case R.id.mapbtn_toolbar:
                 refresh();
@@ -406,8 +526,12 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         dialog.setContentView(R.layout.user_imageview);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Window window = dialog.getWindow();
-        window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
         image_view = dialog.findViewById(R.id.image_view);
+        image_view.setImageBitmap(bitmap);
+        image_view.getAdjustViewBounds();
+        image_view.getMaxWidth();
+        image_view.getMaxHeight();
         dialog.show();
     }
 
@@ -486,11 +610,11 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 postUpdateFunction(str, method);
                 if (method.equals("address")) {
                     txt_address_update_status.setVisibility(View.VISIBLE);
-                }else if(method.equals("bank_account")){
+                } else if (method.equals("bank_account")) {
                     txt_bank_account_update_status.setVisibility(View.VISIBLE);
-                }else if(method.equals("bank_name")){
+                } else if (method.equals("bank_name")) {
                     txt_bank_account_update_status.setVisibility(View.VISIBLE);
-                }else if(method.equals("bank_ifsc")){
+                } else if (method.equals("bank_ifsc")) {
                     txt_bank_account_update_status.setVisibility(View.VISIBLE);
                 }
             }
@@ -516,28 +640,28 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             public void onResponse(String response) {
                 try {
                     JSONObject object = new JSONObject(response);
-                        String status = object.optString(CONSTANT.RESPNOSE);
+                    String status = object.optString(CONSTANT.RESPNOSE);
                     String apiKeyResponse = object.optString(CONSTANT.KEY);
                     String method = object.optString(CONSTANT.METHOD);
-                    Log.e("HR Approval: ",response);
-                    if(response.equals(CONSTANT.TRUE)){
-                        Log.e("response for test",response);
+                    Log.e("HR Approval: ", response);
+                    if (response.equals(CONSTANT.TRUE)) {
+                        Log.e("response for test", response);
                         refresh();
                     }
 
                     if (status.equals(CONSTANT.VERIFIED) && apiKeyResponse.equals(apikey)) {
 //                        for (int i = 0; i < arrlist.length; i++) {
-                            if (method.equals("address")) {
-                                txt_address_update_status.setText("Verified");
-                            }else if(method.equals("bank_account")){
-                                txt_bank_account_update_status.setText("Verified");
-                            }else if(method.equals("bank_name")){
-                                txt_bank_account_update_status.setText("Verified");
-                            }else if(method.equals("bank_ifsc")){
-                                txt_bank_account_update_status.setText("Verified");
-                            }
+                        if (method.equals("address")) {
+                            txt_address_update_status.setText("Verified");
+                        } else if (method.equals("bank_account")) {
+                            txt_bank_account_update_status.setText("Verified");
+                        } else if (method.equals("bank_name")) {
+                            txt_bank_account_update_status.setText("Verified");
+                        } else if (method.equals("bank_ifsc")) {
+                            txt_bank_account_update_status.setText("Verified");
+                        }
 //                        }
-                    } else if(status.equals(CONSTANT.NOT_VERIFIED) && apiKeyResponse.equals(apikey)){
+                    } else if (status.equals(CONSTANT.NOT_VERIFIED) && apiKeyResponse.equals(apikey)) {
                         txt_address_update_status.setText(CONSTANT.PENDING);
                     }
                 } catch (JSONException e) {
@@ -569,18 +693,18 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("method",method);
-                params.put("key",apikey);
-                params.put("emplid",strEmpCode);
-                params.put("data",str);
-                if(method.equals("address")){
-                    params.put("address_type","permanent");
-                }else{
-                    params.put("address_type","");
+                params.put("method", method);
+                params.put("key", apikey);
+                params.put("emplid", strEmpCode);
+                params.put("data", str);
+                if (method.equals("address")) {
+                    params.put("address_type", "permanent");
+                } else {
+                    params.put("address_type", "");
                 }
-                Log.e("method : ",method);
-                Log.e("strEmpCode : ",strEmpCode);
-                Log.e("String : ",str);
+                Log.e("method : ", method);
+                Log.e("strEmpCode : ", strEmpCode);
+                Log.e("String : ", str);
                 return params;
             }
         };

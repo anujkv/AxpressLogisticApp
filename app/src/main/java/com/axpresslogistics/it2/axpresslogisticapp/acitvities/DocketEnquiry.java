@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.adaptor.InvoiceDocketAdaptor;
 import com.axpresslogistics.it2.axpresslogisticapp.model.InvoiceDocketModel;
@@ -41,7 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class DocketEnquiry extends AppCompatActivity {

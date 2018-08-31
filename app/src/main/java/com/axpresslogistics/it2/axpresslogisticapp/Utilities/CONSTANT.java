@@ -1,5 +1,7 @@
 package com.axpresslogistics.it2.axpresslogisticapp.Utilities;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Anuj V on 7/21/2018.
  */
@@ -81,6 +83,7 @@ public class CONSTANT {
     public static final String INFORMATION_NOT_AVAILABLE = "Information not available!";
     public static final String INVOICE_NO = "invoice_no";
     public static final String APP_USER = "app_user";
+    public static final String USER_IMAGE = "profile_image";
     public static String USER_NAME="uname";
     public static String EMAIL="email";
     public static String EMPID="emplid";
@@ -90,6 +93,7 @@ public class CONSTANT {
     public static String EMPLOYEE_DESIGNATION="employee_designation";
     public static String EMPLOYEE_BRANCH="employee_department";
     public static String EMPLOYEE_DEPT="employee_branch";
+    public static String EMPLOYEE_IMAGE="profile_image";
 
     public static String UNEXPECTED_RESPONSE = "Kindly fill correct input format";
     public static String INTERNET_ERROR = "Internet Connection Issue,Kindly Check Your Connectivity";

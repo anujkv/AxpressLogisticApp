@@ -47,9 +47,9 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
         holder.reason.setText(appliedLeaveModel.getReason().trim());
         holder.day.setText(appliedLeaveModel.getDays() + " day");
         holder.type.setText(appliedLeaveModel.getType());
-        if (appliedLeaveModel.getLeave_status().equals("Pending")) {
+        if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pending")) {
             holder.type.setBackgroundColor(Color.YELLOW);
-        } else if (appliedLeaveModel.getLeave_status().equals("approved")) {
+        } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("approved")) {
             holder.type.setBackgroundColor(Color.GREEN);
         } else {
             holder.type.setBackgroundColor(Color.RED);

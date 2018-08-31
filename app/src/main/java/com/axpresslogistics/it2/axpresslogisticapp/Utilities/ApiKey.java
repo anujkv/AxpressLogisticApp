@@ -1,4 +1,4 @@
-package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
+package com.axpresslogistics.it2.axpresslogisticapp.Utilities;
 
 import java.util.Random;
 

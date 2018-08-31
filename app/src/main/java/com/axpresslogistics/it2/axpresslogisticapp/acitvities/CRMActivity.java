@@ -1,32 +1,18 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
 
 public class CRMActivity extends AppCompatActivity {
 
@@ -35,10 +21,12 @@ public class CRMActivity extends AppCompatActivity {
     Intent intent;
 
     public static String[] gridViewStrings = {
-            "Visit Form"
+            "Visit Form",
+            "Business Card"
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_visit,
+            R.drawable.icon_business_card
     };
     GridView gridView;
     Toolbar toolbar;
@@ -70,6 +58,10 @@ public class CRMActivity extends AppCompatActivity {
                     case 0:
                         startActivity(new Intent(CRMActivity.this,
                                 CustomerViewListActivity.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(CRMActivity.this,
+                                BusinessCard.class));
                         break;
                 }
             }

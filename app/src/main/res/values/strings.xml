@@ -177,4 +177,6 @@
         <item>Compensatory Off</item>
         <item>Credit Off</item>
     </string-array>
+    <string name="title_activity_business_card">BusinessCard</string>
+    <string name="approve_leave">Approve Leave</string>
 </resources>

@@ -33,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 
@@ -43,6 +44,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
@@ -54,7 +56,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ProgressBar progressBar;
     LocationManager locationManager;
     double lat, lon;
-    private String url = URL + "HRMS/Get_Login";
+//    private String url = URL + "HRMS/Get_Login";
+    private String url = DEVELOPMENT_URL + "HRMS/Get_Login";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +158,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 object.optString(CONSTANT.EMPLOYEE_DESIGNATION));
                         Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DEPT,
                                 object.optString(CONSTANT.EMPLOYEE_DEPT));
+                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_IMAGE,
+                                object.optString(CONSTANT.USER_IMAGE));
                         Toast.makeText(getApplicationContext(), CONSTANT.WELCOME + username,
                                 LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));

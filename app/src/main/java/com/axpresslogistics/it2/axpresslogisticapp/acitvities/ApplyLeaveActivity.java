@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +36,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 import com.axpresslogistics.it2.axpresslogisticapp.adaptor.AppliedLeaveAdaptor;
@@ -62,6 +62,8 @@ import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL
 public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClickListener {
     String applied_url = URL + "HRMS/leave_entry";
     String leave_info_url = URL + "HRMS/leave_search";
+//    String leave_info_url = DEVELOPMENT_URL + "HRMS/leave_search";
+
     Intent intent;
     String formattedDate;
     CalendarView calendarView, calendarView1;
@@ -378,6 +380,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         StringRequest stringRequest = new StringRequest(Request.Method.POST, applied_url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.e("Response Leave :",response);
                 if (response != null && response.length() > 0) {
                     progressDialog.dismiss();
                     try {

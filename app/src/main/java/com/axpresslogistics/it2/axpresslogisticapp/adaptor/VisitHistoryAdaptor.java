@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,8 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
-import com.axpresslogistics.it2.axpresslogisticapp.acitvities.ApiKey;
-import com.axpresslogistics.it2.axpresslogisticapp.acitvities.CustomerVisitFormActivity;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.model.VisitHistoryModel;
 
 import org.json.JSONArray;

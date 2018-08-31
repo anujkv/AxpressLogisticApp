@@ -1,9 +1,11 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,11 +31,25 @@ public class HrmsActivity extends AppCompatActivity {
             R.drawable.icon_mark,
             R.drawable.icon_activities
     };
+
+    public static String[] gridViewMgrStrings = {
+            "Mark Attendance",
+            "Apply Leave",
+            "Attendence Summary",
+            "Employee Leave Request"
+    };
+    public static int[] gridViewMgrIcons = {
+            R.drawable.icon_mark_attendance,
+            R.drawable.icon_mark,
+            R.drawable.icon_activities,
+            R.drawable.icon_tickets
+    };
     GridView gridView;
     Toolbar toolbar;
     String jsonString;
     JSONObject jObj;
     Intent intent;
+    GridViewHrms gridViewHrms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +67,13 @@ public class HrmsActivity extends AppCompatActivity {
             }
         });
         gridView = findViewById(R.id.gridhrms);
-        gridView = findViewById(R.id.gridhrms);
-
-        GridViewHrms gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewStrings, gridViewIcons);
+        String id = Preferences.getPreference(HrmsActivity.this,CONSTANT.EMPID);
+        if(id.equals("1561")){
+            Log.e("emplid : ",Preferences.getPreference(HrmsActivity.this,CONSTANT.EMPID));
+            gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewMgrStrings, gridViewMgrIcons);
+        }else{
+            gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewStrings, gridViewIcons);
+        }
         gridView.getColumnWidth();
         gridView.getVerticalSpacing();
         gridView.setAdapter(gridViewHrms);
@@ -70,6 +91,9 @@ public class HrmsActivity extends AppCompatActivity {
                         break;
                     case 2:
                         startActivity(new Intent(HrmsActivity.this, AttendanceSummaryActivity.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(HrmsActivity.this, EmployeeLeaveRequestActivity.class));
                         break;
                 }
             }

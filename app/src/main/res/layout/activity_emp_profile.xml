@@ -603,7 +603,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
-                            android:text="xxxxxxuuuu"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -628,7 +627,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="UAN96325874"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -653,7 +651,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="ESI365214"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
@@ -681,7 +678,6 @@
                             android:editable="false"
                             android:textSize="14sp"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="1563 3654 8521 7896"
                             android:textColor="@color/primaryTextColor" />
                         <ImageView
                             android:id="@+id/edtImageButtonBankAccount"
@@ -725,7 +721,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".4"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="ICICI BANK"
                             android:editable="false"
                             android:textSize="14sp"
                             android:textColor="@color/primaryTextColor" />
@@ -771,7 +766,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight=".4"
                             android:autoSizeMaxTextSize="8dp"
-                            android:text="ICIC006244"
                             android:textSize="14sp"
                             android:editable="false"
                             android:textColor="@color/primaryTextColor" />
