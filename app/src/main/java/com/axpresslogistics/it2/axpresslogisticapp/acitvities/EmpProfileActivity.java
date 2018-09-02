@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,7 +29,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -44,7 +47,11 @@ import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CameraUtils;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ImageConverter;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ImageUtils;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.VolleySingleton;
+import com.axpresslogistics.it2.axpresslogisticapp.VolleySupport.VolleyMultipartRequest;
+import com.bumptech.glide.request.RequestOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +60,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,6 +101,9 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     ImageButton backbtn_toolbar, refreshbtn_toolbar;
     Dialog dialog;
     Bitmap bitmap;
+    byte[] image=null;
+    boolean hasImage=false;
+    int GALLERY = 1234;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,100 +125,173 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.
-                        EXTERNAL_CONTENT_URI);
-                startActivityForResult(galleryintent, PICK_IMAGE_REQUEST);
+//                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.
+//                        EXTERNAL_CONTENT_URI);
+//                startActivityForResult(galleryintent, PICK_IMAGE_REQUEST);
+
+                showPictureDialog();
             }
         });
         restoreFromBundle(savedInstanceState);
+    }
+
+    private void showPictureDialog() {
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Profile Image");
+        String[] pictureDialogItems = {
+                "Select From Gallery",
+                "Take  A Picture"};
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                               // dispatchTakePictureIntent();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+
+        startActivityForResult(galleryIntent, GALLERY);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
 
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        final String method = "profile_image";
-        ApiKey apiKey = new ApiKey();
-        final String key = apiKey.saltStr();
-        final ImageConverter imageConverter = new ImageConverter();
 
-        if (resultCode == RESULT_OK && imageReturnedIntent != null && imageReturnedIntent.getData() != null) {
-            final ProgressDialog pDialog = new ProgressDialog(this);
-            pDialog.setMessage("Image uploading, Please wait...");
-            pDialog.show();
-            Uri uri = imageReturnedIntent.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                        profileImage = imageConverter.BitMapToString(bitmap);
-                profileImage = getStringImage(bitmap);
+        if (requestCode == GALLERY) {
+            if (imageReturnedIntent!=null){
+                Uri uri = imageReturnedIntent.getData();
+                String path = getRealPathFromURI(uri);
+                Preferences.setPreference(EmpProfileActivity.this, CONSTANT.imagePath,path);
+                Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                image = byteArrayOutputStream.toByteArray();
                 userImageView.setImageBitmap(bitmap);
-                saveToInternalStorage(bitmap);
-
-
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, PROFILE_IMAGE_UPLOAD_URL,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.e("Response Profile", response);
-                                pDialog.dismiss();
-                                try {
-                                    JSONObject object = new JSONObject(response);
-                                    String encodedString = object.getString("profile_image");
-                                    String status = object.optString("status");
-                                    if (status.equals(CONSTANT.TRUE) && !encodedString.isEmpty()) {
-                                        Toast.makeText(getApplication(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(getApplication(), "Some error occurred!", Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("response======", "" + error.toString());
-                        if (error instanceof NetworkError) {
-                        } else if (error instanceof ServerError) {
-                            Toast.makeText(getBaseContext(),
-                                    CONSTANT.RESPONSEERROR,
-                                    Toast.LENGTH_LONG).show();
-                        } else if (error instanceof AuthFailureError) {
-                        } else if (error instanceof ParseError) {
-                        } else if (error instanceof NoConnectionError) {
-                            Toast.makeText(getBaseContext(),
-                                    CONSTANT.INTERNET_ERROR,
-                                    Toast.LENGTH_LONG).show();
-                        } else if (error instanceof TimeoutError) {
-                            Toast.makeText(getBaseContext(),
-                                    CONSTANT.TIMEOUT_ERROR,
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        pDialog.dismiss();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("profile_image", profileImage);
-                        params.put(CONSTANT.EMPID, strEmpCode);
-                        params.put(CONSTANT.KEY, key);
-                        params.put(CONSTANT.METHOD, method);
-                        Log.e("profile_image", profileImage);
-                        Log.e("strEmpCode", strEmpCode);
-                        Log.e("key", key);
-                        Log.e("method", method);
-                        return params;
-                    }
-                };
-                RequestQueue requestQueue = Volley.newRequestQueue(this);
-                requestQueue.add(stringRequest);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                pDialog.dismiss();
+                hasImage = true;
             }
         }
+
+    }
+    private String getRealPathFromURI(Uri contentURI) {
+        Cursor cursor = EmpProfileActivity.this.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
+        }
+    }
+
+
+    void UpdateProfile(final String user_name,final String mobile,final String user_id)
+    {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        final String method = CONSTANT.EMPLOYEE_METHOD;
+        final ApiKey apiKey = new ApiKey();
+        final String apikey = apiKey.saltStr();
+        final String url="";
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, 
+                PROFILE_IMAGE_UPLOAD_URL, new Response.Listener<NetworkResponse>() {
+
+            @Override
+            public void onResponse(NetworkResponse response) {
+                String responseString = new String(response.data);
+                Log.d("ERROR",responseString+"ERROR");
+                progressDialog.dismiss();
+                try {
+                    JSONObject object = new JSONObject(responseString);
+                  //TODO response codeyour respone is on
+                    Log.d("TEXT",responseString);
+
+                } catch (JSONException e) {
+                    Log.e("JSONException",e.getMessage());
+                    progressDialog.dismiss();
+
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.INTERNET_ERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
+                }
+                progressDialog.dismiss();
+            }
+        })
+
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("method","updateProfile");
+                params.put("app_key", "@menos@123543");
+                params.put("name", user_name);
+                params.put("mobile_no",mobile);
+                params.put("user_id",user_id);
+                /*for (int i = 0; i < params.size(); i++) {
+                    System.out.println("Params!:"+ new Gson().toJson(params.get(i)));
+
+                }*/
+
+              /*  for (Map.Entry<String,String> entry : params.entrySet()) {
+                    String key = entry.getKey();
+                    String value = entry.getValue();
+                    Log.d("PARAMETERkuyiuS", value);
+                    // do stuff
+                }*/
+                //Log.d("PARAMETERS",params.get(0).toString());
+                //Log.d("Params",new Gson().toJson(params.get(0)));
+
+                return params;
+
+
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                if (hasImage){
+                    params.put("profile_image", new DataPart("User_profile.jpg", image, "image/jpeg"));
+                }
+                return params;
+            }
+        };
+
+        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                40000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(EmpProfileActivity.this).addToRequestQueue(multipartRequest);
+
+
     }
 
     public String getStringImage(Bitmap bmp) {
@@ -538,63 +622,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         dialog.show();
     }
 
-//    @Override
-//    public void startActivityForResult(Intent intent, int requestCode) {
-//        super.startActivityForResult(intent, requestCode);
-////        if (requestCode == RESULT_LOAD_IMAGE && requestCode == RESULT_OK && null != intent) {
-////            Uri selectedImage = intent.getData();
-////            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-////
-////            Cursor cursor = getContentResolver().query(selectedImage,
-////                    filePathColumn, null, null, null);
-////            cursor.moveToFirst();
-////            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-////            String picturePath = cursor.getString(columnIndex);
-////            cursor.close();
-//////            ImageView imageView = findViewById(R.id.user_imageId);
-////            userImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-////            image_view.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-////        }
-//
-////        if (requestCode == RESULT_LOAD_IMAGE && null != intent){
-////            Log.e("Intent",intent.toString());
-////            Log.e("Request", String.valueOf(requestCode));
-////            Uri selectedImage = intent.getData();
-////            String[] filePath = { MediaStore.Images.Media.DATA };
-////
-////            assert selectedImage != null;
-////            Log.e("selectedImage",selectedImage.toString());
-////            Log.e("filePath", Arrays.toString(filePath));
-////            Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
-////            if (c != null) {
-////                c.moveToFirst();
-////                int columnIndex = c.getColumnIndex(filePath[0]);
-////                String picturePath = c.getString(columnIndex);
-////                c.close();
-////                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-////                userImageView.setImageBitmap(thumbnail);
-////                image_view.setImageBitmap(thumbnail);
-////            }
-////
-//////            userImageView.setImageBitmap(thumbnail);
-////        }
-//        if(requestCode==PICK_IMAGE_REQUEST && requestCode == RESULT_OK && null != intent) {
-//            Uri selectedImage = intent.getData();
-//            Bitmap bitmap = null;
-//            try {
-//                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-//                Log.e("Bitmap : ",bitmap.toString());
-//            } catch (FileNotFoundException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }else{
-//            Toast.makeText(getApplicationContext(),"false",Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
 
     public void showChangeProfileDialog(String title, final String field_detail, final String method) {
 
@@ -718,4 +746,91 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     private void refresh() {
         employee_profileApi();
     }
-}
+
+
+  //  void imageupload{
+
+
+      /*  final String method = "profile_image";
+        ApiKey apiKey = new ApiKey();
+        final String key = apiKey.saltStr();
+        final ImageConverter imageConverter = new ImageConverter();
+
+        if (resultCode == RESULT_OK && imageReturnedIntent != null && imageReturnedIntent.getData() != null) {
+            final ProgressDialog pDialog = new ProgressDialog(this);
+            pDialog.setMessage("Image uploading, Please wait...");
+            pDialog.show();
+            Uri uri = imageReturnedIntent.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+//                        profileImage = imageConverter.BitMapToString(bitmap);
+                profileImage = getStringImage(bitmap);
+                userImageView.setImageBitmap(bitmap);
+                saveToInternalStorage(bitmap);
+
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, PROFILE_IMAGE_UPLOAD_URL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.e("Response Profile", response);
+                                pDialog.dismiss();
+                                try {
+                                    JSONObject object = new JSONObject(response);
+                                    String encodedString = object.getString("profile_image");
+                                    String status = object.optString("status");
+                                    if (status.equals(CONSTANT.TRUE) && !encodedString.isEmpty()) {
+                                        Toast.makeText(getApplication(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplication(), "Some error occurred!", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("response======", "" + error.toString());
+                        if (error instanceof NetworkError) {
+                        } else if (error instanceof ServerError) {
+                            Toast.makeText(getBaseContext(),
+                                    CONSTANT.RESPONSEERROR,
+                                    Toast.LENGTH_LONG).show();
+                        } else if (error instanceof AuthFailureError) {
+                        } else if (error instanceof ParseError) {
+                        } else if (error instanceof NoConnectionError) {
+                            Toast.makeText(getBaseContext(),
+                                    CONSTANT.INTERNET_ERROR,
+                                    Toast.LENGTH_LONG).show();
+                        } else if (error instanceof TimeoutError) {
+                            Toast.makeText(getBaseContext(),
+                                    CONSTANT.TIMEOUT_ERROR,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        pDialog.dismiss();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("profile_image", profileImage);
+                        params.put(CONSTANT.EMPID, strEmpCode);
+                        params.put(CONSTANT.KEY, key);
+                        params.put(CONSTANT.METHOD, method);
+                        Log.e("profile_image", profileImage);
+                        Log.e("strEmpCode", strEmpCode);
+                        Log.e("key", key);
+                        Log.e("method", method);
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequest);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                pDialog.dismiss();
+            }*/
+    }
+

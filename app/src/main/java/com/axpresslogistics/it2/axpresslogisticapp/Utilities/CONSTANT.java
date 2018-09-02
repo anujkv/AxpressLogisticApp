@@ -99,5 +99,6 @@ public class CONSTANT {
     public static String INTERNET_ERROR = "Internet Connection Issue,Kindly Check Your Connectivity";
     public static String TIMEOUT_ERROR = "Oops. Timeout error!";
     public static final String RESPONSEERROR ="Unexpected Response Error" ;
+    public static String imagePath="imagePath";
 
 }
