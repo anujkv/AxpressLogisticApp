@@ -280,7 +280,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
-                            android:maxLines="1"
+                            android:inputType="textMultiLine"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -366,6 +366,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".5"
+                            android:layout_gravity="center"
                             android:text="@string/other_employee_name"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />

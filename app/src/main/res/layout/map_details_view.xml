@@ -47,7 +47,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:autoSizeMaxTextSize="8dp"
-            android:text="12563"
             android:textSize="14sp"
             android:editable="false"
             android:textColor="@color/primaryTextColor" />
@@ -72,7 +71,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:autoSizeMaxTextSize="8dp"
-            android:text="SH-1234-32"
             android:textSize="14sp"
             android:editable="false"
             android:textColor="@color/primaryTextColor" />
@@ -97,7 +95,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:autoSizeMaxTextSize="8dp"
-            android:text="Shimla"
             android:textSize="14sp"
             android:editable="false"
             android:textColor="@color/primaryTextColor" />
@@ -146,7 +143,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:autoSizeMaxTextSize="8dp"
-            android:text="Jaipur"
             android:textSize="14sp"
             android:editable="false"
             android:textColor="@color/primaryTextColor" />
@@ -171,7 +167,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:autoSizeMaxTextSize="8dp"
-            android:text="23 jun 2018 03:15:25 AM"
             android:textSize="14sp"
             android:editable="false"
             android:textColor="@color/primaryTextColor" />
@@ -198,7 +193,6 @@
             android:autoSizeMaxTextSize="8dp"
             android:editable="false"
             android:textSize="14sp"
-            android:text="Gurgaon corporate office"
             android:textColor="@color/primaryTextColor" />
     </LinearLayout>
 
@@ -213,6 +207,7 @@
             android:layout_weight=".5"
             android:text="Receive At Destination"
             android:textColor="@color/primaryTextColor"
+            android:layout_gravity="center"
             android:textSize="14sp" />
 
         <EditText
@@ -221,7 +216,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:autoSizeMaxTextSize="8dp"
-            android:text="GGN-CO"
             android:textSize="14sp"
             android:editable="false"
             android:textColor="@color/primaryTextColor" />
@@ -247,7 +241,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:autoSizeMaxTextSize="8dp"
-            android:text="xxyyzz"
             android:textSize="14sp"
             android:editable="false"
             android:textColor="@color/primaryTextColor" />

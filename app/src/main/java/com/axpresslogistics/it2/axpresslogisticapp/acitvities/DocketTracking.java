@@ -193,7 +193,6 @@ public class DocketTracking extends AppCompatActivity implements View.OnClickLis
                             object.getString("challan_to"),
                             object.getString("vehicle_no"),
                             object.getString("status"));
-
                     challanList.add(docketTracking);
                 }
 

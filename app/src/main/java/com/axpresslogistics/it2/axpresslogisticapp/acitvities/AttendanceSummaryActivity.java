@@ -136,6 +136,7 @@ public class AttendanceSummaryActivity extends AppCompatActivity implements View
                     JSONObject jsonObject = new JSONObject(response);
                     status = jsonObject.optString("status");
                     String apikeyResponse = jsonObject.optString("key");
+                    Log.e("Response ",response);
 
                     if (status.equals("true") && apikeyResponse.equals(apikey)) {
                         mapMonth(currentMonthPosition);

@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10,
                     5, (LocationListener) this);
-
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -89,7 +88,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));
         }
-
     }
 
     private void getLocationPermissionCheck() {
@@ -148,12 +146,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         username = object.optString(CONSTANT.EMPLOYEE_NAME);
                         Preferences.setPreference(LoginActivity.this, CONSTANT.USER_NAME,
                                 object.optString(CONSTANT.EMPLOYEE_NAME));
+                        Preferences.setPreference(LoginActivity.this,  CONSTANT.EMPLOYEE_BRANCH,
+                                object.optString( CONSTANT.EMPLOYEE_BRANCH));
                         Preferences.setPreference(LoginActivity.this, CONSTANT.EMPID,
                                 object.optString("Emplid"));
                         Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,
                                 object.optString(CONSTANT.EMAIL));
-                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_BRANCH,
-                                object.optString(CONSTANT.EMPLOYEE_BRANCH));
                         Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DESIGNATION,
                                 object.optString(CONSTANT.EMPLOYEE_DESIGNATION));
                         Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DEPT,
@@ -183,10 +181,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Toast.LENGTH_LONG).show();
                 } else if (error instanceof AuthFailureError) {
                 } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(getBaseContext(),
                             CONSTANT.TIMEOUT_ERROR,
@@ -202,6 +196,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 params.put("pwd", password.getText().toString().trim());
                 params.put(CONSTANT.METHOD, method);
                 params.put(CONSTANT.KEY, apikey.trim());
+
+                Log.e("username",employee_code.getText().toString().trim());
+                Log.e("pwd", password.getText().toString().trim());
+                Log.e(CONSTANT.METHOD, method);
+                Log.e(CONSTANT.KEY, apikey.trim());
                 return params;
             }
         };

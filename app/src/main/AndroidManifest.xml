@@ -126,8 +126,37 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.EmployeeLeaveRequestActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/approve_leave"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acitvities.AddBrokerActivity"
+            android:label="@string/add_broker"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acitvities.BrokerList"
+            android:label="@string/broker_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acitvities.MarketVehicleRequest"
+            android:label="@string/title_activity_market_vehicle_request"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acitvities.AddVehicleReq"
+            android:label="@string/title_activity_add_vehicle_request"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".acitvities.VehicalApproval"
+            android:label="@string/title_vehicle_approval"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".acitvities.VehicletrackingMap"
+            android:label="@string/title_vehicle_tracking"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
+
 </manifest>

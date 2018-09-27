@@ -59,7 +59,7 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
     ImageButton backbtn_toolbar, addbtn_toolbar,searchbtn_toolbar;
     ImageView refresh_image;
     RecyclerView recyclerViewVisit,search_recyclerView;
-    List<VisitModel> visitModelList,tempVisitModelList;
+    List<VisitModel> visitModelList;
     VisitAdaptor adapter;
     List<SearchInputListModel> inputListModelList;
     SearchInputListAdaptor setAdapter;
@@ -155,10 +155,6 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
                             Toast.LENGTH_LONG).show();
                 } else if (error instanceof AuthFailureError) {
                 } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(getBaseContext(),
                             CONSTANT.TIMEOUT_ERROR,

@@ -27,6 +27,8 @@ public class CONSTANT {
     //API's URLS:
     public static final String URL = "http://webapi.axpresslogistics.com/api/";
     public static final String DEVELOPMENT_URL = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
+//    public static final String URL = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
+
 
     //STRINGS
     public static final String CHOOSE_THE_SEARCH_TYPE = "Choose the search type.";
@@ -82,8 +84,52 @@ public class CONSTANT {
     public static final String VISIT_DATE = "visit_date";
     public static final String INFORMATION_NOT_AVAILABLE = "Information not available!";
     public static final String INVOICE_NO = "invoice_no";
+    public static final String INFO_NO = "1962";
+
     public static final String APP_USER = "app_user";
-    public static final String USER_IMAGE = "profile_image";
+    public static final String IMAGE_UPLOADED_SUCCESSFULLY = "image uploaded,successfully!";
+    public static final String IMAGE_UPLOADED_UNSUCCESSFULL = "image uploaded unsuccessful!";
+    public static final String ADD_BROKER = "Add Broker";
+    public static final String BROKER_LIST = "Broker List";
+    public static final String CHOOSE_THE_STATUS_TYPE = "Choose the status type";
+    public static final String ENTER_THE_BROKER_NAME = "Enter the broker name";
+    public static final String MANDATORY = "Mandatory *";
+    public static final String broker_name = "broker_name";
+    public static final String CONTACT = "contact";
+    public static final String EMAIL_ID = "email_id";
+    public static final String ADDRESS = "address";
+    public static final String ACTIVE_STATUS = "active_status";
+    public static final String ADD_BROKER_SUCCESSFULLY = "Add broker successfully";
+    public static final String UNSUCCESSFULLY = "unsuccessfully";
+    public static final String BROKER_CODE = "broker_code";
+    public static final String ALREADY_EXISTS = "Already Exists";
+    public static final String REJECT = "Reject";
+    public static final String APPROVE = "Approve";
+    public static final String SERVER_ERROR = "Internal Server Error";
+    public static final String AUTH_FAILURE_ERROR = "Authorization Failure Error";
+    public static final String PARSE_ERROR = "Parse Error";
+    public static final String VEHICLE_TRACKING = "Vehicle Tracking";
+    public static final String VEHICLE_TRACKING_MAP = "Vehicle Tracking Map";
+    public static final String VEHICLE_APPROVAL_LIST = "Vehicle Approval List";
+    public static final String APPROVED = "Approved";
+    public static final String B = "B";
+    public static final String L = "L";
+    public static final String BROKER_STATUS = "broker_status";
+    public static final String SUPERVISIOR_ID = "supervisior_emplid";
+    public static String already_exist = "already_exist";
+    public static final String ENTER_THE_CONTACT_NO = "Enter the contact no";
+    public static final String ENTER_THE_CORRECT_CONTACT_NO = "Enter the correct contact no";
+    public static final String ENTER_THE_EMAIL = "Enter the email id";
+    public static final String ENTER_THE_CORRECT_EMAIL = "Enter the correct email id";
+    public static final String ENTER_THE_ADDRESS = "Enter the address";
+    public static final String MARKET_VEHICLE_REQ = "Market Vehicle Req.";
+    public static final String ADD_VEHICLE = "Add Vehicle";
+    public static final String ADD_VEHICLE_REQ = "Add Vehicle REQ.";
+    public static final String VEHICLE_APPROVAL = "Vehicle Approval";
+    public static final String HIDE = "Hide";
+    public static final String SHOW = "Show";
+    public static final String DATA_UPDATE = "Data Updated";
+    public static final String ADD_VEHICLE_SUCCESSFULLY = "Vehicle add, Successfully";
     public static String USER_NAME="uname";
     public static String EMAIL="email";
     public static String EMPID="emplid";
@@ -91,14 +137,15 @@ public class CONSTANT {
     public static String BRANCH="branch";
     public static String DEPT="dept";
     public static String EMPLOYEE_DESIGNATION="employee_designation";
-    public static String EMPLOYEE_BRANCH="employee_department";
-    public static String EMPLOYEE_DEPT="employee_branch";
-    public static String EMPLOYEE_IMAGE="profile_image";
+    public static String EMPLOYEE_BRANCH="employee_branch";
+    public static String EMPLOYEE_BRANCHCAPITAL="Employee_Branch";
+    public static String EMPLOYEE_DEPT="employee_department";
+    public static final String USER_IMAGE = "profile_image";
+    public static String imagePath="imagePath";
 
     public static String UNEXPECTED_RESPONSE = "Kindly fill correct input format";
     public static String INTERNET_ERROR = "Internet Connection Issue,Kindly Check Your Connectivity";
     public static String TIMEOUT_ERROR = "Oops. Timeout error!";
-    public static final String RESPONSEERROR ="Unexpected Response Error" ;
-    public static String imagePath="imagePath";
-
+    public static final String RESPONSEERROR ="Unexpected Response Error";
+    public static String alternate_contact = "alternate_contact";
 }

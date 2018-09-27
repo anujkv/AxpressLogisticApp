@@ -75,7 +75,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
     //    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
 //    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
-    String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/profile_image_upload";
+    String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/image";
 
 
     public static final String IMAGE_EXTENSION = "jpg";
@@ -125,9 +125,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent galleryintent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.
-//                        EXTERNAL_CONTENT_URI);
-//                startActivityForResult(galleryintent, PICK_IMAGE_REQUEST);
 
                 showPictureDialog();
             }
@@ -175,15 +172,16 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 Uri uri = imageReturnedIntent.getData();
                 String path = getRealPathFromURI(uri);
                 Preferences.setPreference(EmpProfileActivity.this, CONSTANT.imagePath,path);
-                Bitmap bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
+                bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                 image = byteArrayOutputStream.toByteArray();
+                Log.e("setimage",path);
                 userImageView.setImageBitmap(bitmap);
                 hasImage = true;
+                UpdateProfile(bitmap,path);
             }
         }
-
     }
     private String getRealPathFromURI(Uri contentURI) {
         Cursor cursor = EmpProfileActivity.this.getContentResolver().query(contentURI, null, null, null, null);
@@ -197,32 +195,41 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    void UpdateProfile(final String user_name,final String mobile,final String user_id)
+    void UpdateProfile(final Bitmap bitmap, final String path)
     {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        final String method = CONSTANT.EMPLOYEE_METHOD;
+        final String method = "image";
         final ApiKey apiKey = new ApiKey();
-        final String apikey = apiKey.saltStr();
-        final String url="";
-        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, 
+        final String key = apiKey.saltStr();
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST,
                 PROFILE_IMAGE_UPLOAD_URL, new Response.Listener<NetworkResponse>() {
 
             @Override
             public void onResponse(NetworkResponse response) {
                 String responseString = new String(response.data);
-                Log.d("ERROR",responseString+"ERROR");
+                Log.e("ERROR",responseString+"ERROR");
                 progressDialog.dismiss();
                 try {
                     JSONObject object = new JSONObject(responseString);
                   //TODO response codeyour respone is on
                     Log.d("TEXT",responseString);
+                    String status = object.optString(CONSTANT.STATUS);
+                    if(status.equals(CONSTANT.TRUE)){
+                        Toast.makeText(getApplicationContext(),CONSTANT.IMAGE_UPLOADED_SUCCESSFULLY,
+                                Toast.LENGTH_SHORT).show();
+                        Preferences.setPreference(EmpProfileActivity.this, CONSTANT.USER_IMAGE,path);
+                        userImageView.setImageBitmap(bitmap);
+                    }
 
                 } catch (JSONException e) {
                     Log.e("JSONException",e.getMessage());
-                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),CONSTANT.IMAGE_UPLOADED_UNSUCCESSFULL,
+                            Toast.LENGTH_SHORT).show();
+                    Log.e("ERRORcatch",responseString+"catch");
 
+                    progressDialog.dismiss();
                 }
             }
         }, new Response.ErrorListener() {
@@ -236,15 +243,13 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                             Toast.LENGTH_LONG).show();
                 } else if (error instanceof AuthFailureError) {
                 } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(getBaseContext(),
                             CONSTANT.TIMEOUT_ERROR,
                             Toast.LENGTH_LONG).show();
                 }
+                Log.e("ERROR",error+"ERROR");
+
                 progressDialog.dismiss();
             }
         })
@@ -253,35 +258,17 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("method","updateProfile");
-                params.put("app_key", "@menos@123543");
-                params.put("name", user_name);
-                params.put("mobile_no",mobile);
-                params.put("user_id",user_id);
-                /*for (int i = 0; i < params.size(); i++) {
-                    System.out.println("Params!:"+ new Gson().toJson(params.get(i)));
-
-                }*/
-
-              /*  for (Map.Entry<String,String> entry : params.entrySet()) {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-                    Log.d("PARAMETERkuyiuS", value);
-                    // do stuff
-                }*/
-                //Log.d("PARAMETERS",params.get(0).toString());
-                //Log.d("Params",new Gson().toJson(params.get(0)));
-
+                params.put("method",method);
+                params.put("key", key);
+                params.put("emplid", strEmpCode);
                 return params;
-
-
             }
 
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 if (hasImage){
-                    params.put("profile_image", new DataPart("User_profile.jpg", image, "image/jpeg"));
+                    params.put("image", new DataPart(strEmpCode+".jpg", image, "image/jpeg"));
                 }
                 return params;
             }
@@ -369,7 +356,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
-                        Log.e("Response : ", response);
+                        Log.e("Response multi : ", response);
                         try {
                             jObj = new JSONObject(response);
                             String status = jObj.optString(CONSTANT.STATUS);
@@ -746,91 +733,4 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     private void refresh() {
         employee_profileApi();
     }
-
-
-  //  void imageupload{
-
-
-      /*  final String method = "profile_image";
-        ApiKey apiKey = new ApiKey();
-        final String key = apiKey.saltStr();
-        final ImageConverter imageConverter = new ImageConverter();
-
-        if (resultCode == RESULT_OK && imageReturnedIntent != null && imageReturnedIntent.getData() != null) {
-            final ProgressDialog pDialog = new ProgressDialog(this);
-            pDialog.setMessage("Image uploading, Please wait...");
-            pDialog.show();
-            Uri uri = imageReturnedIntent.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                        profileImage = imageConverter.BitMapToString(bitmap);
-                profileImage = getStringImage(bitmap);
-                userImageView.setImageBitmap(bitmap);
-                saveToInternalStorage(bitmap);
-
-
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, PROFILE_IMAGE_UPLOAD_URL,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.e("Response Profile", response);
-                                pDialog.dismiss();
-                                try {
-                                    JSONObject object = new JSONObject(response);
-                                    String encodedString = object.getString("profile_image");
-                                    String status = object.optString("status");
-                                    if (status.equals(CONSTANT.TRUE) && !encodedString.isEmpty()) {
-                                        Toast.makeText(getApplication(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(getApplication(), "Some error occurred!", Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("response======", "" + error.toString());
-                        if (error instanceof NetworkError) {
-                        } else if (error instanceof ServerError) {
-                            Toast.makeText(getBaseContext(),
-                                    CONSTANT.RESPONSEERROR,
-                                    Toast.LENGTH_LONG).show();
-                        } else if (error instanceof AuthFailureError) {
-                        } else if (error instanceof ParseError) {
-                        } else if (error instanceof NoConnectionError) {
-                            Toast.makeText(getBaseContext(),
-                                    CONSTANT.INTERNET_ERROR,
-                                    Toast.LENGTH_LONG).show();
-                        } else if (error instanceof TimeoutError) {
-                            Toast.makeText(getBaseContext(),
-                                    CONSTANT.TIMEOUT_ERROR,
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        pDialog.dismiss();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("profile_image", profileImage);
-                        params.put(CONSTANT.EMPID, strEmpCode);
-                        params.put(CONSTANT.KEY, key);
-                        params.put(CONSTANT.METHOD, method);
-                        Log.e("profile_image", profileImage);
-                        Log.e("strEmpCode", strEmpCode);
-                        Log.e("key", key);
-                        Log.e("method", method);
-                        return params;
-                    }
-                };
-                RequestQueue requestQueue = Volley.newRequestQueue(this);
-                requestQueue.add(stringRequest);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                pDialog.dismiss();
-            }*/
     }
-

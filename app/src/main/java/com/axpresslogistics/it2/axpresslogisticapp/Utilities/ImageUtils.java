@@ -51,7 +51,6 @@ public class ImageUtils {
             } else {
                 actualHeight = (int) maxHeight;
                 actualWidth = (int) maxWidth;
-
             }
         }
 
@@ -66,7 +65,6 @@ public class ImageUtils {
             bmp = BitmapFactory.decodeFile(imagePath, options);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
-
         }
         try {
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_4444);

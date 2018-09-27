@@ -2,6 +2,7 @@ package com.axpresslogistics.it2.axpresslogisticapp.adaptor;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -10,10 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
+import com.axpresslogistics.it2.axpresslogisticapp.acitvities.AddBrokerActivity;
 import com.axpresslogistics.it2.axpresslogisticapp.acitvities.ApplyLeaveActivity;
 import com.axpresslogistics.it2.axpresslogisticapp.model.AppliedLeaveModel;
 
@@ -26,6 +29,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     Context context;
     List<AppliedLeaveModel> appliedLeaveModelList;
     Dialog dialog;
+    Button edit_btn = null;
 
     public AppliedLeaveAdaptor(Context context, List<AppliedLeaveModel> appliedLeaveModelList) {
         this.context = context;
@@ -51,8 +55,13 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
             holder.type.setBackgroundColor(Color.YELLOW);
         } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("approved")) {
             holder.type.setBackgroundColor(Color.GREEN);
-        } else {
+        }  else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pushback")) {
+            holder.type.setBackgroundColor(Color.DKGRAY);
+        } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("unapproved") ||
+                appliedLeaveModel.getLeave_status().toLowerCase().equals("rejected") ) {
             holder.type.setBackgroundColor(Color.RED);
+        }else{
+            holder.type.setBackgroundColor(Color.WHITE);
         }
         String to = dateConversion(appliedLeaveModel.getTo());
         holder.to.setText(to);
@@ -84,17 +93,37 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
                 if(appliedLeaveModel.getLeave_status().equals("approved")){
                     txt_leaveType.setBackgroundColor(Color.GREEN);
                     txt_leaveType.setTextColor(Color.RED);
-                }else if (appliedLeaveModel.getLeave_status().equals("Pending")){
+                }else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pending")){
                     txt_leaveType.setBackgroundColor(Color.YELLOW);
                     txt_leaveType.setTextColor(Color.RED);
-                }else if (appliedLeaveModel.getLeave_status().equals("Unapproved")){
+                }else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("unapproved")){
                     txt_leaveType.setBackgroundColor(Color.RED);
                     txt_leaveType.setTextColor(Color.WHITE);
+                }else if (appliedLeaveModel.getLeave_status().equals("pushback")){
+                    txt_leaveType.setBackgroundColor(Color.DKGRAY);
+                    txt_leaveType.setTextColor(Color.WHITE);
+                    edit_btn.setVisibility(View.VISIBLE);
                 }
                 txt_totalDays.setText(appliedLeaveModel.getDays() + " Day");
                 txt_appliedDate.setText(appliedLeaveModel.getApplied_date().substring(0,11));
                 txt_leaveType.setText(appliedLeaveModel.getType().trim());
                 dialog.show();
+            }
+        });
+
+        edit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO edit functionality...
+                Context context = v.getContext();
+                Intent intent = new Intent(context, ApplyLeaveActivity.class);
+                intent.putExtra("from",appliedLeaveModel.getFrom());
+                intent.putExtra("from",appliedLeaveModel.getFrom());
+                intent.putExtra("from",appliedLeaveModel.getFrom());
+                intent.putExtra("from",appliedLeaveModel.getFrom());
+                intent.putExtra("method","pushbach_data");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
     }

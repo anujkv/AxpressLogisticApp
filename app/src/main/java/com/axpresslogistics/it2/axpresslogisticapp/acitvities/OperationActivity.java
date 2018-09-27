@@ -1,6 +1,5 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,10 +16,18 @@ import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 
 public class OperationActivity extends AppCompatActivity {
     public static String[] gridViewStrings = {
-            CONSTANT.DOCKET_INVOICE
+            CONSTANT.DOCKET_INVOICE,
+            CONSTANT.ADD_BROKER,
+            CONSTANT.ADD_VEHICLE_REQ,
+            CONSTANT.VEHICLE_APPROVAL,
+            CONSTANT.VEHICLE_TRACKING_MAP,
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_operation,
+            R.drawable.icon_add_customer,
+            R.drawable.icon_vehicale,
+            R.drawable.icon_approval,
+            R.drawable.icon_vehicale,
     };
     GridView gridView;
     Toolbar toolbar;
@@ -29,7 +36,7 @@ public class OperationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
-        Toolbar toolbar =  findViewById(R.id.app_bar);
+        Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
         lable.setText(CONSTANT.OPERATION);
@@ -54,7 +61,19 @@ public class OperationActivity extends AppCompatActivity {
                 switch (position) {
 
                     case 0:
-                        startActivity(new Intent(getApplicationContext(),DocketEnquiry.class));
+                        startActivity(new Intent(getApplicationContext(), DocketEnquiry.class));
+                        break;
+                    case 1:
+                        startActivity(new Intent(getApplicationContext(), BrokerList.class));
+                        break;
+                    case 2:
+                        startActivity(new Intent(getApplicationContext(), AddVehicleReq.class));
+                        break;
+                    case 3:
+                        startActivity(new Intent(getApplicationContext(), MarketVehicleRequest.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(getApplicationContext(), VehicletrackingMap.class));
                         break;
                 }
             }

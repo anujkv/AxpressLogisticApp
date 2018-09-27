@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/mapapp_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/addVehicleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardview_vehicle_detailsId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:divider="@color/colorPrimaryDark"
+                android:dividerHeight="5dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="24dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/vehicle_req"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edt_vehicle_req_code"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:editable="false"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/req_date"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edt_vehicle_req_date"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:editable="false"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/from_branch"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edt_from_branch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:editable="false"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/to_branch"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edt_to_branch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/loading_point"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edt_loading_point"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/unloading_point"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edt_unloading_point"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:inputType="phone"
+                            android:maxLines="1"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/requirement_type"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/spinner_req_type"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:editable="false"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/goods_type"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/spinner_goods_type"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:editable="false"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/actual_weight_of_goods"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/edt_actual_wt_of_goods"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="@string/vehicle_type"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+
+                        <EditText
+                            android:id="@+id/spinner_vehicle_type"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:editable="false"
+                            android:maxLines="1"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/broker_list_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

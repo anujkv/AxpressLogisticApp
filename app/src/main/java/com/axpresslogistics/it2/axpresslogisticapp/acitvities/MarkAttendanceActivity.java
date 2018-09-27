@@ -4,14 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -37,8 +36,10 @@ import com.android.volley.toolbox.Volley;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
-import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ImageConverter;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +53,6 @@ import static android.widget.Toast.LENGTH_SHORT;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class MarkAttendanceActivity extends AppCompatActivity implements LocationListener {
-    private String url = URL + "HRMS/Attendance";
     static final int REQUEST_LOCATION = 1;
     public static TextView txtUsername, txtUserId, txtDateTime, txtDept, txtBranch, txtDesignation;
     String strUsername, strUserId, strDateTime, strDept, strBranch, strDesignation, formattedDate;
@@ -63,8 +63,8 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
     Intent intent;
     Boolean FLAG = true;
     ProgressBar progressBar;
-    String locationPref = "1962";
-
+    String locationPref = CONSTANT.INFO_NO;
+    byte[] image = null;
     //Longitude and latitude Information...
     double company_lat = 28.4995993;
     double company_long = 77.0738609;
@@ -72,8 +72,8 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
     double nearbycompany_max_lat = 28.4997600;
     double nearbycompany_min_long = 77.0753330;
     double nearbycompany_max_long = 77.0739430;
-
     double lat, lon;
+    private String url = URL + "HRMS/Attendance";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,10 +128,9 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
         if ((nearbycompany_max_lat >= lat && lat >= nearbycompany_min_lat) || (nearbycompany_max_long
                 >= lon && lon >= nearbycompany_min_long)) {
             pushAttendance();
-        }else if(strUserId.equals(locationPref)){
+        } else if (strUserId.equals(locationPref)) {
             pushAttendance();
-        }
-        else {
+        } else {
             String lat_long = "Latitude = " + lat + " Longitude = " + lon;
             String NOT_IN_LOCATION = "You are not in Office Location";
             Toast.makeText(getApplicationContext(), NOT_IN_LOCATION, Toast.LENGTH_SHORT).show();
@@ -183,10 +182,6 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
                             Toast.LENGTH_LONG).show();
                 } else if (error instanceof AuthFailureError) {
                 } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(getBaseContext(),
                             CONSTANT.TIMEOUT_ERROR,
@@ -223,24 +218,28 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
     }
 
     private void getValuesFromPref() {
-        strUsername = Preferences.getPreference(getApplicationContext(),CONSTANT.USER_NAME);
-        strUserId = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID);
-        strDesignation = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPLOYEE_BRANCH.trim());
-        strDept = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPLOYEE_DESIGNATION.trim());
-        strBranch = Preferences.getPreference(getApplicationContext(),CONSTANT.EMPLOYEE_DEPT.trim());
-
-        ImageConverter imageConverter = new ImageConverter();
-        String image_profile = Preferences.getPreference(MarkAttendanceActivity.this, CONSTANT.EMPLOYEE_IMAGE);
-        Bitmap image = imageConverter.StringToBitMap("0x89504E470D0A1A0A0000000D49484452000000AB000000B808060000009CAA1C2C000000017352474200AECE1CE90000000467414D410000B18F0BFC6105000000097048597300000EC300000EC301C76FA8640000DB98494441");
-        userImage.setImageBitmap(image);
+        strUsername = Preferences.getPreference(getApplicationContext(), CONSTANT.USER_NAME);
+        strUserId = Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID);
+        strDesignation = Preferences.getPreference(getApplicationContext(), CONSTANT.EMPLOYEE_DESIGNATION.trim());
+        strDept = Preferences.getPreference(getApplicationContext(), CONSTANT.EMPLOYEE_DEPT.trim());
+        strBranch = Preferences.getPreference(getApplicationContext(), CONSTANT.EMPLOYEE_BRANCH.trim());
+        String image_profile = Preferences.getPreference(getApplicationContext(), CONSTANT.USER_IMAGE.trim());
+        Log.e("URL : ", image_profile);
+        Log.e("strUsername : ", strUsername);
+        Log.e("strUserId : ", strUserId);
+        Log.e("strDesignation : ", strDesignation);
+        Log.e("strDept : ", strDept);
+        Log.e("strBranch : ", strBranch);
+        Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE )
+                .networkPolicy(NetworkPolicy.NO_CACHE).into(userImage);
     }
 
     private void setValuesInFields() {
         txtUsername.setText(strUsername.trim());
         txtUserId.setText(strUserId.trim());
         txtBranch.setText(strBranch.trim());
-        txtDesignation.setText(strDept.trim());
-        txtDept.setText(strDesignation.trim());
+        txtDesignation.setText(strDesignation.trim());
+        txtDept.setText(strDept.trim());
         attendance_btn.setText("Submit Attendance");
     }
 

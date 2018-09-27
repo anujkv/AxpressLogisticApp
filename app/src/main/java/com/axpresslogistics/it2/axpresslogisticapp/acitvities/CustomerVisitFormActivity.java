@@ -349,45 +349,34 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     }
 
     private void save() {
-//        if(businessType.equals("customer_visit_search")){
             getdata(compVisitID, this.businessType);
             validation();
-//            Log.e("search ===comVISIT_ID",companyUniqueIDF);
-//            Log.e("search ===businessType",businessType);
-//            pushonDBNew(businessType, companyUniqueIDF);
-//        } else if (businessType.equals("customer_visit_add")) {
-//
-////            Log.e("add ===comVISIT_ID",compVisitID);
-////            Log.e("add ===businessType",businessType);
-//            getdata(compVisitID, this.businessType);
-//            validation(this.businessType);
-//        }
 
     }
 
     private void validation() {
-        if(str_customer_name == null || str_customer_name.equals("")){
-            edt_customer_name.setHint("Mandatory *");
+        if(str_customer_name == null || str_customer_name.equals(CONSTANT.BLANK)){
+            edt_customer_name.setHint(CONSTANT.MANDATORY);
             edt_customer_name.setHintTextColor(Color.RED);
         }
-        if(str_visitdate == null || str_visitdate.equals("")){
-            edt_visitdate.setHint("Mandatory *");
+        if(str_visitdate == null || str_visitdate.equals(CONSTANT.BLANK)){
+            edt_visitdate.setHint(CONSTANT.MANDATORY);
             edt_visitdate.setHintTextColor(Color.RED);
         }if(str_visit_for == null || str_visit_for.equals("Select")){
             spinner_visit_for.setBackgroundColor(Color.RED);
         }if(str_visit_type == null || str_visit_type.equals("Select")){
             spinner_visit_type.setBackgroundColor(Color.RED);
-        }if(strContactPerson == null || strContactPerson.equals("")){
-            edtContactPerson.setHint("Mandatory *");
+        }if(strContactPerson == null || strContactPerson.equals(CONSTANT.BLANK)){
+            edtContactPerson.setHint(CONSTANT.MANDATORY);
             edtContactPerson.setHintTextColor(Color.RED);
-        }if(strContactNo == null || strContactNo.equals("")){
-            edtContactNo.setHint("Mandatory *");
+        }if(strContactNo == null || strContactNo.equals(CONSTANT.BLANK)){
+            edtContactNo.setHint(CONSTANT.MANDATORY);
             edtContactNo.setHintTextColor(Color.RED);
-        }if(str_product_name == null || strContactNo.equals("")){
-            edt_product_name.setHint("Mandatory *");
+        }if(str_product_name == null || strContactNo.equals(CONSTANT.BLANK)){
+            edt_product_name.setHint(CONSTANT.MANDATORY);
             edt_product_name.setHintTextColor(Color.RED);
         }if(strRemark == null || strRemark.equals("")){
-            edtRemark.setHint("Mandatory *");
+            edtRemark.setHint(CONSTANT.MANDATORY);
             edtRemark.setHintTextColor(Color.RED);
         }else{
             pushonDBNew(businessType,companyUniqueIDF);
@@ -532,10 +521,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                             Toast.LENGTH_LONG).show();
                 } else if (error instanceof AuthFailureError) {
                 } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(getBaseContext(),
                             CONSTANT.TIMEOUT_ERROR,
@@ -557,7 +542,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     params.put("key", apikey);
                     params.put("emplid", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
                     params.put("customer", str_customer_name);
-                    params.put("visit_date", "13-08-2018 14:10:32");
+                    params.put("visit_date", str_visitdate.trim());
                     params.put("visit_for", str_visit_for);
                     params.put("visit_type", str_visit_type);
                     params.put("contact_person", strContactPerson);
@@ -589,7 +574,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     params.put("key", apikey);
                     params.put("emplid", Preferences.getPreference(CustomerVisitFormActivity.this, CONSTANT.EMPID));
                     params.put("customer", str_customer_name);
-                    params.put("visit_date", "13-08-2018 14:10:32");
+                    params.put("visit_date", str_visitdate.trim());
                     params.put("visit_for", str_visit_for);
                     params.put("visit_type", str_visit_type);
                     params.put("contact_person", strContactPerson);

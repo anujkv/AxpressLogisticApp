@@ -1,6 +1,7 @@
 package com.axpresslogistics.it2.axpresslogisticapp.adaptor;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
+import com.axpresslogistics.it2.axpresslogisticapp.acitvities.BusinessCardView;
 
 public class SlideAdaptor extends PagerAdapter {
 
@@ -17,6 +19,9 @@ public class SlideAdaptor extends PagerAdapter {
     private ImageView imageView;
 
     private LayoutInflater inflater;
+    byte[] image = null;
+    Bitmap bitmap;
+    BusinessCardView businessCardViewInstance = new BusinessCardView();
 
     public SlideAdaptor(Context context, ImageView imageView) {
         this.context = context;

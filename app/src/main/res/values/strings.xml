@@ -177,6 +177,103 @@
         <item>Compensatory Off</item>
         <item>Credit Off</item>
     </string-array>
+
+    //string for requirement point...
+    <string name="requirement_points_prompt">Select</string>
+    <string-array name="requirement_points_arrays">
+        <item>Select</item>
+        <item>FTL</item>
+        <item>PTL</item>
+    </string-array>
+
+    //string for touching point...
+    <string name="touching_points_prompt">Select</string>
+    <string-array name="touching_points_arrays">
+        <item>Select</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    //string for goods type...
+    <string name="goods_type_prompt">Select</string>
+    <string-array name="goods_type_arrays">
+        <item>Select</item>
+        <item>Light Weight</item>
+        <item>Heavy Weight</item>
+    </string-array>
+
+    //string for vehicle type...
+    <string name="vehicle_type_prompt">Select</string>
+    <string-array name="vehicle_type_arrays">
+        <item>Select</item>
+        <item>500-Volvo</item>
+        <item>800-Eco</item>
+        <item>3000-PICK UP</item>
+        <item>800-TATA ACE</item>
+        <item>1800-TATA 407</item>
+        <item>3500-14 FEET(open)</item>
+        <item>5000-17 FEET(open)</item>
+        <item>7500-19 FEET(open)</item>
+        <item>7000-20 FEET(close)</item>
+        <item>15000-22 FEET(open)</item>
+        <item>7000-22 FEET(close)</item>
+        <item>20000-24 FEET(open)</item>
+        <item>8200-24 FEET(close)</item>
+        <item>7000-32 FEET SXL(close)</item>
+        <item>15000-32 FEET MXL(close)</item>
+        <item>8000-JCB 28 FEET</item>
+        <item>20000-Platform Trailor 40 FEET</item>
+    </string-array>
+
+
     <string name="title_activity_business_card">BusinessCard</string>
     <string name="approve_leave">Approve Leave</string>
+    <string name="add_broker">Broker Details</string>
+    <string name="broker_list">Broker List</string>
+    <string name="broker_name">Broker Name</string>
+    <string name="broker_id">Broker Id</string>
+    <string name="alternate_contact_no">Alternate Contact No</string>
+    <string name="bank_account_no">Account No.</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="pan_no">PAN No.</string>
+    <string name="name_on_pancard">Name on PAN Card</string>
+    <string name="ifsc_code">IFSC Code</string>
+    <string name="created_by">Created By</string>
+    <string name="created_on">Created On</string>
+    <string name="active">Active</string>
+    <string name="inactive">InActive</string>
+    <string name="title_activity_market_vehicle_request">MarketVehicleRequest</string>
+    <string name="vehicle_req">Request Code</string>
+    <string name="from_branch">From branch</string>
+    <string name="slash"> / </string>
+    <string name="to_branch">To branch</string>
+    <string name="loading_point">Loading point</string>
+    <string name="title_activity_add_vehicle_request">Add Market Vehicle Req.</string>
+    <string name="unloading_point">Unloading point</string>
+    <string name="requirement_type">Requirement Type</string>
+    <string name="touching_point">Touching point</string>
+    <string name="goods_type">Good\'s type</string>
+    <string name="actual_weight_of_goods">Actual Wt. of Good\'s</string>
+    <string name="vehicle_type">Vehicle type</string>
+    <string name="vehicle_capacity">Vehicle capacity</string>
+    <string name="broker_selection">Broker selection</string>
+    <string name="broker_rate">Broker rate</string>
+    <string name="advance">Advance</string>
+    <string name="broker_code">Broker code</string>
+    <string name="req_date">Request date</string>
+    <string name="mini_rate">Minimum Rate</string>
+    <string name="show">Show</string>
+    <string name="title_vehicle_approval">Vehicle Approval</string>
+    <string name="approve">Approve</string>
+    <string name="title_vehicle_tracking">Vehicle Tracking</string>
+    <string name="Vehicle_no">Vehicle No.</string>
+    <string name="colon"> : </string>
+    <string name="reject">Reject</string>
+    <string name="denied">denied</string>
+    <string name="id">ID</string>
+    <string name="approve_status">Approval Status</string>
+    <string name="pushback">Push Back</string>
+    <string name="edit">Edit</string>
 </resources>

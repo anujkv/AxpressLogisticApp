@@ -27,6 +27,13 @@
     <dimen name="primary_button_width">250dp</dimen>
     <dimen name="profilesize">150dp</dimen>
     <dimen name="margin5dp">5dp</dimen>
+    <dimen name="margin10dp">10dp</dimen>
+    <dimen name="margin16dp">16dp</dimen>
+    <dimen name="margin8dp">8dp</dimen>
+    <dimen name="margin2dp">2dp</dimen>
+    <dimen name="margin12dp">12dp</dimen>
+    <dimen name="margin12sp">12sp</dimen>
+    <dimen name="margin13sp">13sp</dimen>
     <integer name="max_width_short_month_label_dp">240</integer>
     <integer name="max_height_mini_view_dp">180</integer>
     <integer name="max_height_mini_view_1_row_dp">120</integer>

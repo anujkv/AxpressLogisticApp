@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/details_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".3"
+                        android:layout_height="wrap_content"
+                        android:text="@string/id"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin5dp"
+                        android:layout_marginRight="@dimen/margin5dp"
+                        android:text="@string/colon"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/leave_id"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/margin12dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".3"
+                        android:layout_height="wrap_content"
+                        android:text="@string/employee_id"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin5dp"
+                        android:layout_marginRight="@dimen/margin5dp"
+                        android:text="@string/colon"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/emplid"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/margin12dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".3"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin5dp"
+                        android:layout_marginRight="@dimen/margin5dp"
+                        android:text="@string/colon"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/applier_name"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/margin12dp"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".3"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Leave_type"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin5dp"
+                        android:layout_marginRight="@dimen/margin5dp"
+                        android:text="@string/colon"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/leave_type"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/margin12dp"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".3"
+                        android:layout_height="wrap_content"
+                        android:text="@string/from"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin5dp"
+                        android:layout_marginRight="@dimen/margin5dp"
+                        android:text="@string/colon"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/leave_from"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/margin12dp"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".3"
+                        android:text="@string/to"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin5dp"
+                        android:layout_marginRight="@dimen/margin5dp"
+                        android:text="@string/colon"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/leave_to"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/margin12dp"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight=".3"
+                        android:layout_height="wrap_content"
+                        android:text="@string/days"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin5dp"
+                        android:layout_marginRight="@dimen/margin5dp"
+                        android:text="@string/colon"
+                        android:textSize="@dimen/margin12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/leave_days"
+                        android:layout_width="0dp"
+                        android:layout_weight=".7"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/margin12dp"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/approval_clicks_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".2"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/approve_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/approve"
+                    android:textSize="8sp" />
+
+                <Button
+                    android:id="@+id/denied_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/denied"
+                    android:textSize="8sp" />
+                <Button
+                android:id="@+id/pushback_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pushback"
+                android:textSize="8sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".2"
+                android:layout_height="wrap_content"
+                android:text="@string/leave_reason_edt"
+                android:textSize="@dimen/margin12dp"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin5dp"
+                android:layout_marginRight="@dimen/margin5dp"
+                android:text="@string/colon"
+                android:textSize="@dimen/margin12dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/leave_reason"
+                android:layout_width="0dp"
+                android:layout_weight=".65"
+                android:editable="false"
+                android:focusable="false"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textSize="@dimen/margin13sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="wrap_content"
+                android:text="@string/approve_status"
+                android:textSize="@dimen/margin12dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin5dp"
+                android:layout_marginRight="@dimen/margin5dp"
+                android:text="@string/colon"
+                android:textSize="@dimen/margin12dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/approval_status"
+                android:layout_width="0dp"
+                android:layout_weight=".7"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/margin12dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight=".3"
+                android:layout_height="wrap_content"
+                android:text="@string/remark"
+                android:textSize="@dimen/margin12dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin5dp"
+                android:layout_marginRight="@dimen/margin5dp"
+                android:text="@string/colon"
+                android:textSize="@dimen/margin12dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+
+
+
+            <EditText
+                android:id="@+id/approval_comment"
+                android:layout_width="0dp"
+                android:layout_weight=".7"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textSize="@dimen/margin12dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</android.support.v7.widget.CardView>

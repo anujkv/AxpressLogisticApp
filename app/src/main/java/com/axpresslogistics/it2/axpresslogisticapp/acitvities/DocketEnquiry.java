@@ -214,19 +214,19 @@ public class DocketEnquiry extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),method + CONSTANT.NOT_FOUND,
                                 Toast.LENGTH_SHORT).show();
                         submit_docket_btn.setClickable(true);
-                        progressDialog.show();
+                        progressDialog.dismiss();
 
                     }
                     else{
                         Toast.makeText(getApplicationContext(),CONSTANT.SOMETHING_WENT_WRONG,
                                 Toast.LENGTH_SHORT).show();
                         submit_docket_btn.setClickable(true);
-                        progressDialog.show();
+                        progressDialog.dismiss();
 
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    progressDialog.show();
+                    progressDialog.dismiss();
 
                 }
             }
@@ -251,7 +251,7 @@ public class DocketEnquiry extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
                 submit_docket_btn.setClickable(true);
-                progressDialog.show();
+                progressDialog.dismiss();
             }
         }) {
             @Override

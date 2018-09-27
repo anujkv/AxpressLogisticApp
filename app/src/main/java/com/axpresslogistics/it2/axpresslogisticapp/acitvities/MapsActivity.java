@@ -36,11 +36,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.TIMEOUT_ERROR;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,View.OnClickListener {
-    private String url = CONSTANT.URL + "Operations/map";
-//    private String url = "http://192.168.1.7/webapi.axpresslogistics.com/api/Operations/map";
+//    private String url = CONSTANT.URL + "Operations/map";
+    private String url = DEVELOPMENT_URL + "Operations/map";
 
     private GoogleMap mMap;
     ImageButton backbtn_toolbar,mapbtn_toolbar;
@@ -98,9 +99,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         location  = object.optString("location");
                         origin  = object.optString("origin");
                         destination  = object.optString("destination");
-                        start_time  = object.optString("start_time");
-                        current_location  = object.optString("current_location");
-                        receive_at_destination  = object.optString("recevied_at_destination");
+                        start_time  = object.optString("record_datetime");
+                        current_location  = object.optString(str_latitude + ", "+ str_longitude);
+                        receive_at_destination  = object.optString("received_at_dest");
 //
                         getlocation();
 
