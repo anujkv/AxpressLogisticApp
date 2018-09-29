@@ -18,6 +18,7 @@ import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.model.BrokerApprovalModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAdaptor.AdaptorHolder> {
@@ -25,11 +26,15 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
     List<BrokerApprovalModel> approvalModels;
     Boolean FLAG = false;
     int item_position,selection_code;
+    String broker_code,broker_name,broker_rate,approved_status;
 
 
     public BrokerApprovalAdaptor(Context context, List<BrokerApprovalModel> approvalModels) {
         this.context = context;
         this.approvalModels = approvalModels;
+    }
+
+    public BrokerApprovalAdaptor() {
     }
 
     @NonNull
@@ -87,23 +92,63 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
             @Override
             public void onClick(View v) {
                 item_position = holder.getAdapterPosition();
+                broker_code = model.getBroker_code();
+                broker_name = model.getBroker_name();
+                broker_rate = model.getBroker_rate();
+
                 if(model.getLoggedin_member().equals("L")){
+                    approved_status = "Approved";
                     approvedBtnClickedL(holder,model);
                 }else{
+                    approved_status = "BApproved";
                     approvedBtnClickedB(holder,model);
                 }
                 Toast.makeText(context.getApplicationContext(),
-                        model.getBroker_code() + "/ " + item_position,
+                        model.getBroker_code() + "/ " + item_position + "/ "+broker_code,
                         Toast.LENGTH_SHORT).show();
+
+                clicked_details();
+//                Context context = v.getContext();
+//                Intent intent = new Intent(context, VehicalApproval.class);
+//                intent.putExtra("broker_code",broker_code);
+//                intent.putExtra("broker_name",broker_name);
+//                intent.putExtra("broker_rate",broker_rate);
+//                intent.putExtra("approved_status",approved_status);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(intent);
+
             }
         });
         holder.btn_broker_selectionReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rejectBtnClickerL(holder,model,position);
+                broker_code = model.getBroker_code();
+                broker_name = model.getBroker_name();
+                broker_rate = model.getBroker_rate();
+                approved_status = "Reject";
+                clicked_details();
+//                Context context = v.getContext();
+//                Intent intent = new Intent(context, VehicalApproval.class);
+//                intent.putExtra("broker_code",broker_code);
+//                intent.putExtra("broker_name",broker_name);
+//                intent.putExtra("broker_rate",broker_rate);
+//                intent.putExtra("approved_status",approved_status);
+//                context.startActivity(intent);
             }
         });
     }
+
+    public List<String> clicked_details() {
+        List<String> list = new ArrayList<String>();
+            list.add(broker_code);
+            list.add(broker_name);
+            list.add(broker_rate);
+            list.add(approved_status);
+            Log.e("LIST", String.valueOf(list));
+            return list;
+    }
+
 
     private void rejectBtnClickerL(AdaptorHolder holder, BrokerApprovalModel model, int position) {
         holder.approved_btn.setTextColor(Color.WHITE);

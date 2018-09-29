@@ -71,10 +71,10 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
     public static final String GALLERY_DIRECTORY_NAME = "axpress/camera";
 //    String PROFILE_IMAGE_UPLOAD_URL = URL + "HRMS/profile_image_upload";
-    String UPDATE_URL = URL + "HRMS/hr_approval";
-    String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
-    //    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
-//    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
+//    String UPDATE_URL = URL + "HRMS/hr_approval";
+//    String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
+        String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
+    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
     String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/image";
 
 

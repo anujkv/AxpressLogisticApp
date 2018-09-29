@@ -43,7 +43,14 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="10dp">
-
+                <TextView
+                    android:id="@+id/txtid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/id"
+                    android:textSize="12sp"
+                    android:maxLines="2"
+                    android:visibility="gone"/>
                 <TextView
                     android:id="@+id/txtreason"
                     android:layout_width="wrap_content"

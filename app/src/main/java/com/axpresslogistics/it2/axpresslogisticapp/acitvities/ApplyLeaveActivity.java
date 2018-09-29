@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -56,18 +57,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 
 public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClickListener {
-    String applied_url = URL + "HRMS/leave_entry";
-    String leave_info_url = URL + "HRMS/leave_search";
-//    String leave_info_url = DEVELOPMENT_URL + "HRMS/leave_search";
+    String applied_url = DEVELOPMENT_URL + "HRMS/leave_entry";
+//    String leave_info_url = URL + "HRMS/leave_search";
+    String leave_info_url = DEVELOPMENT_URL + "HRMS/leave_search";
 
     Intent intent;
     String formattedDate;
     CalendarView calendarView, calendarView1;
-    String date2, date, fromDate, toDate, leaveReason, strleave_type, strPin_no, leaveType;
+    String date2, date, fromDate, toDate, leaveReason, strleave_type, strPin_no, leaveType,ID = null,
+            METHOD,KEY,EMPLID;
     EditText input_leave_from, input_leave_to;
     int dayfrom, monthfrom, yearfrom, dayto, monthto, yearto;
     TextView total_leave_days,txt_datanotfound;
@@ -76,7 +79,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     Spinner spinner_apply_leave;
     int daysDifference = 0;
     AlertDialog dialog;
-    String notApplied = "Leave Not Applied", applied = "Leave Applied";
+    String notApplied = "Leave Not Applied", applied = "Leave Applied",LEAVE_DAYS = null;
     RecyclerView recyclerView;
     List<AppliedLeaveModel> appliedLeaveModelList;
     AppliedLeaveAdaptor leaveAdaptor;
@@ -110,31 +113,63 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         recyclerView.setHasFixedSize(true);
         appliedLeaveModelList = new ArrayList<>();
         uploadleavelist();
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, final int dayOfMonth) {
-                Date c = Calendar.getInstance().getTime();
-                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
-                formattedDate = df.format(c);
-                final int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                final int m = Calendar.getInstance().get(Calendar.MONTH);
-                final int y = Calendar.getInstance().get(Calendar.YEAR);
-                dayfrom = dayOfMonth;
-                monthfrom = month + 1;
-                yearfrom = year;
-                date = dayOfMonth + "-" + monthfrom + "-" + year;
-                DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                try {
-                    selectedDate = (Date) formatter.parse(date);
-                    System.out.println("Today is " + selectedDate.getTime());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                createDialogBox();
+        Intent intent = getIntent();
+        ID= intent.getStringExtra("id");
+        try{
+            if(ID != null){
+                Toast.makeText(getApplicationContext(),"ID " + ID,Toast.LENGTH_SHORT).show();
+                METHOD = intent.getStringExtra("method");
+                calendarView_method();
+            }else{
+                calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                    @Override
+                    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, final int dayOfMonth) {
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+                        formattedDate = df.format(c);
+                        final int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                        final int m = Calendar.getInstance().get(Calendar.MONTH);
+                        final int y = Calendar.getInstance().get(Calendar.YEAR);
+                        dayfrom = dayOfMonth;
+                        monthfrom = month + 1;
+                        yearfrom = year;
+                        date = dayOfMonth + "-" + monthfrom + "-" + year;
+                        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                        try {
+                            selectedDate = formatter.parse(date);
+                            System.out.println("Today is " + selectedDate.getTime());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        createDialogBox();
+                    }
+                });
             }
-//                else {}
-//            }
-        });
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void calendarView_method() {
+        try{
+            Intent intent = getIntent();
+            ID = intent.getStringExtra("id");
+            fromDate = intent.getStringExtra("from");
+            toDate = intent.getStringExtra("to");
+            strleave_type = intent.getStringExtra("type");
+            LEAVE_DAYS = intent.getStringExtra("days");
+            leaveReason = intent.getStringExtra("reason");
+            strPin_no = intent.getStringExtra("pin_no");
+            METHOD = intent.getStringExtra("method");
+            KEY = intent.getStringExtra("key");
+            EMPLID = intent.getStringExtra("emplid");
+            Log.e("ID",ID);
+            createDialogBox();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void createDialogBox() {
@@ -162,8 +197,15 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        input_leave_from.setText(date);
+        if(fromDate!=null){
+            input_leave_from.setText(fromDate);
+            input_leave_to.setText(toDate);
+            total_leave_days.setText(LEAVE_DAYS);
+            editTextReason_of_leave.setText(leaveReason);
+        }
+        else{
+            input_leave_from.setText(date);
+        }
         builderfrom = new AlertDialog.Builder(alertLayout.getContext());
         builderfrom.setTitle("Apply Leave");
         builderfrom.setView(alertLayout);
@@ -173,6 +215,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if(ID!=null){
+                    finish();
+                }
                 Toast.makeText(getBaseContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -184,19 +229,22 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 applied();
                 refreshAppliedList();
             }
-
-
         });
+
         checkEmptyFields();
         dialog = builderfrom.create();
         dialog.show();
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
         ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        clickInputTOLEave();
+    }
 
+    private void clickInputTOLEave() {
         input_leave_to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date selectedDate = new Date();
                 LayoutInflater inflater = getLayoutInflater();
                 final View alertLayout = inflater.inflate(R.layout.calendar_view, null);
                 calendarView1 = alertLayout.findViewById(R.id.calendarViewdatePicker);
@@ -208,6 +256,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 builderto.setCancelable(false);
 
                 calendarView1.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                         dayto = dayOfMonth;
@@ -235,6 +284,60 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 dialog1.show();
             }
         });
+
+        if(ID != null){
+            input_leave_from.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Date selectedDate = new Date();
+                    LayoutInflater inflater = getLayoutInflater();
+                    final View alertLayout = inflater.inflate(R.layout.calendar_view, null);
+                    calendarView = alertLayout.findViewById(R.id.calendarViewdatePicker);
+                    calendarView.setMinDate(selectedDate.getTime());
+                    Log.e("MIN TIME", String.valueOf(selectedDate.getTime()));
+                    System.out.println(calendarView.getDate() + "  Current Time");
+                    builderto = new AlertDialog.Builder(alertLayout.getContext());
+                    builderto.setTitle("Apply Leave");
+                    builderto.setView(alertLayout);
+                    builderto.setCancelable(false);
+
+                    calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+                        @Override
+                        public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                            dayfrom = dayOfMonth;
+                            monthfrom = month + 1;
+                            yearfrom = year;
+                            date = dayOfMonth + "-" + monthfrom + "-" + year;
+                            Log.e("FROM:",date);
+                            input_leave_from.setText(date);
+
+                        }
+                    });
+
+                    builderto.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(getBaseContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    builderto.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            input_leave_from.setText(date);
+                            fromDate = date;
+
+                            calculate_days();
+
+                        }
+                    });
+                    AlertDialog dialog1 = builderto.create();
+                    dialog1.show();
+                }
+            });
+        }
+
     }
 
     private void mapLeaveCode(String strleave_type) {
@@ -290,6 +393,14 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         input_leave_to.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                if(count>0){
+//                    okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                    validation(inputDateCount, inputResonCount, selectorInputCount);
+                Log.e("charSBEFORE", String.valueOf(s));
+                Log.e("startBEFORE", String.valueOf(start));
+                Log.e("countBEFORE", String.valueOf(count));
+                Log.e("afterBEFORE", String.valueOf(after));
+//                }
             }
 
             @Override
@@ -297,11 +408,19 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 inputDateCount = count;
                 validation(inputDateCount, inputResonCount, selectorInputCount);
+
+                Log.e("charSTextChanged", String.valueOf(s));
+                Log.e("startTextChanged", String.valueOf(start));
+                Log.e("countTextChanged", String.valueOf(count));
+//                Log.e("afterBEFORE", String.valueOf(after));
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-            }
+//                okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                validation(inputDateCount, inputResonCount, selectorInputCount);
+//
+                Log.e("charSAfter", String.valueOf(s));   }
         });
 
         editTextReason_of_leave.addTextChangedListener(new TextWatcher() {
@@ -328,6 +447,8 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-mm-dd");
         fromDate = yearfrom + "-" + monthfrom + "-" + dayfrom;
         toDate = yearto + "-" + monthto + "-" + dayto;
+        Log.e("FROM<>>",fromDate);
+        Log.e("TO<>>",toDate);
 
         try {
 
@@ -375,7 +496,12 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         leaveReason = editTextReason_of_leave.getText().toString();
         ApiKey apiKey = new ApiKey();
         final String apikey = apiKey.saltStr();
-        final String method = "apply_leave";
+        final String method;
+        if(METHOD == null){
+            method = "apply_leave";
+        }else{
+            method = "edit_leave";
+        }
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, applied_url, new Response.Listener<String>() {
             @Override
@@ -415,10 +541,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             Toast.LENGTH_LONG).show();
                 } else if (error instanceof AuthFailureError) {
                 } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
                 } else if (error instanceof TimeoutError) {
                     Toast.makeText(getBaseContext(),
                             CONSTANT.TIMEOUT_ERROR,
@@ -430,28 +552,44 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-
                 Log.e("method", method);
                 Log.e("key", apikey);
                 Log.e("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
-                Log.e("from", fromDate);
+                Log.e("from", input_leave_from.getText().toString().trim());
                 Log.e("to", toDate);
                 Log.e("days", String.valueOf(daysDifference));
                 Log.e("reason", leaveReason);
                 Log.e("type", leaveType);
                 Log.e("pin_no", strPin_no);
+                if(method.equals("apply_leave")){
+                    params.put("method", method);
+                    params.put("key", apikey);
+                    params.put("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
+                    params.put("pin_no", strPin_no);
+                    params.put("type", leaveType);
+                    params.put("from", fromDate);
+                    params.put("to", toDate);
+                    params.put("days", String.valueOf(daysDifference));
+                    params.put("reason", leaveReason);
+                    params.put("applied_date", formattedDate);
+                    return params;
+                }
+                else {
+                    params.put("id",ID);
+                    params.put("method", METHOD);
+                    params.put("key", apikey);
+                    params.put("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
+                    params.put("pin_no", strPin_no);
+                    params.put("type", leaveType);
+                    params.put("from", input_leave_from.getText().toString().trim());
+                    params.put("to", toDate);
+                    params.put("days", String.valueOf(daysDifference));
+                    params.put("reason", leaveReason);
+                    params.put("approval_flag","pushback");
+//                    params.put("applied_date", formattedDate);
+                    return params;
+                }
 
-                params.put("method", method);
-                params.put("key", apikey);
-                params.put("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
-                params.put("pin_no", strPin_no);
-                params.put("type", leaveType);
-                params.put("from", fromDate);
-                params.put("to", toDate);
-                params.put("days", String.valueOf(daysDifference));
-                params.put("reason", leaveReason);
-                params.put("applied_date", formattedDate);
-                return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -502,6 +640,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                                 for (int i = 0; i < array.length(); i++) {
                                     JSONObject jsonObject = array.getJSONObject(i);
                                     appliedLeaveModel = new AppliedLeaveModel(
+                                            jsonObject.getString("id"),
                                             jsonObject.getString("from"),
                                             jsonObject.getString("reason"),
                                             jsonObject.getString("days"),

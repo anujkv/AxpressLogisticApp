@@ -8,15 +8,17 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
-import com.axpresslogistics.it2.axpresslogisticapp.acitvities.AddBrokerActivity;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
+import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 import com.axpresslogistics.it2.axpresslogisticapp.acitvities.ApplyLeaveActivity;
 import com.axpresslogistics.it2.axpresslogisticapp.model.AppliedLeaveModel;
 
@@ -29,7 +31,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     Context context;
     List<AppliedLeaveModel> appliedLeaveModelList;
     Dialog dialog;
-    Button edit_btn = null;
+    Button edit_btn;
 
     public AppliedLeaveAdaptor(Context context, List<AppliedLeaveModel> appliedLeaveModelList) {
         this.context = context;
@@ -47,6 +49,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     public void onBindViewHolder(@NonNull final AppliedLeaveHolder holder, int position) {
         final AppliedLeaveModel appliedLeaveModel = appliedLeaveModelList.get(position);
         String from = dateConversion(appliedLeaveModel.getFrom());
+        holder.id.setText(appliedLeaveModel.getId());
         holder.from.setText(from);
         holder.reason.setText(appliedLeaveModel.getReason().trim());
         holder.day.setText(appliedLeaveModel.getDays() + " day");
@@ -55,14 +58,15 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
             holder.type.setBackgroundColor(Color.YELLOW);
         } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("approved")) {
             holder.type.setBackgroundColor(Color.GREEN);
-        }  else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pushback")) {
+        } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pushback")) {
             holder.type.setBackgroundColor(Color.DKGRAY);
         } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("unapproved") ||
-                appliedLeaveModel.getLeave_status().toLowerCase().equals("rejected") ) {
+                appliedLeaveModel.getLeave_status().toLowerCase().equals("rejected")) {
             holder.type.setBackgroundColor(Color.RED);
-        }else{
+        } else {
             holder.type.setBackgroundColor(Color.WHITE);
         }
+
         String to = dateConversion(appliedLeaveModel.getTo());
         holder.to.setText(to);
         holder.pin_no.setText(appliedLeaveModel.getPin_no());
@@ -77,8 +81,8 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView txt_leaveType, txt_clickedDate, txt_leaveReason, txt_fromDate, txt_toDate, txt_leaveStatus,
-                        txt_totalDays, txt_appliedDate;
+                TextView txt_id,txt_leaveType, txt_clickedDate, txt_leaveReason, txt_fromDate,
+                        txt_toDate, txt_leaveStatus, txt_totalDays, txt_appliedDate;
                 txt_leaveType = dialog.findViewById(R.id.txt_leaveType);
                 txt_leaveReason = dialog.findViewById(R.id.txt_leaveReason);
                 txt_fromDate = dialog.findViewById(R.id.txt_fromDate);
@@ -86,44 +90,58 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
                 txt_leaveStatus = dialog.findViewById(R.id.txt_leaveStatus);
                 txt_totalDays = dialog.findViewById(R.id.txt_totalDays);
                 txt_appliedDate = dialog.findViewById(R.id.txt_appliedDate);
+                edit_btn = dialog.findViewById(R.id.edit_btn);
                 txt_leaveReason.setText(appliedLeaveModel.getReason().trim());
                 txt_fromDate.setText(dateConversion(appliedLeaveModel.getFrom()));
                 txt_toDate.setText(dateConversion(appliedLeaveModel.getTo()));
                 txt_leaveStatus.setText(appliedLeaveModel.getLeave_status());
-                if(appliedLeaveModel.getLeave_status().equals("approved")){
+                if (appliedLeaveModel.getLeave_status().equals("approved")) {
                     txt_leaveType.setBackgroundColor(Color.GREEN);
                     txt_leaveType.setTextColor(Color.RED);
-                }else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pending")){
+                    edit_btn.setVisibility(View.GONE);
+                } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pending")) {
                     txt_leaveType.setBackgroundColor(Color.YELLOW);
                     txt_leaveType.setTextColor(Color.RED);
-                }else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("unapproved")){
+                    edit_btn.setVisibility(View.GONE);
+                } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("unapproved")) {
                     txt_leaveType.setBackgroundColor(Color.RED);
                     txt_leaveType.setTextColor(Color.WHITE);
-                }else if (appliedLeaveModel.getLeave_status().equals("pushback")){
+                    edit_btn.setVisibility(View.GONE);
+                } else if (appliedLeaveModel.getLeave_status().equals("pushback")) {
                     txt_leaveType.setBackgroundColor(Color.DKGRAY);
                     txt_leaveType.setTextColor(Color.WHITE);
                     edit_btn.setVisibility(View.VISIBLE);
+
+                    edit_btn.setOnClickListener(new View.OnClickListener() {
+                        ApiKey apiKey = new ApiKey();
+                        String key = apiKey.saltStr();
+                        String emplid = Preferences.getPreference(context, CONSTANT.EMPID);
+
+                        @Override
+                        public void onClick(View v) {
+                            Context context = v.getContext();
+//                            ApplyLeaveActivity leaveActivityInstance = new ApplyLeaveActivity();
+//                            leaveActivityInstance.createDialogBox();
+                            Intent intent = new Intent(context, ApplyLeaveActivity.class);
+                            intent.putExtra("id", appliedLeaveModel.getId());
+                            intent.putExtra("from", appliedLeaveModel.getFrom());
+                            intent.putExtra("to", appliedLeaveModel.getTo());
+                            intent.putExtra("type", appliedLeaveModel.getType());
+                            intent.putExtra("days", appliedLeaveModel.getDays());
+                            intent.putExtra("reason", appliedLeaveModel.getReason());
+                            intent.putExtra("pin_no", appliedLeaveModel.getType());
+                            intent.putExtra(CONSTANT.METHOD, "edit_leave");
+                            intent.putExtra(CONSTANT.KEY, key);
+                            intent.putExtra(CONSTANT.EMPID, emplid);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                        }
+                    });
                 }
                 txt_totalDays.setText(appliedLeaveModel.getDays() + " Day");
-                txt_appliedDate.setText(appliedLeaveModel.getApplied_date().substring(0,11));
+                txt_appliedDate.setText(appliedLeaveModel.getApplied_date().substring(0, 11));
                 txt_leaveType.setText(appliedLeaveModel.getType().trim());
                 dialog.show();
-            }
-        });
-
-        edit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO edit functionality...
-                Context context = v.getContext();
-                Intent intent = new Intent(context, ApplyLeaveActivity.class);
-                intent.putExtra("from",appliedLeaveModel.getFrom());
-                intent.putExtra("from",appliedLeaveModel.getFrom());
-                intent.putExtra("from",appliedLeaveModel.getFrom());
-                intent.putExtra("from",appliedLeaveModel.getFrom());
-                intent.putExtra("method","pushbach_data");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
             }
         });
     }
@@ -151,11 +169,12 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     }
 
     public class AppliedLeaveHolder extends RecyclerView.ViewHolder {
-        TextView from, to, reason, type, pin_no, day, applied_date, leave_status;
+        TextView id,from, to, reason, type, pin_no, day, applied_date, leave_status;
         CardView cardView;
 
         public AppliedLeaveHolder(View itemView) {
             super(itemView);
+            id = itemView.findViewById(R.id.txtid);
             from = itemView.findViewById(R.id.txtfromdate);
             to = itemView.findViewById(R.id.txttodate);
             reason = itemView.findViewById(R.id.txtreason);

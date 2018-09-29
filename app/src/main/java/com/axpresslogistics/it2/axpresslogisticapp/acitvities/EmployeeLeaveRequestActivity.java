@@ -60,7 +60,7 @@ public class EmployeeLeaveRequestActivity extends AppCompatActivity implements V
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText(CONSTANT.MARK_ATTENDANCE);
+        lable.setText(CONSTANT.REQUEST_LEAVE);
         init();
 
         recyclerView = findViewById(R.id.leave_requestRecyclerViewId);

@@ -169,6 +169,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), CONSTANT.SEVER_NOT_RECHABLE,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {

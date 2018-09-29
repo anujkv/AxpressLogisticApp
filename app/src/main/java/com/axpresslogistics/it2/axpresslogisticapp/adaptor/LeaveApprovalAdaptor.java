@@ -93,7 +93,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
         holder.pushback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.denied.setTextColor(Color.YELLOW);
+                holder.pushback.setTextColor(Color.YELLOW);
                 holder.approved.setTextColor(Color.WHITE);
                 holder.denied.setTextColor(Color.WHITE);
                 approval_status = "pushback";

@@ -116,6 +116,9 @@ public class CONSTANT {
     public static final String L = "L";
     public static final String BROKER_STATUS = "broker_status";
     public static final String SUPERVISIOR_ID = "supervisior_emplid";
+    public static final String REQUEST_LEAVE = "Leave Request Approval";
+    public static final String BRANCH_CODE = "branch_code";
+    public static final String SEVER_NOT_RECHABLE = "Server not reachable!";
     public static String already_exist = "already_exist";
     public static final String ENTER_THE_CONTACT_NO = "Enter the contact no";
     public static final String ENTER_THE_CORRECT_CONTACT_NO = "Enter the correct contact no";

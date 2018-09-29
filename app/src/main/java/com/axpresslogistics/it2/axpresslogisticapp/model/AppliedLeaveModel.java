@@ -1,13 +1,14 @@
 package com.axpresslogistics.it2.axpresslogisticapp.model;
 
 public class AppliedLeaveModel {
-    String from,reason,days,type,to,pin_no,applied_date,leave_status;
+    String id,from,reason,days,type,to,pin_no,applied_date,leave_status;
 
     public AppliedLeaveModel() {
     }
 
-    public AppliedLeaveModel(String from, String reason, String days, String type, String to,
+    public AppliedLeaveModel(String id,String from, String reason, String days, String type, String to,
                              String pin_no, String applied_date, String leave_status) {
+        this.id = id;
         this.from = from;
         this.reason = reason;
         this.days = days;
@@ -16,6 +17,10 @@ public class AppliedLeaveModel {
         this.pin_no = pin_no;
         this.applied_date = applied_date;
         this.leave_status = leave_status;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getFrom() {

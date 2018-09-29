@@ -48,7 +48,8 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
     TextView show1,show2,show3;
     Boolean FLAG_DROP_DOWN = false, FLAG_DROP_DOWN2 = false, FLAG_DROP_DOWN3 = false;
     CardView broker1_rate_details,broker2_rate_details,broker3_rate_details;
-    String method,str_empid,methodAPI,vehicle_req_code,broker_status;
+    String method,str_empid,methodAPI,vehicle_req_code,broker_status,BROKER_RATE,BROKER_NAME,
+            BROKER_CODE,SELECTION_STATUS;
     String APPROVED_URL = CONSTANT.DEVELOPMENT_URL + "Operations/approved_vehicle";
     String FETCH_APPROVAL_URL = CONSTANT.DEVELOPMENT_URL + "Operations/saved_vehicle_list_for_approval";
     String str_vehicle_req_code,str_request_date,str_from_branch,str_to_branch,str_loading_point,
@@ -93,6 +94,13 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
         if(vehicle_req_code != null){
             fetch_approval_details(methodAPI,vehicle_req_code);
             set_data_in_fields();
+        }
+        String APPROVED_BROKER_CODE = getIntent().getStringExtra("broker_code");
+        if(APPROVED_BROKER_CODE != null){
+            BROKER_RATE = getIntent().getStringExtra("broker_rate");
+            BROKER_CODE = getIntent().getStringExtra("broker_code");
+            BROKER_NAME = getIntent().getStringExtra("broker_name");
+            SELECTION_STATUS = getIntent().getStringExtra("approved_status") ;
         }
     }
 
@@ -253,12 +261,12 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.mapbtn_toolbar:
-//                approved();
-                Log.e("req_code:",str_vehicle_req_code);
-                Log.e(CONSTANT.METHOD,"approved");
-                Log.e(CONSTANT.KEY,"dfgagsdgsdg345dfsd");
-//                Log.e("Borker_code:", broker_code);
-                Log.e("approved_status",str_approved_status);
+                approved();
+//                Log.e("req_code:",BROKER_CODE);
+//                Log.e(CONSTANT.METHOD,"approved");
+//                Log.e(CONSTANT.KEY,"dfgagsdgsdg345dfsd");
+//                Log.e("Borker_Nmae:", BROKER_NAME);
+//                Log.e("approved_status",str_approved_status);
                 break;
         }
     }
@@ -270,6 +278,15 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
         final String approved_method = "approved_vehicle";
         final ApiKey apiKey = new ApiKey();
         final String key = apiKey.saltStr();
+
+        List list = fetchapprovalAdaptor.clicked_details();
+        if(!list.isEmpty()){
+                BROKER_CODE = (String) list.get(0);
+                BROKER_NAME = (String) list.get(1);
+                BROKER_RATE = (String) list.get(2);
+                SELECTION_STATUS = (String) list.get(3);
+        }
+        Log.e("List:", String.valueOf(list));
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, APPROVED_URL, new
                 Response.Listener<String>() {
@@ -301,8 +318,19 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 params.put(CONSTANT.METHOD,approved_method);
                 params.put(CONSTANT.KEY,key);
                 params.put("request_code",str_vehicle_req_code);
-                params.put("broker_code",str_broker_code);
-                params.put("approved_status",str_approved_status);
+                params.put("broker_name", BROKER_NAME);
+                params.put("broker_code",BROKER_CODE);
+                params.put("broker_rate",BROKER_RATE);
+                params.put("approved_status",SELECTION_STATUS);
+                params.put("from_branch",str_from_branch);
+                params.put("to_branch", str_to_branch);
+                params.put("loading_point",str_loading_point);
+                params.put("unloading_point",str_unloading_point);
+                params.put("requirement_type", str_req_type);
+                params.put("actual_wt_of_goods",str_act_wt_of_goods);
+
+                params.put(CONSTANT.EMPID,str_empid);
+                params.put(CONSTANT.BRANCH_CODE,str_from_branch);
                 return params;
             }
         };
