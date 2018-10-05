@@ -258,7 +258,7 @@
     <string name="actual_weight_of_goods">Actual Wt. of Good\'s</string>
     <string name="vehicle_type">Vehicle type</string>
     <string name="vehicle_capacity">Vehicle capacity</string>
-    <string name="broker_selection">Broker selection</string>
+    <string name="broker_selection">Broker </string>
     <string name="broker_rate">Broker rate</string>
     <string name="advance">Advance</string>
     <string name="broker_code">Broker code</string>

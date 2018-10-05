@@ -1,5 +1,6 @@
 package com.axpresslogistics.it2.axpresslogisticapp.adaptor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -45,16 +46,12 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
         return new AdaptorHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final AdaptorHolder holder, final int position) {
+        int i = 1+position;
         final BrokerApprovalModel model = approvalModels.get(position);
         holder.logged_in_status.setText(model.getLoggedin_member());
-//        holder.broker_code.setText(model.getBroker_code());
-//        holder.broker_name.setText(model.getBroker_name());
-//        holder.broker_rate.setText(model.getBroker_rate());
-//        holder.broker_advance.setText(model.getBroker_advance());
-//        holder.broker_remark.setText(model.getBroker_remark());
-//        holder.spinner_broker_selection.setText(model.getBroker_name());
 
         holder.broker_code.setText(approvalModels.get(position).getBroker_code());
         holder.broker_name.setText(approvalModels.get(position).getBroker_name());
@@ -63,30 +60,12 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
         holder.broker_remark.setText(approvalModels.get(position).getBroker_remark());
         holder.spinner_broker_selection.setText(approvalModels.get(position).getBroker_name());
 
-        holder.show_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(model.getLoggedin_member().equals("L")){
-                    Log.e("LoggedL:",model.getLoggedin_member());
-                    if(FLAG.equals(false)){
-                        holder.btn_broker_selectionReject.setVisibility(View.VISIBLE);
-                       visibleFalseState(holder);
+        holder.broker_selection_no.setText("Broker "+i);
 
-                    }else if(FLAG.equals(true)){
-                        holder.btn_broker_selectionReject.setVisibility(View.GONE);
-                        visibleTrueState(holder);
-                    }
-                } else {
-                    Log.e("LoggedB:",model.getLoggedin_member());
-                    if(FLAG.equals(false)){
-                        visibleFalseState(holder);
 
-                    }else if(FLAG.equals(true)){
-                        visibleTrueState(holder);
-                    }
-                }
-            }
-        });
+        if(model.getLoggedin_member().equals("L")){
+            holder.btn_broker_selectionReject.setVisibility(View.VISIBLE);
+        }
 
         holder.approved_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,28 +76,21 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
                 broker_rate = model.getBroker_rate();
 
                 if(model.getLoggedin_member().equals("L")){
-                    approved_status = "Approved";
+                    approved_status = "Approval";
                     approvedBtnClickedL(holder,model);
                 }else{
-                    approved_status = "BApproved";
-                    approvedBtnClickedB(holder,model);
+                    approved_status = "BApproval";
+                    approvedBtnClickedB(holder,model,position);
                 }
+
                 Toast.makeText(context.getApplicationContext(),
-                        model.getBroker_code() + "/ " + item_position + "/ "+broker_code,
+                        model.getBroker_code() + "/ " + item_position ,
                         Toast.LENGTH_SHORT).show();
 
                 clicked_details();
-//                Context context = v.getContext();
-//                Intent intent = new Intent(context, VehicalApproval.class);
-//                intent.putExtra("broker_code",broker_code);
-//                intent.putExtra("broker_name",broker_name);
-//                intent.putExtra("broker_rate",broker_rate);
-//                intent.putExtra("approved_status",approved_status);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-
             }
         });
+
         holder.btn_broker_selectionReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,13 +100,6 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
                 broker_rate = model.getBroker_rate();
                 approved_status = "Reject";
                 clicked_details();
-//                Context context = v.getContext();
-//                Intent intent = new Intent(context, VehicalApproval.class);
-//                intent.putExtra("broker_code",broker_code);
-//                intent.putExtra("broker_name",broker_name);
-//                intent.putExtra("broker_rate",broker_rate);
-//                intent.putExtra("approved_status",approved_status);
-//                context.startActivity(intent);
             }
         });
     }
@@ -159,24 +124,13 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
         selection_code = -1;
     }
 
-    private void approvedBtnClickedB(AdaptorHolder holder, BrokerApprovalModel model) {
+    private void approvedBtnClickedB(AdaptorHolder holder, BrokerApprovalModel model, int position) {
         holder.approved_btn.setTextColor(Color.GREEN);
         holder.approved_btn.setText(CONSTANT.APPROVED);
         holder.broker_code.setText(model.getBroker_code());
-        for (int i = 0; i < approvalModels.size(); i++) {
-            Log.e("I:", String.valueOf(i));
-            Log.e("approvalModels.get(i):", String.valueOf(approvalModels.get(i)));
-            Log.e("model.getBroker_code():", model.getBroker_code());
-            Log.e("getAdapterPosition()):", String.valueOf(holder.getAdapterPosition()));
-
-            if (i == holder.getAdapterPosition()) continue;
-//                Button b =approvalModels.get(i);
-//                Font f = approvalModels.get(i);
-            if (i != holder.getAdapterPosition()) {
-                notifyItemChanged(i); // Tell the adapter this item is updated
-            }
-        }approvalModels.get(holder.getAdapterPosition());
         notifyItemChanged(holder.getAdapterPosition());
+        notifyItemChanged(position);
+
     }
 
     private void approvedBtnClickedL(AdaptorHolder holder, BrokerApprovalModel model) {
@@ -188,34 +142,17 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
         selection_code = 0;
     }
 
-    private void visibleTrueState(AdaptorHolder holder) {
-        holder.broker1_rate_details.setVisibility(View.GONE);
-        holder.approved_btn.setVisibility(View.GONE);
-        holder.spinner_broker_selection.setVisibility(View.VISIBLE);
-        FLAG = false;
-        holder.show_btn.setText(CONSTANT.SHOW);
-    }
-
-    private void visibleFalseState(AdaptorHolder holder) {
-        holder.broker1_rate_details.setVisibility(View.VISIBLE);
-        holder.approved_btn.setVisibility(View.VISIBLE);
-        holder.spinner_broker_selection.setVisibility(View.GONE);
-        FLAG = true;
-        holder.show_btn.setText(CONSTANT.HIDE);
-    }
-
     @Override
     public int getItemCount() {
         return approvalModels.size();
     }
 
     public class AdaptorHolder extends RecyclerView.ViewHolder {
-        TextView broker_code,show_btn,approval_status,logged_in_status;
+        TextView broker_code,show_btn,approval_status,logged_in_status,broker_selection_no;
         EditText broker_name, broker_rate, broker_advance, broker_remark;
         CardView broker1_rate_details;
         Button approved_btn,btn_broker_selectionReject;
         EditText spinner_broker_selection;
-
 
         public AdaptorHolder(View itemView) {
             super(itemView);
@@ -230,6 +167,7 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
             broker1_rate_details = itemView.findViewById(R.id.broker1_rate_details);
             spinner_broker_selection = itemView.findViewById(R.id.spinner_broker_selection);
             btn_broker_selectionReject = itemView.findViewById(R.id.btn_broker_selectionReject);
+            broker_selection_no = itemView.findViewById(R.id.broker_selection_no);
         }
     }
 }

@@ -324,7 +324,7 @@ public class MainHomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_Logout) {
             logout();
         } else if (id == R.id.nav_share) {
-
+            share_it();
         } else if (id == R.id.nav_send) {
 
         }
@@ -332,6 +332,15 @@ public class MainHomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void share_it() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = CONSTANT.SHARE_IT_MSG;
+//        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, CONSTANT.SHARE_IT_MSG);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
     private void logout() {

@@ -119,6 +119,7 @@ public class CONSTANT {
     public static final String REQUEST_LEAVE = "Leave Request Approval";
     public static final String BRANCH_CODE = "branch_code";
     public static final String SEVER_NOT_RECHABLE = "Server not reachable!";
+    public static final String SHARE_IT_MSG = "Check out Axp App, I use it for organization work & get information about related work, Get it for free at https://play.google.com/store/apps/details?id=com.axpresslogistics.it2.axpresslogisticapp";
     public static String already_exist = "already_exist";
     public static final String ENTER_THE_CONTACT_NO = "Enter the contact no";
     public static final String ENTER_THE_CORRECT_CONTACT_NO = "Enter the correct contact no";

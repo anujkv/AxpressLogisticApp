@@ -3,6 +3,7 @@ package com.axpresslogistics.it2.axpresslogisticapp.adaptor;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -98,6 +99,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.denied.setTextColor(Color.WHITE);
                 approval_status = "pushback";
                 push_data(holder,model,approval_status);
+                holder.cardView.removeAllViews();
             }
         });
     }
@@ -111,6 +113,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
         TextView id, emplid, applier_name, leave_type, from_date, to_date, days, reason, approval_status,
                 approval_comment;
         Button approved, denied,pushback;
+        CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -127,6 +130,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
             approved = itemView.findViewById(R.id.approve_btn);
             denied = itemView.findViewById(R.id.denied_btn);
             pushback = itemView.findViewById(R.id.pushback_btn);
+            cardView = itemView.findViewById(R.id.approved_cardview);
         }
     }
 
@@ -160,6 +164,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                                     leaved_status = "Leave PushBack";
                                     Toast.makeText(context,model.getId()+ " - " + leaved_status,Toast.LENGTH_SHORT).show();
                                 }
+
                             } else {
 
                             }

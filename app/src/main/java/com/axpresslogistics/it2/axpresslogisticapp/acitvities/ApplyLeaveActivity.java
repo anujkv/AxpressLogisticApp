@@ -83,7 +83,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     RecyclerView recyclerView;
     List<AppliedLeaveModel> appliedLeaveModelList;
     AppliedLeaveAdaptor leaveAdaptor;
-    Date selectedDate;
+    Date selectedDatefrom,selectedDateto,c;
     Button okButton;
     int inputResonCount = 0;
     int inputDateCount = 0;
@@ -124,20 +124,17 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, final int dayOfMonth) {
-                        Date c = Calendar.getInstance().getTime();
+                        c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
                         formattedDate = df.format(c);
-                        final int d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-                        final int m = Calendar.getInstance().get(Calendar.MONTH);
-                        final int y = Calendar.getInstance().get(Calendar.YEAR);
                         dayfrom = dayOfMonth;
                         monthfrom = month + 1;
                         yearfrom = year;
                         date = dayOfMonth + "-" + monthfrom + "-" + year;
                         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                         try {
-                            selectedDate = formatter.parse(date);
-                            System.out.println("Today is " + selectedDate.getTime());
+                            selectedDatefrom = formatter.parse(date);
+                            System.out.println("Today is " + selectedDatefrom.getTime());
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -197,6 +194,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
         if(fromDate!=null){
             input_leave_from.setText(fromDate);
             input_leave_to.setText(toDate);
@@ -206,6 +204,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         else{
             input_leave_from.setText(date);
         }
+        //FROM..............
         builderfrom = new AlertDialog.Builder(alertLayout.getContext());
         builderfrom.setTitle("Apply Leave");
         builderfrom.setView(alertLayout);
@@ -244,12 +243,27 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         input_leave_to.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date selectedDate = new Date();
+                Date current = Calendar.getInstance().getTime();
                 LayoutInflater inflater = getLayoutInflater();
                 final View alertLayout = inflater.inflate(R.layout.calendar_view, null);
                 calendarView1 = alertLayout.findViewById(R.id.calendarViewdatePicker);
-                calendarView1.setMinDate(selectedDate.getTime());
-                System.out.println(calendarView.getDate() + "  Current Time");
+
+                try{
+                    Log.e("selectedDatefrom", String.valueOf(selectedDatefrom));
+                    if(String.valueOf(selectedDatefrom)!=null){
+                        calendarView1.setMinDate(selectedDatefrom.getTime());
+                        Log.e("setMinDate", String.valueOf(selectedDatefrom));
+                    }else{
+                        calendarView1.setMinDate(current.getTime());
+                        Log.e("setMinDatecurrent", String.valueOf(current));
+                    }
+
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                    calendarView1.setMinDate(current.getTime());
+                    Log.e("setMinDatecurrent", String.valueOf(current));
+                }
+
                 builderto = new AlertDialog.Builder(alertLayout.getContext());
                 builderto.setTitle("Apply Leave");
                 builderto.setView(alertLayout);
@@ -263,6 +277,13 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                         monthto = month + 1;
                         yearto = year;
                         date2 = dayOfMonth + "-" + monthto + "-" + year;
+                        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                        try {
+                            selectedDateto = formatter.parse(date2);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -286,6 +307,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         });
 
         if(ID != null){
+            input_leave_from.setText("");
             input_leave_from.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -327,7 +349,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                         public void onClick(DialogInterface dialog, int which) {
                             input_leave_from.setText(date);
                             fromDate = date;
-
                             calculate_days();
 
                         }
@@ -390,6 +411,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void checkEmptyFields() {
+//        input_leave_to.setText("");
         input_leave_to.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -513,13 +535,19 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                         JSONObject object = new JSONObject(response);
                         String status = object.optString("status");
                         String apiKeyResponse = object.optString("key");
+                        Log.e("Edit Leave Response",response);
 
                         if (status.equals("true") && apiKeyResponse.equals(apikey)) {
                             refreshAppliedList();
+                            uploadleavelist();
                             Toast.makeText(getApplicationContext(), applied, Toast.LENGTH_SHORT).show();
+                            if(method.equals("edit_leave")){
+                                finish();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), notApplied, Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
+                            uploadleavelist();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

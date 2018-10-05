@@ -61,11 +61,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.imagePath;
 
 public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
@@ -137,7 +139,8 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         pictureDialog.setTitle("Select Profile Image");
         String[] pictureDialogItems = {
                 "Select From Gallery",
-                "Take  A Picture"};
+//                "Take  A Picture"
+        };
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -158,7 +161,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     public void choosePhotoFromGallary() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-
         startActivityForResult(galleryIntent, GALLERY);
     }
 
@@ -261,14 +263,19 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                 params.put("method",method);
                 params.put("key", key);
                 params.put("emplid", strEmpCode);
+                Log.e("method",method);
+                Log.e("key", key);
+                Log.e("emplid", strEmpCode);
                 return params;
             }
 
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
+
                 if (hasImage){
                     params.put("image", new DataPart(strEmpCode+".jpg", image, "image/jpeg"));
+                    Log.e("image", String.valueOf(hasImage));
                 }
                 return params;
             }

@@ -51,25 +51,22 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_from_branch, edt_loading_point, edt_unloading_point, edt_actual_wt_of_goods,
             edt_vehicle_capacity,edt_broker_rate1,edt_broker_rate2,edt_broker_rate3,edt_advance1,edt_advance2,
-            edt_advance3,edt_remark1,edt_remark2,edt_remark3;
+            edt_advance3,edt_remark1,edt_remark2,edt_remark3,edtbrokerName1,edtbrokerName2,edtbrokerName3;
     Spinner spinner_to_branch,spinner_req_type, spinner_touching_point, spinner_goods_type, spinner_vehicle_type,
             spinner_broker_selection1, spinner_broker_selection2, spinner_broker_selection3;
     String str_vehicle_req_code, str_from_branch, str_to_branch, str_loading_point, str_unloading_point,
             str_actual_wt_of_goods, str_vehicle_capacity, str_req_type, str_touching_point,
-            str_goods_type, str_vehicle_type, str_broker_selection1, str_broker_selection2,
-            str_broker_selection3;
-    String method,emp_id,branch_code;
+            str_goods_type, str_vehicle_type,str_broker_name1,str_broker_name2,str_broker_name3;
+    String method,emp_id,branch_code,broker_code1= null,broker_code2= null,broker_code3= null;
+    String str_contact_no1 = "",str_contact_no2= "",str_contact_no3="";
     CardView broker1_rate_details,broker2_rate_details,broker3_rate_details;
     Boolean FLAG_DROP_DOWN = false, FLAG_DROP_DOWN2 = false, FLAG_DROP_DOWN3 = false;
     TextView show_more_click_link,show_more_click_link2,show_more_click_link3;
     String CALL_BROKER_LIST = CONSTANT.DEVELOPMENT_URL + "Operations/brokercalllist";
-    List<ListOfBrokersModel> brokersModelList;
-    ListOfBrokerAdaptor listOfBrokerAdaptor;
-    ArrayList<String> to_branch_name_list;
     RecyclerView recyclerView;
     JSONArray array;
     List<String> list;
-    List<String> brokerlist;
+    List<String> broker_list1, broker_list2,broker_list3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +75,7 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
-        lable.setText(CONSTANT.ADD_VEHICLE);
+        lable.setText(CONSTANT.MARKET_VEHICLE_REQ);
         backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
         savebtn_toolbar = findViewById(R.id.mapbtn_toolbar);
         backbtn_toolbar.setOnClickListener(this);
@@ -86,31 +83,11 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
         savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
         init();
         load_branch_list();
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        brokersModelList = new ArrayList<>();
-
+        load_broker_list();
 
         emp_id = Preferences.getPreference(AddVehicleReq.this,CONSTANT.EMPID);
         str_from_branch = Preferences.getPreference(AddVehicleReq.this,CONSTANT.EMPLOYEE_BRANCH);
         edt_from_branch.setText(str_from_branch.trim());
-        call_broker_list();
-//        ArrayAdapter<ListOfBrokersModel> adapter = new ArrayAdapter<>(
-//                this, android.R.layout.simple_spinner_item, brokersModelList);
-//
-//
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_broker_selection1.setAdapter(adapter);
-        spinner_broker_selection1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         spinner_vehicle_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -133,38 +110,45 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        spinner_broker_selection1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        broker_list1 = new ArrayList<String>();
+        ArrayAdapter<String> brokerAdapter1 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, broker_list1);
+        brokerAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_broker_selection1.setAdapter(brokerAdapter1);
+        broker_list1.add(0, "select");
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        broker_list2 = new ArrayList<String>();
+        ArrayAdapter<String> brokerAdapter2 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, broker_list2);
+        brokerAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_broker_selection2.setAdapter(brokerAdapter2);
+        broker_list2.add(0, "select");
 
-            }
+        broker_list3 = new ArrayList<String>();
+        ArrayAdapter<String> brokerAdapter3 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, broker_list3);
+        brokerAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_broker_selection3.setAdapter(brokerAdapter3);
+        broker_list3.add(0, "select");
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
         list = new ArrayList<String>();
-//        list.add("list 1");
-//        list.add("list 2");
-//        list.add("list 3");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_to_branch.setAdapter(dataAdapter);
+        list.add(0, "select");
         spinner_to_branch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 str_to_branch = spinner_to_branch.getSelectedItem().toString();
                 if (position > 0) {
                     str_to_branch = parent.getItemAtPosition(position).toString();
-                    Pattern mPattern = Pattern.compile("(\\w+)\\s\\-");
-                    Matcher matcher = mPattern.matcher(str_to_branch);
-                    if (matcher.find()) {
-                        branch_code = matcher.group().trim();
-                    }
+                    branch_code = branch_code_matcher_regex(str_to_branch);
+                    list.remove(0);
+
                 }else {
                     str_vehicle_type = parent.getItemAtPosition(position).toString();
+                    branch_code = branch_code_matcher_regex(str_vehicle_type);
                 }
             }
 
@@ -173,6 +157,195 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
 
             }
         });
+
+        spinner_broker_selection1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                str_broker_name1 = broker_name_matcher_regex(parent.getItemAtPosition(position).toString());
+                broker_code1 = broker_code_matcher_regex(parent.getItemAtPosition(position).toString());
+                if(broker_list1.get(0).equals("select")){
+                    broker_list1.remove(0);
+                }else{
+                    broker1_rate_details.setVisibility(View.VISIBLE);
+                }
+
+                if(broker_code1 == null || broker_code1.equals("")){
+                    broker_code1 = "";
+                }
+                if(str_broker_name1 == null || str_broker_name1.equals("")){
+                    str_broker_name1 = "";
+                }else{
+                    edtbrokerName1.setText(str_broker_name1);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                str_broker_name1 = edtbrokerName1.getText().toString().trim();
+                str_broker_name1 = broker_name_matcher_regex(str_broker_name1);
+                edtbrokerName1.setText(str_broker_name1);
+            }
+        });
+
+        spinner_broker_selection2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String broker = broker_name_matcher_regex(parent.getItemAtPosition(position).toString());
+                broker_code2 = broker_code_matcher_regex(parent.getItemAtPosition(position).toString());
+                edtbrokerName2.setText(broker);
+                str_broker_name2 = broker;
+                if(broker_list2.get(0).equals("select")){
+                    broker_list2.remove(0);
+                }else{
+                    broker2_rate_details.setVisibility(View.VISIBLE);
+                }
+                if(broker_code2 == null || broker_code2.equals("")){
+                    broker_code2 = "";
+                }
+                if(str_broker_name2 == null || str_broker_name2.equals("")){
+                    str_broker_name2 = "";
+                }else{
+                    edtbrokerName2.setText(str_broker_name2);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                str_broker_name2 = edtbrokerName2.getText().toString().trim();
+                str_broker_name2 = broker_name_matcher_regex(str_broker_name2);
+                edtbrokerName2.setText(str_broker_name2);
+            }
+        });
+
+        spinner_broker_selection3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String broker = broker_name_matcher_regex(parent.getItemAtPosition(position).toString());
+                broker_code3 = broker_code_matcher_regex(parent.getItemAtPosition(position).toString());
+                edtbrokerName3.setText(broker);
+                str_broker_name3 = broker;
+                if(broker_list3.get(0).equals("select")){
+                    broker_list3.remove(0);
+                }else{
+                    broker3_rate_details.setVisibility(View.VISIBLE);
+                }
+                if(broker_code3 == null || broker_code3.equals("")){
+                    broker_code3 = "";
+                }
+                if(str_broker_name3 == null || str_broker_name3.equals("")){
+                    str_broker_name3 = "";
+                }else{
+                    edtbrokerName3.setText(str_broker_name3);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                str_broker_name3 = edtbrokerName3.getText().toString().trim();
+                str_broker_name3 = broker_name_matcher_regex(str_broker_name3);
+                edtbrokerName3.setText(str_broker_name3);
+            }
+        });
+    }
+
+    private String broker_code_matcher_regex(String s) {
+        String name = null;
+        Pattern mPattern = Pattern.compile("(\\d+)");
+        Matcher matcher = mPattern.matcher(s);
+        if (matcher.find()) {
+            name = matcher.group().trim();
+        }
+        return name;
+    }
+
+    private String broker_name_matcher_regex(String s) {
+        String name = null;
+        name = s.split(" --")[0];
+        return name;
+    }
+
+    private String branch_code_matcher_regex(String str_vehicle_type) {
+        String string; string = str_vehicle_type;
+        Pattern mPattern = Pattern.compile("(\\w+)\\s");
+        Matcher matcher = mPattern.matcher(string);
+        if (matcher.find()) {
+            branch_code = matcher.group().trim().replace(" ","");
+        }
+        return branch_code;
+    }
+
+    private void load_broker_list() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        method = "call_broker_list";
+        final ApiKey apiKey = new ApiKey();
+        final String key = apiKey.saltStr();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CALL_BROKER_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.e("load_broker_list",response);
+                        progressDialog.dismiss();
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String status = object.getString(CONSTANT.STATUS);
+                            String keyResponse = object.getString(CONSTANT.KEY);
+                            if(status.equals(CONSTANT.TRUE)){
+                                array = object.getJSONArray("searchbroker");
+                                for (int i =0;i<array.length();i++){
+                                    JSONObject jsonObject = array.getJSONObject(i);
+                                    String branch_name = jsonObject.getString("broker_name");
+                                    String branch_code = jsonObject.getString("broker_code");
+                                    if(!branch_name.equals("")){
+                                        branch_name = branch_name.split(" --")[0];
+                                    }
+                                    broker_list1.add(branch_name+" --" + branch_code);
+//                                    broker_list1.add(branch_code);
+                                    broker_list2.add(branch_name+" --"+ branch_code);
+                                    broker_list3.add(branch_name+" --" + branch_code);
+                                }
+                                spinner_broker_selection1.setAdapter(new ArrayAdapter<String>(AddVehicleReq.this,
+                                        android.R.layout.simple_spinner_dropdown_item, broker_list1));
+                                spinner_broker_selection2.setAdapter(new ArrayAdapter<String>(AddVehicleReq.this,
+                                        android.R.layout.simple_spinner_dropdown_item, broker_list2));
+                                spinner_broker_selection3.setAdapter(new ArrayAdapter<String>(AddVehicleReq.this,
+                                        android.R.layout.simple_spinner_dropdown_item, broker_list3));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof NetworkError) {
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.RESPONSEERROR,
+                            Toast.LENGTH_LONG).show();
+                } else if (error instanceof AuthFailureError) {
+                } else if (error instanceof ParseError) {
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(),
+                            CONSTANT.TIMEOUT_ERROR,
+                            Toast.LENGTH_LONG).show();
+                }
+                progressDialog.dismiss();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put(CONSTANT.METHOD,method);
+                params.put(CONSTANT.KEY,key);
+                params.put(CONSTANT.EMPID,emp_id);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
     private void load_branch_list() {
@@ -187,7 +360,7 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("to_branch_list",response);
+//                        Log.e("to_branch_list",response);
                         progressDialog.dismiss();
                         try {
                             JSONObject object = new JSONObject(response);
@@ -237,82 +410,6 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
         requestQueue.add(stringRequest);
     }
 
-    private void call_broker_list()
-    {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-        method = "call_broker_list";
-        final ApiKey apiKey = new ApiKey();
-        final String key = apiKey.saltStr();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, CALL_BROKER_LIST,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.e("call_broker_list",response);
-                        progressDialog.dismiss();
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            String status = object.getString(CONSTANT.STATUS);
-                            String keyResponse = object.getString(CONSTANT.KEY);
-                            if(status.equals(CONSTANT.TRUE)){
-                                array = object.getJSONArray("searchbroker");
-                                for (int i =0;i<array.length();i++){
-//                                    JSONObject jsonObjectName =  array.getJSONObject(i);
-//                                    String broker_name =jsonObjectName.getString("broker_name");
-//                                    brokerlist.add(broker_name);
-                                    JSONObject jsonObject = array.getJSONObject(i);
-                                    ListOfBrokersModel brokersModel = new ListOfBrokersModel(
-                                            jsonObject.getString("broker_name"),
-                                            jsonObject.getString("broker_code"),
-                                            jsonObject.getString("contact_no"),
-                                            jsonObject.getString("address"),
-                                            jsonObject.getString("account_no"),
-                                            jsonObject.getString("bank_name"),
-                                            jsonObject.getString("pan_no"),
-                                            jsonObject.getString("name_on_pan_card"),
-                                            jsonObject.getString("ifsc_code"));
-                                    brokersModelList.add(brokersModel);
-                                }
-//                                spinner_broker_selection1.setAdapter(new ArrayAdapter<String>(AddVehicleReq.this, android.R.layout.simple_spinner_dropdown_item, brokerlist));
-                                listOfBrokerAdaptor = new ListOfBrokerAdaptor(getApplicationContext(),brokersModelList);
-                                recyclerView.setAdapter(listOfBrokerAdaptor);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error instanceof NetworkError) {
-                } else if (error instanceof ServerError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.RESPONSEERROR,
-                            Toast.LENGTH_LONG).show();
-                } else if (error instanceof AuthFailureError) {
-                } else if (error instanceof ParseError) {
-                } else if (error instanceof TimeoutError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.TIMEOUT_ERROR,
-                            Toast.LENGTH_LONG).show();
-                }
-                progressDialog.dismiss();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put(CONSTANT.METHOD,method);
-                params.put(CONSTANT.KEY,key);
-                params.put(CONSTANT.EMPID,emp_id);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
 
     private void init() {
         edt_from_branch = findViewById(R.id.edt_from_branch);
@@ -325,20 +422,14 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
         spinner_goods_type = findViewById(R.id.spinner_goods_type);
         spinner_vehicle_type = findViewById(R.id.spinner_vehicle_type);
         edt_vehicle_capacity = findViewById(R.id.edt_vehicle_capacity);
-        spinner_broker_selection1 = findViewById(R.id.spinner_broker_selection1);
+        spinner_broker_selection1 = findViewById(R.id.spinner_broker_selection);
         spinner_broker_selection2 = findViewById(R.id.spinner_broker_selection2);
         spinner_broker_selection3 = findViewById(R.id.spinner_broker_selection3);
 
-        show_more_click_link = findViewById(R.id.show_more_click_link);
-        show_more_click_link.setOnClickListener(this);
         broker1_rate_details = findViewById(R.id.broker1_rate_details);
 
-        show_more_click_link2 = findViewById(R.id.show_more_click_link2);
-        show_more_click_link2.setOnClickListener(this);
         broker2_rate_details = findViewById(R.id.broker2_rate_details);
 
-        show_more_click_link3 = findViewById(R.id.show_more_click_link3);
-        show_more_click_link3.setOnClickListener(this);
         broker3_rate_details = findViewById(R.id.broker3_rate_details);
         recyclerView = findViewById(R.id.recyclerview_brokerlist);
 
@@ -353,27 +444,34 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
         edt_remark1 = findViewById(R.id.edt_remark1);
         edt_remark2 = findViewById(R.id.edt_remark2);
         edt_remark3 = findViewById(R.id.edt_remark3);
+
+        edtbrokerName1 = findViewById(R.id.edtbrokerName1);
+        edtbrokerName2 = findViewById(R.id.edtbrokerName2);
+        edtbrokerName3 = findViewById(R.id.edtbrokerName3);
     }
 
     private void getdata() {
-        if (str_req_type.equals("Select")) {
-//            str_to_branch = spinner_to_branch.getText().toString().trim();
-        }
+
         str_loading_point = edt_loading_point.getText().toString().trim();
         str_unloading_point = edt_unloading_point.getText().toString().trim();
         str_actual_wt_of_goods = edt_actual_wt_of_goods.getText().toString().trim();
+        if(str_loading_point.equals("") && str_unloading_point.equals("") && str_actual_wt_of_goods.equals("")){
+            Toast.makeText(getApplicationContext(),"Kindly fill the field",
+                    Toast.LENGTH_SHORT).show();
+        }
+
         str_req_type = spinner_req_type.getSelectedItem().toString().trim();
-        if (str_req_type.equals("Select")) {
+        if (str_req_type.toLowerCase().equals("select")) {
             Toast.makeText(getApplicationContext(),"Kindly select the field",
                     Toast.LENGTH_SHORT).show();
         }
         str_touching_point = spinner_touching_point.getSelectedItem().toString().trim();
-        if (str_touching_point.equals("Select")) {
+        if (str_touching_point.toLowerCase().equals("select")) {
             Toast.makeText(getApplicationContext(),"Kindly select the field",
                     Toast.LENGTH_SHORT).show();
         }
         str_goods_type = spinner_goods_type.getSelectedItem().toString().trim();
-        if (str_goods_type.equals("Select")) {
+        if (str_goods_type.toLowerCase().equals("select")) {
 //            //TODO if user not select any list of item,do something
             Toast.makeText(getApplicationContext(),"kindly select the field",
                     Toast.LENGTH_SHORT).show();
@@ -389,44 +487,46 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.mapbtn_toolbar:
                 getdata();
-//                mandatoryCheck();
-                save();
+                mandatoryCheck();
+//                save();
 //                add_function_api_call();
                 break;
-            case R.id.show_more_click_link:
-                if(FLAG_DROP_DOWN.equals(false)){
-                    broker1_rate_details.setVisibility(View.VISIBLE);
-                    show_more_click_link.setText(CONSTANT.SHOW_LESS);
-                    FLAG_DROP_DOWN = true;
-                }else{
-                    broker1_rate_details.setVisibility(View.GONE);
-                    show_more_click_link.setText(CONSTANT.SHOW_MORE);
-                    FLAG_DROP_DOWN = false;
-                }
-                break;
-            case R.id.show_more_click_link2:
-                if(FLAG_DROP_DOWN2.equals(false)){
-                    broker2_rate_details.setVisibility(View.VISIBLE);
-                    show_more_click_link2.setText(CONSTANT.SHOW_LESS);
-                    FLAG_DROP_DOWN2 = true;
-                }else{
-                    broker2_rate_details.setVisibility(View.GONE);
-                    show_more_click_link2.setText(CONSTANT.SHOW_MORE);
-                    FLAG_DROP_DOWN2 = false;
-                }
-                break;
-            case R.id.show_more_click_link3:
-                if(FLAG_DROP_DOWN3.equals(false)){
-                    broker3_rate_details.setVisibility(View.VISIBLE);
-                    show_more_click_link3.setText(CONSTANT.SHOW_LESS);
-                    FLAG_DROP_DOWN3 = true;
-                }else{
-                    broker3_rate_details.setVisibility(View.GONE);
-                    show_more_click_link3.setText(CONSTANT.SHOW_MORE);
-                    FLAG_DROP_DOWN3 = false;
-                }
-                break;
         }
+    }
+
+    private void mandatoryCheck() {
+        Boolean condition_code = false,condition_rate=false;
+        try{
+            if(!broker_code1.equals("") && !broker_code2.equals("")){
+                condition_code = true;
+            }else{
+                Toast.makeText(getApplicationContext(),"Kindly select two brokers from list",
+                        Toast.LENGTH_SHORT).show();
+            }
+            String str_rate1,str_rate2,str_rate3;
+            str_rate1 = edt_broker_rate1.getText().toString().trim();
+            str_rate2 = edt_broker_rate2.getText().toString().trim();
+            str_rate3 = edt_broker_rate3.getText().toString().trim();
+            if(str_rate1.equals("") && str_rate2.equals("") && str_rate3.equals("")){
+                Toast.makeText(getApplicationContext(),"Kindly fill the rate of brokers",
+                        Toast.LENGTH_SHORT).show();
+            }else if(str_rate2.equals("") && str_rate3.equals("")){
+                Toast.makeText(getApplicationContext(),"Kindly fill the rate of brokers",
+                        Toast.LENGTH_SHORT).show();
+            }else if(str_rate1.equals("") && str_rate3.equals("")){
+                Toast.makeText(getApplicationContext(),"Kindly fill the rate of brokers",
+                        Toast.LENGTH_SHORT).show();
+            }else{
+                condition_rate = true;
+            }
+
+            if(condition_code.equals(true) && condition_rate.equals(true)){
+                save();
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
     }
 
     private void save() {
@@ -503,8 +603,6 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
                 params.put(CONSTANT.EMPID, emp_id);
                 params.put("from_branch",str_from_branch);
                 params.put("to_branch",branch_code);
-//                params.put("to_branch","dhrt");
-
                 params.put("loading_point",str_loading_point);
                 params.put("unloading_point",str_unloading_point);
                 params.put("req_type",str_req_type);
@@ -514,58 +612,29 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
                 params.put("vehicle_type",str_vehicle_type);
                 params.put("vehicle_capacity",str_vehicle_capacity);
                 params.put("market_vehicle_entry_status","pending");
-//                params.put("broker_name1",str_broker_selection1);
-//                params.put("broker_code1",str_broker_selection1);
-                params.put("broker1_contact_no","987654212");
+                params.put("broker1_contact_no",str_contact_no1);
+                params.put("broker_code1",broker_code1);
+                params.put("broker_name1",edtbrokerName1.getText().toString().trim());
                 params.put("broker_1_rate",edt_broker_rate1.getText().toString().trim());
                 params.put("broker_1_advance",edt_advance1.getText().toString().trim());
                 params.put("broker_1_remark",edt_remark1.getText().toString().trim());
-//                params.put("broker_name1",str_broker_selection2);
-//                params.put("broker_code1",str_broker_selection2);
-                params.put("broker2_contact_no","987654212");
+                params.put("broker2_contact_no",str_contact_no2);
+                params.put("broker_name2",edtbrokerName2.getText().toString().trim());
+                params.put("broker_code2",broker_code2);
                 params.put("broker_2_rate",edt_broker_rate2.getText().toString().trim());
                 params.put("broker_2_advance",edt_advance2.getText().toString().trim());
                 params.put("broker_2_remark",edt_remark2.getText().toString().trim());
-//                params.put("broker_name1",str_broker_selection3);
-//                params.put("broker_code1",str_broker_selection3);
-                params.put("broker3_contact_no","987654212");
-//                params.put("broker_3_rate",edt_broker_rate2.getText().toString().trim());
-//                params.put("broker_3_advance",edt_advance2.getText().toString().trim());
-//                params.put("broker_3_remark",edt_remark3.getText().toString().trim());
-//                params.put("req_type","FTL");
-//                params.put("touching_point","0");
-//                params.put("good_type","Heavy Weight");
-//                params.put("actual_wt_of_goods","100");
-//                params.put("vehicle_type","500-Volvo");
-//                params.put("vehicle_capacity","500");
-//                params.put("market_vehicle_entry_status","pending");
-                params.put("broker_name1","Rajnikant");
-//                params.put("broker1_contact_no","987654212");
-                params.put("broker_code1","100");
-//                params.put("broker_1_rate","5000");
-//                params.put("broker_1_advance","1000");
-//                params.put("broker_1_remark","next month will pay");
-                params.put("broker_name2","Lokesh");
-//                params.put("broker2_contact_no","987654812");
-                params.put("broker_code2","110");
-//                params.put("broker_2_rate","5000");
-//                params.put("broker_2_advance","0");
-//                params.put("broker_2_remark","");
-                params.put("broker_name3","");
-//                params.put("broker3_contact_no","");
-                params.put("broker_code3","");
-                params.put("broker_3_rate","");
-                params.put("broker_3_advance","");
-                params.put("broker_3_remark","");
+                params.put("broker3_contact_no",str_contact_no3);
+                params.put("broker_name3",edtbrokerName3.getText().toString().trim());
+                params.put("broker_code3",broker_code3);
+                params.put("broker_3_rate",edt_broker_rate3.getText().toString().trim());
+                params.put("broker_3_advance",edt_advance3.getText().toString().trim());
+                params.put("broker_3_remark",edt_remark3.getText().toString().trim());
                 Log.e("method","add_vehicle_req");
                 return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
-
-    private void mandatoryCheck() {
-
     }
 }

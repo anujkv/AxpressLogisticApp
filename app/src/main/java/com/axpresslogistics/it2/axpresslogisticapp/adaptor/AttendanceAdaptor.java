@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.axpresslogistics.it2.axpresslogisticapp.R.color.colorPrimary;
+import static com.axpresslogistics.it2.axpresslogisticapp.R.color.colorPrimaryDark;
 
 public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.AttendanceHolder> {
     Context context;
@@ -156,6 +157,7 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         holder.leaveAppliedCardView.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
                 TextView txt_leaveType, txt_clickedDate, txt_leaveReason, txt_fromDate, txt_toDate, txt_leaveStatus,
@@ -244,7 +246,7 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
                 }else if (attendanceModel.getDayStatus().equals("A") ||
                         attendanceModel.getDayStatus().equals("S")){
                     if(attendanceModel.getDayStatus().equals("A")){
-                        txt_clickedDate.setBackgroundColor(Color.RED);
+                        txt_clickedDate.setBackgroundColor(colorPrimary);
                         txt_clickedDate.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         txt_clickedDate.setTextColor(Color.WHITE);
                         txt_clickedDate.setText(convertDate_dd_MMM_yyyy(attendanceModel.getDate()));
@@ -252,7 +254,7 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
                         txt_leaveType.setText("Absent");
                         txt_leaveType.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         txt_leaveType.setTextSize(16);
-                        txt_leaveType.setTextColor(Color.RED);
+                        txt_leaveType.setTextColor(colorPrimary);
                         fromDate.setVisibility(View.GONE);
                         txt_fromDate.setVisibility(View.GONE);
                         toDate.setVisibility(View.GONE);
@@ -267,14 +269,15 @@ public class AttendanceAdaptor extends RecyclerView.Adapter<AttendanceAdaptor.At
                         txt_appliedDate.setVisibility(View.GONE);
                     }else if(attendanceModel.getDayStatus().equals("S") &&
                             attendanceModel.getInTime().equals("")){
-                        txt_clickedDate.setBackgroundColor(Color.RED);
+//                        txt_clickedDate.setBackgroundColor(Color.RED);
+                        txt_clickedDate.setBackgroundColor(colorPrimary);
                         txt_clickedDate.setTextColor(Color.WHITE);
                         txt_clickedDate.setText(convertDate_dd_MMM_yyyy(attendanceModel.getDate()));
                         leaveType.setVisibility(View.GONE);
                         txt_leaveType.setText("Sunday");
                         txt_leaveType.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                         txt_leaveType.setTextSize(16);
-                        txt_leaveType.setTextColor(Color.RED);
+                        txt_leaveType.setTextColor(colorPrimary);
                         fromDate.setVisibility(View.GONE);
                         txt_fromDate.setVisibility(View.GONE);
                         toDate.setVisibility(View.GONE);

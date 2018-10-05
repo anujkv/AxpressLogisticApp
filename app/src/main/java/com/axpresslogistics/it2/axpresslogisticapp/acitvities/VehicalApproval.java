@@ -48,9 +48,9 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
     TextView show1,show2,show3;
     Boolean FLAG_DROP_DOWN = false, FLAG_DROP_DOWN2 = false, FLAG_DROP_DOWN3 = false;
     CardView broker1_rate_details,broker2_rate_details,broker3_rate_details;
-    String method,str_empid,methodAPI,vehicle_req_code,broker_status,BROKER_RATE,BROKER_NAME,
+    String method,str_empid,methodAPI,vehicle_req_code,broker_status,BROKER_RATE= "0",BROKER_NAME = "",
             BROKER_CODE,SELECTION_STATUS;
-    String APPROVED_URL = CONSTANT.DEVELOPMENT_URL + "Operations/approved_vehicle";
+    String APPROVED_URL = CONSTANT.DEVELOPMENT_URL + "Operations/approval_method";
     String FETCH_APPROVAL_URL = CONSTANT.DEVELOPMENT_URL + "Operations/saved_vehicle_list_for_approval";
     String str_vehicle_req_code,str_request_date,str_from_branch,str_to_branch,str_loading_point,
             str_unloading_point,str_req_type,str_goods_type,str_act_wt_of_goods,
@@ -275,7 +275,7 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        final String approved_method = "approved_vehicle";
+        final String approved_method = "approved_method";
         final ApiKey apiKey = new ApiKey();
         final String key = apiKey.saltStr();
 
@@ -292,7 +292,27 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
+
                         Log.e("Approved Response>",response);
+
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            String status = object.getString(CONSTANT.STATUS);
+                            String keyResponse = object.getString(CONSTANT.KEY);
+
+                            if(status.equals(CONSTANT.TRUE)){
+                                Toast.makeText(getApplicationContext(),"Approval send,Successful!"
+                                        ,Toast.LENGTH_SHORT).show();
+                                finish();
+                            }else{
+                                Toast.makeText(getApplicationContext(),"Approval not send,Unsuccessful"
+                                        ,Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -328,9 +348,24 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 params.put("unloading_point",str_unloading_point);
                 params.put("requirement_type", str_req_type);
                 params.put("actual_wt_of_goods",str_act_wt_of_goods);
-
                 params.put(CONSTANT.EMPID,str_empid);
                 params.put(CONSTANT.BRANCH_CODE,str_from_branch);
+
+                Log.e(CONSTANT.METHOD,approved_method);
+                Log.e(CONSTANT.KEY,key);
+                Log.e("request_code",str_vehicle_req_code);
+                Log.e("broker_name", BROKER_NAME);
+                Log.e("broker_code",BROKER_CODE);
+                Log.e("broker_rate",BROKER_RATE);
+                Log.e("approved_status",SELECTION_STATUS);
+                Log.e("from_branch",str_from_branch);
+                Log.e("to_branch", str_to_branch);
+                Log.e("loading_point",str_loading_point);
+                Log.e("unloading_point",str_unloading_point);
+                Log.e("requirement_type", str_req_type);
+                Log.e("actual_wt_of_goods",str_act_wt_of_goods);
+                Log.e(CONSTANT.EMPID,str_empid);
+                Log.e(CONSTANT.BRANCH_CODE,str_from_branch);
                 return params;
             }
         };
