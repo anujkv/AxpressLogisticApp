@@ -127,7 +127,7 @@ public class MarketVehicleRequest extends AppCompatActivity implements View.OnCl
                                     jsonObject.getString("request_date"),
                                     jsonObject.getString("from_branch"),
                                     jsonObject.getString("to_branch"),
-                                    jsonObject.getString("broker_name"),
+                                    jsonObject.getString("broker_name").split(" --")[0],
                                     jsonObject.getString("minimum_rate"));
                             modelList.add(vehicleModel);
                         }
@@ -253,7 +253,7 @@ public class MarketVehicleRequest extends AppCompatActivity implements View.OnCl
                                             jsonObject.getString("request_date"),
                                             jsonObject.getString("from_branch"),
                                             jsonObject.getString("to_branch"),
-                                            jsonObject.getString("broker_name"),
+                                            jsonObject.getString("broker_name").split(" --")[0],
                                             jsonObject.getString("minimum_rate"));
                                     vehicleReqModelList.add(searchVehicleReqModel);
                                 }

@@ -171,7 +171,7 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                             for (int j = 0; j < jsonArray.length(); j++){
                                 JSONObject jsonObjectbroker = jsonArray.getJSONObject(j);
                                 BrokerApprovalModel model = new BrokerApprovalModel(
-                                        jsonObjectbroker.getString("broker_name"),
+                                        jsonObjectbroker.getString("broker_name").split("--")[0],
                                         jsonObjectbroker.getString("broker_code"),
                                         jsonObjectbroker.getString("broker_rate"),
                                         jsonObjectbroker.getString("broker_advance"),
@@ -345,8 +345,8 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 params.put("approved_status",SELECTION_STATUS);
                 params.put("from_branch",str_from_branch);
                 params.put("to_branch", str_to_branch);
-                params.put("loading_point",str_loading_point);
-                params.put("unloading_point",str_unloading_point);
+                params.put("loading_point",str_loading_point).toUpperCase();
+                params.put("unloading_point",str_unloading_point).toUpperCase();
                 params.put("requirement_type", str_req_type);
                 params.put("actual_wt_of_goods",str_act_wt_of_goods);
                 params.put(CONSTANT.EMPID,str_empid);
