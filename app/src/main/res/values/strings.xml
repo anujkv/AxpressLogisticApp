@@ -168,14 +168,9 @@
     <string name="Leave_prompt">Select</string>
     <string-array name="leave_arrays">
         <item>Select</item>
-        <item>Casual Leave</item>
-        <item>Sick Leave</item>
         <item>Earned Leave</item>
-        <item>Loss of Pay</item>
         <item>On Duty</item>
-        <item>Maternity Leave</item>
         <item>Compensatory Off</item>
-        <item>Credit Off</item>
     </string-array>
 
     //string for requirement point...

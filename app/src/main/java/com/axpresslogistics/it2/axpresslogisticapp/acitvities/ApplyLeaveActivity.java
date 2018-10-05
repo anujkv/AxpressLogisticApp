@@ -333,7 +333,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             date = dayOfMonth + "-" + monthfrom + "-" + year;
                             Log.e("FROM:",date);
                             input_leave_from.setText(date);
-
                         }
                     });
 

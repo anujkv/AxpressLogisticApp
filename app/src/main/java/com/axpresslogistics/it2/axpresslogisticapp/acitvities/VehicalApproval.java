@@ -182,6 +182,7 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
 
                             fetchapprovalAdaptor = new BrokerApprovalAdaptor(getApplicationContext(), modelList);
                             recyclerView.setAdapter(fetchapprovalAdaptor);
+                            fetchapprovalAdaptor.notifyDataSetChanged();
                         }
                     }else{
                         Toast.makeText(getApplicationContext(),"Sorry data couldn't load!",Toast.LENGTH_SHORT).show();

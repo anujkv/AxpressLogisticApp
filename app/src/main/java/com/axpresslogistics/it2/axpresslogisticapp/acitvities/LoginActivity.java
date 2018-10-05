@@ -165,6 +165,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(getApplicationContext(), CONSTANT.WRONG_CREDENTIAL,
                                 Toast.LENGTH_LONG).show();
                         invisibleProgressbar();
+//                        TESST
+//                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_NAME,
+//                                "1257");
+//                        Preferences.setPreference(LoginActivity.this,  CONSTANT.EMPLOYEE_BRANCH,
+//                                "GGN");
+//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPID,
+//                                "1257");
+//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,
+//                                "1257@gmail.com");
+//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DESIGNATION,
+//                                "BRANCH");
+//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DEPT,
+//                                "DEPT");
+//                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_IMAGE,
+//                                "http://192.168.1.7/webapi.axpresslogistics.com/api/HRMS/anuj.jp");
+//                        Toast.makeText(getApplicationContext(), CONSTANT.WELCOME + username,
+//                                LENGTH_SHORT).show();
+//                        startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));
                     }
 
                 } catch (JSONException e) {

@@ -182,10 +182,8 @@ public class MainHomeActivity extends AppCompatActivity
 
     private void check(String call) {
         if (list.contains(call)) {
-            //one line code use when you authentication by pass in main activity
-//            if(call!= null){
-            //one line code use when you authentication implement in main activity
-            if (call.equals("Operations")) {
+
+                if (call.equals("Operations")) {
                 startActivity(new Intent(getApplicationContext(), OperationActivity.class));
             } else if (call.equals("hrms")) {
                 startActivity(new Intent(getApplicationContext(), HrmsActivity.class));
@@ -237,6 +235,8 @@ public class MainHomeActivity extends AppCompatActivity
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "credinital not found", Toast.LENGTH_SHORT).show();
+//                        list.add("Operations");list.add("hrms");
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -272,9 +272,14 @@ public class MainHomeActivity extends AppCompatActivity
                 params.put(CONSTANT.METHOD, method);
                 params.put(CONSTANT.KEY, key);
                 params.put(CONSTANT.EMPID, Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
-                Log.e("method : ", method);
-                Log.e("key : ", key);
-                Log.e("EMPID : ", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
+
+                //TEST.....
+//                params.put("method : ", "app_user");
+//                params.put("key : ", "dfgsdfsadfsdfs");
+//                params.put(CONSTANT.EMPID, "1257");
+                Log.e("method : ", "app_user");
+                Log.e("key : ", "dfgsdfsadfsdfs");
+//                Log.e("EMPID : ", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
 
                 return params;
             }
