@@ -2,6 +2,15 @@ package com.axpresslogistics.it2.axpresslogisticapp.model;
 
 public class BrokerApprovalModel {
     String  broker_name,broker_code,broker_rate,broker_advance,broker_remark,loggedin_member;
+    boolean isSelected=false;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public BrokerApprovalModel() {
     }
