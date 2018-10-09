@@ -41,6 +41,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
+
 public class AddBrokerActivity extends AppCompatActivity implements View.OnClickListener {
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_branch, edtbrokerName, edtContactNo, edtContactAltNo, edtEmail, edtAddress,
@@ -48,7 +50,7 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
             edtCreatedBy, edtCreatedOn;
     String str_branch, strbrokerName, strContactNo, strContactAltNo, strEmail, strAddress,
             str_bank_account_no, str_bank_name, str_pan_no, str_name_on_pancard, strBankIFSC,
-            strCreatedBy, strCreatedOn, strbroker_status,str_broker_code,function_method = null;
+            strCreatedBy, strCreatedOn, strbroker_status,str_broker_code,function_method = "";
     int selectedId;
     String broker_code_from_broker_list = null;
     String method, input, branch_code;
@@ -56,7 +58,7 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
     RadioGroup radio_group_id;
     int MAX_LENGTH = 10;
 
-    String ADD_NEW_BROKER_URL = CONSTANT.DEVELOPMENT_URL+ "Operations/broker_add";
+    String ADD_NEW_BROKER_URL = URL+ "Operations/broker_add";
     String FETCH_BROKER_DETAILS_URL = CONSTANT.DEVELOPMENT_URL+"Operations/broker_fetch";
     String UPDATE_BROKER_DETAILS_URL = CONSTANT.DEVELOPMENT_URL+"Operations/brokerupdate";
 
@@ -74,12 +76,16 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
         savebtn_toolbar.setOnClickListener(this);
         savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
         init();
-
+        Log.e(">>>>>","Addbroker");
         Intent intent = getIntent();
         broker_code_from_broker_list = intent.getStringExtra("broker_code");
         function_method = intent.getStringExtra("method");
+        if(function_method==(null)){
+            function_method = "";
+        }
+        Log.e("FUNCTION: ",function_method);
 
-        if(broker_code_from_broker_list!=null && !broker_code_from_broker_list.equals(CONSTANT.BLANK));{
+        if(broker_code_from_broker_list!=null && !broker_code_from_broker_list.equals(CONSTANT.BLANK)){
             fetch_broker_details(broker_code_from_broker_list);
         }
     }
@@ -139,8 +145,6 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.mapbtn_toolbar:
                 mandatoryCheck();
-//                save();
-//                add_function_api_call();
                 break;
         }
     }
@@ -375,6 +379,9 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
                 params.put("pan_no", str_pan_no);
                 params.put("name_on_pancard", str_name_on_pancard);
                 params.put("bank_ifsc", strBankIFSC);
+
+
+                Log.e("METHOD :", function_method);
                 Log.e("BRANCH :", str_branch);
                 Log.e(CONSTANT.broker_name, strbrokerName);
                 Log.e(CONSTANT.BROKER_CODE, broker_code_from_broker_list);

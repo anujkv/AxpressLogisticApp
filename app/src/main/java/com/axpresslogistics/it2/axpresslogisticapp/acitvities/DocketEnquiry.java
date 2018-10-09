@@ -42,23 +42,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class DocketEnquiry extends AppCompatActivity {
     private String url = URL + "Operations/Docket_Invoice";
-    private String DOCKET_LIST_URL  = URL +"Operations/invoice_details";
-    Boolean FLAG = false;
     RadioGroup radio_group_id;
     RadioButton radio_btn_id;
     EditText input_editSearch_text_id;
     Button submit_docket_btn;
     String method, strInput_editSearch_text,docket;
-    int intInput_editSearch_text;
     Intent intent;
     ProgressBar progressBar;
-    RecyclerView recyclerView;
-    InvoiceDocketAdaptor invoiceDocketAdaptor;
-    List<InvoiceDocketModel> invoiceDocketModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,90 +102,19 @@ public class DocketEnquiry extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                     } else if(radio_btn_id.getText().equals("Invoice")){
-                        showDocketList();
+                        Intent intent = new Intent(getApplicationContext(),InvoiceDocketActivityList.class);
+                        intent.putExtra("invoice_no",strInput_editSearch_text);
+                        startActivity(intent);
                     }
                 }
             }
         });
     }
 
-    private void showDocketList() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        final ApiKey apiKey = new ApiKey();
-        final String method = "invoice_details";
-        final String apikey = apiKey.saltStr();
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DOCKET_LIST_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        Log.e("Response Invoice",response);
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            String status = object.optString(CONSTANT.STATUS);
-                            if(status.equals(CONSTANT.TRUE)){
-                                progressDialog.dismiss();
-                                Intent intent = new Intent(DocketEnquiry.this,InvoiceDocketActivityList.class);
-                                intent.putExtra("invoice_no",strInput_editSearch_text);
-                                startActivity(intent);
-                            }
-                            else if(status.equals(CONSTANT.FALSE)){
-                                Toast.makeText(getApplicationContext(),"Invoice No not found",
-                                        Toast.LENGTH_SHORT).show();
-                                progressDialog.dismiss();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            progressDialog.dismiss();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("response======", "" + error.toString());
-                if (error instanceof NetworkError) {
-                } else if (error instanceof ServerError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.RESPONSEERROR,
-                            Toast.LENGTH_LONG).show();
-                } else if (error instanceof AuthFailureError) {
-                } else if (error instanceof ParseError) {
-                } else if (error instanceof NoConnectionError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.INTERNET_ERROR,
-                            Toast.LENGTH_LONG).show();
-                } else if (error instanceof TimeoutError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.TIMEOUT_ERROR,
-                            Toast.LENGTH_LONG).show();
-                }
-                progressDialog.dismiss();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put(CONSTANT.METHOD,CONSTANT.INVOICE_DETAILS_METHOD);
-                params.put(CONSTANT.KEY,apikey);
-                params.put(CONSTANT.INVOICE_NO,strInput_editSearch_text.trim());
-                progressDialog.dismiss();
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-        progressDialog.dismiss();
-    }
-
     public void dataJsonFunction() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         submit_docket_btn.setClickable(false);
-//        final String method;
-        String url = URL + "Operations/Docket_Invoice";
         ApiKey apiKey = new ApiKey();
         final String method = CONSTANT.DOCKET;
         final String apikey = apiKey.saltStr();
@@ -277,6 +201,7 @@ public class DocketEnquiry extends AppCompatActivity {
     protected void onPostResume() {
         submit_docket_btn.setClickable(true);
         progressBar.setVisibility(View.INVISIBLE);
+        input_editSearch_text_id.setText("");
         super.onPostResume();
     }
 

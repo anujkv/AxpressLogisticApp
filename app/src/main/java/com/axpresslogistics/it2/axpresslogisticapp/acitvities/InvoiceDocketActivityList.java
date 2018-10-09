@@ -45,7 +45,7 @@ public class InvoiceDocketActivityList extends AppCompatActivity {
     RecyclerView recyclerView;
     InvoiceDocketAdaptor invoiceDocketAdaptor;
     List<InvoiceDocketModel> invoiceDocketModelList;
-    String DOCKET_LIST_URL = CONSTANT.URL+"Operations/invoice_details";
+    String DOCKET_LIST_URL = CONSTANT.DEVELOPMENT_URL+"Operations/invoice_details";
     String invoice_no;
 
     @Override
@@ -67,6 +67,7 @@ public class InvoiceDocketActivityList extends AppCompatActivity {
         });
 
        invoice_no = getIntent().getStringExtra("invoice_no");
+       Log.e("INVOICE",invoice_no);
 
         recyclerView = findViewById(R.id.docketlistRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -80,7 +81,6 @@ public class InvoiceDocketActivityList extends AppCompatActivity {
     private void showDocketList(final String invoice_no) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         final ApiKey apiKey = new ApiKey();
-        final String method = "invoice_details";
         final String apikey = apiKey.saltStr();
         progressDialog.setMessage("Loading...");
         progressDialog.show();

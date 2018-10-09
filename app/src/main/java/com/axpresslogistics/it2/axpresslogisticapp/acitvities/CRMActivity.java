@@ -14,6 +14,8 @@ import com.axpresslogistics.it2.axpresslogisticapp.R;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class CRMActivity extends AppCompatActivity {
 
     private String jsonString;
@@ -22,14 +24,16 @@ public class CRMActivity extends AppCompatActivity {
 
     public static String[] gridViewStrings = {
             "Visit Form",
-            "Business Card"
+//            "Business Card"
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_visit,
-            R.drawable.icon_business_card
+//            R.drawable.icon_business_card
     };
     GridView gridView;
     Toolbar toolbar;
+    ArrayList<String> list = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,8 @@ public class CRMActivity extends AppCompatActivity {
         gridView = findViewById(R.id.gridhrms);
         GridViewHrms gridViewHrms = new GridViewHrms(CRMActivity.this, gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewHrms);
+        Intent intent = getIntent();
+        list = intent.getStringArrayListExtra("list");
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -56,15 +62,24 @@ public class CRMActivity extends AppCompatActivity {
 
                 switch (position) {
                     case 0:
-                        startActivity(new Intent(CRMActivity.this,
-                                CustomerViewListActivity.class));
+                        check("visit form");
                         break;
-                    case 1:
-                        startActivity(new Intent(CRMActivity.this,
-                                BusinessCard.class));
-                        break;
+//                    case 1:
+//                        startActivity(new Intent(CRMActivity.this,
+//                                BusinessCard.class));
+//                        break;
                 }
             }
         });
+    }
+
+    private void check(String call) {
+        if (list.contains(call)) {
+
+            if (call.equals("visit form")) {
+                startActivity(new Intent(CRMActivity.this,
+                                CustomerViewListActivity.class));
+            }
+        }
     }
 }

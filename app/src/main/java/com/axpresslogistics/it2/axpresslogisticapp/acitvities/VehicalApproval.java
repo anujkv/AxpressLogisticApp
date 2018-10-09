@@ -45,8 +45,6 @@ import java.util.Map;
 
 public class VehicalApproval extends AppCompatActivity implements View.OnClickListener{
     ImageButton backbtn_toolbar, savebtn_toolbar;
-    TextView show1,show2,show3;
-    Boolean FLAG_DROP_DOWN = false, FLAG_DROP_DOWN2 = false, FLAG_DROP_DOWN3 = false;
     CardView broker1_rate_details,broker2_rate_details,broker3_rate_details;
     String method,str_empid,methodAPI,vehicle_req_code,broker_status,BROKER_RATE= "0",BROKER_NAME = "",
             BROKER_CODE,SELECTION_STATUS;
@@ -54,14 +52,13 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
     String FETCH_APPROVAL_URL = CONSTANT.DEVELOPMENT_URL + "Operations/saved_vehicle_list_for_approval";
     String str_vehicle_req_code,str_request_date,str_from_branch,str_to_branch,str_loading_point,
             str_unloading_point,str_req_type,str_goods_type,str_act_wt_of_goods,
-            str_vehicle_type,str_broker_code,str_approved_status, str_contact, str_broker_rate,
-            str_broker_advance, str_broker_remark;
+            str_vehicle_type,str_approved_status;
     int no_of_brokers;
     EditText edt_vehicle_req_code,edt_vehicle_req_date,edt_from_branch,edt_to_branch,edt_loading_point,
             edt_unloading_point,spinner_req_type,spinner_goods_type,edt_actual_wt_of_goods,
             spinner_vehicle_type,
-            spinner_broker_selection1,spinner_broker_selection2,spinner_broker_selection3;
-    Button btn_broker_selection1,btn_broker_selection2,btn_broker_selection3;
+            spinner_broker_selection1;
+    Button btn_broker_selection1;
     BrokerApprovalAdaptor fetchapprovalAdaptor;
     List<BrokerApprovalModel> modelList;
     RecyclerView recyclerView;
@@ -214,13 +211,6 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-
-                Log.e("branch_code",str_from_branch);
-                Log.e("emplid",str_empid);
-                Log.e("key",key);
-                Log.e("method",method);
-                Log.e("vehicle_request_code",vehicle_req_code);
-
                 params.put("branch_code",str_from_branch);
                 params.put("emplid",str_empid);
                 params.put("key",key);
@@ -263,11 +253,6 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.mapbtn_toolbar:
                 approved();
-//                Log.e("req_code:",BROKER_CODE);
-//                Log.e(CONSTANT.METHOD,"approved");
-//                Log.e(CONSTANT.KEY,"dfgagsdgsdg345dfsd");
-//                Log.e("Borker_Nmae:", BROKER_NAME);
-//                Log.e("approved_status",str_approved_status);
                 break;
         }
     }
@@ -287,15 +272,12 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 BROKER_RATE = (String) list.get(2);
                 SELECTION_STATUS = (String) list.get(3);
         }
-        Log.e("List:", String.valueOf(list));
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, APPROVED_URL, new
                 Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
-
-                        Log.e("Approved Response>",response);
 
                         try {
                             JSONObject object = new JSONObject(response);
@@ -351,22 +333,6 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
                 params.put("actual_wt_of_goods",str_act_wt_of_goods);
                 params.put(CONSTANT.EMPID,str_empid);
                 params.put(CONSTANT.BRANCH_CODE,str_from_branch);
-
-                Log.e(CONSTANT.METHOD,approved_method);
-                Log.e(CONSTANT.KEY,key);
-                Log.e("request_code",str_vehicle_req_code);
-                Log.e("broker_name", BROKER_NAME);
-                Log.e("broker_code",BROKER_CODE);
-                Log.e("broker_rate",BROKER_RATE);
-                Log.e("approved_status",SELECTION_STATUS);
-                Log.e("from_branch",str_from_branch);
-                Log.e("to_branch", str_to_branch);
-                Log.e("loading_point",str_loading_point);
-                Log.e("unloading_point",str_unloading_point);
-                Log.e("requirement_type", str_req_type);
-                Log.e("actual_wt_of_goods",str_act_wt_of_goods);
-                Log.e(CONSTANT.EMPID,str_empid);
-                Log.e(CONSTANT.BRANCH_CODE,str_from_branch);
                 return params;
             }
         };

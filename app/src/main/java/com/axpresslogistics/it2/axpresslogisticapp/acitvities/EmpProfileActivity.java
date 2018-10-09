@@ -1,18 +1,23 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -46,12 +51,13 @@ import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CameraUtils;
-import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ImageConverter;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ImageUtils;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.VolleySingleton;
 import com.axpresslogistics.it2.axpresslogisticapp.VolleySupport.VolleyMultipartRequest;
-import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,31 +66,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.imagePath;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.IMAGE_URL_TEMP;
 
 public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
     public static final String GALLERY_DIRECTORY_NAME = "axpress/camera";
-//    String PROFILE_IMAGE_UPLOAD_URL = URL + "HRMS/profile_image_upload";
-//    String UPDATE_URL = URL + "HRMS/hr_approval";
-//    String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
-        String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
-    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
-    String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/image";
-
-
     public static final String IMAGE_EXTENSION = "jpg";
     public static final int BITMAP_SAMPLE_SIZE = 8;
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static int PICK_IMAGE_REQUEST = 1;
     private static String imageStoragePath;
+    //    String PROFILE_IMAGE_UPLOAD_URL = URL + "HRMS/profile_image_upload";
+//    String UPDATE_URL = URL + "HRMS/hr_approval";
+//    String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
+    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
+    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
+    String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/image";
     Boolean FLAG = false;
     EditText edtName, edtEmpCode, edtContactNo, edtContactAltNo, edtDesignation, edtDept, edtBranch,
             edtBranchCode,
@@ -98,13 +99,13 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             strAddress, strPAN, strUAN, strESI, strBankAccount, strBankName, strBankIFSC;
     ImageView edtAddressBtn, edtBankAccountBtn, edtBankNameBtn, edtIFSCBtn, userImageView, editImage, image_view;
     Intent intent;
-    String title, method, str, profileImage;
+    String title, method, str, image_profile;
     JSONObject jObj;
     ImageButton backbtn_toolbar, refreshbtn_toolbar;
     Dialog dialog;
     Bitmap bitmap;
-    byte[] image=null;
-    boolean hasImage=false;
+    byte[] image = null;
+    boolean hasImage = false;
     int GALLERY = 1234;
 
     @Override
@@ -123,6 +124,14 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         //Set View with fields..
         setView();
         strEmpCode = Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID);
+        image_profile = Preferences.getPreference(getApplicationContext(), CONSTANT.USER_IMAGE);
+        try {
+
+            Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).into(userImageView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         employee_profileApi();
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,10 +156,33 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                choosePhotoFromGallary();
+                                if (Build.VERSION.SDK_INT >= 23) {
+                                    int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
+                                    if (ContextCompat.checkSelfPermission(EmpProfileActivity.this,
+                                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                                            != PackageManager.PERMISSION_GRANTED) {
+                                        if (ActivityCompat.shouldShowRequestPermissionRationale(EmpProfileActivity.this,
+                                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                                        } else {
+                                            ActivityCompat.requestPermissions(EmpProfileActivity.this,
+                                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                                            choosePhotoFromGallary();
+                                        }
+                                    }else{
+                                        ActivityCompat.requestPermissions(EmpProfileActivity.this,
+                                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                                        choosePhotoFromGallary();
+                                    }
+                                } else {
+                                    choosePhotoFromGallary();
+
+                                }
                                 break;
                             case 1:
-                               // dispatchTakePictureIntent();
+                                // dispatchTakePictureIntent();
                                 break;
                         }
                     }
@@ -168,23 +200,28 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
 
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-
-        if (requestCode == GALLERY) {
-            if (imageReturnedIntent!=null){
-                Uri uri = imageReturnedIntent.getData();
-                String path = getRealPathFromURI(uri);
-                Preferences.setPreference(EmpProfileActivity.this, CONSTANT.imagePath,path);
-                bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                image = byteArrayOutputStream.toByteArray();
-                Log.e("setimage",path);
-                userImageView.setImageBitmap(bitmap);
-                hasImage = true;
-                UpdateProfile(bitmap,path);
+        try {
+            if (requestCode == GALLERY) {
+                if (imageReturnedIntent != null) {
+                    Uri uri = imageReturnedIntent.getData();
+                    String path = getRealPathFromURI(uri);
+                    Preferences.setPreference(EmpProfileActivity.this, CONSTANT.imagePath, path);
+                    bitmap = ImageUtils.getInstant().getCompressedBitmap(path);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    image = byteArrayOutputStream.toByteArray();
+                    Log.e("setimage", path);
+                    userImageView.setImageBitmap(bitmap);
+                    hasImage = true;
+                    UpdateProfile(bitmap, path);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
+
     private String getRealPathFromURI(Uri contentURI) {
         Cursor cursor = EmpProfileActivity.this.getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) { // Source is Dropbox or other similar local file path
@@ -197,8 +234,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    void UpdateProfile(final Bitmap bitmap, final String path)
-    {
+    void UpdateProfile(final Bitmap bitmap, final String path) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -211,25 +247,25 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onResponse(NetworkResponse response) {
                 String responseString = new String(response.data);
-                Log.e("ERROR",responseString+"ERROR");
+                Log.e("ERROR", responseString + "ERROR");
                 progressDialog.dismiss();
                 try {
                     JSONObject object = new JSONObject(responseString);
-                  //TODO response codeyour respone is on
-                    Log.d("TEXT",responseString);
+                    //TODO response codeyour respone is on
+                    Log.d("TEXT", responseString);
                     String status = object.optString(CONSTANT.STATUS);
-                    if(status.equals(CONSTANT.TRUE)){
-                        Toast.makeText(getApplicationContext(),CONSTANT.IMAGE_UPLOADED_SUCCESSFULLY,
+                    if (status.equals(CONSTANT.TRUE)) {
+                        Toast.makeText(getApplicationContext(), CONSTANT.IMAGE_UPLOADED_SUCCESSFULLY,
                                 Toast.LENGTH_SHORT).show();
-                        Preferences.setPreference(EmpProfileActivity.this, CONSTANT.USER_IMAGE,path);
+                        Preferences.setPreference(EmpProfileActivity.this, CONSTANT.USER_IMAGE, path);
                         userImageView.setImageBitmap(bitmap);
                     }
 
                 } catch (JSONException e) {
-                    Log.e("JSONException",e.getMessage());
-                    Toast.makeText(getApplicationContext(),CONSTANT.IMAGE_UPLOADED_UNSUCCESSFULL,
+                    Log.e("JSONException", e.getMessage());
+                    Toast.makeText(getApplicationContext(), CONSTANT.IMAGE_UPLOADED_UNSUCCESSFULL,
                             Toast.LENGTH_SHORT).show();
-                    Log.e("ERRORcatch",responseString+"catch");
+                    Log.e("ERRORcatch", responseString + "catch");
 
                     progressDialog.dismiss();
                 }
@@ -240,9 +276,25 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             public void onErrorResponse(VolleyError error) {
                 if (error instanceof NetworkError) {
                 } else if (error instanceof ServerError) {
-                    Toast.makeText(getBaseContext(),
-                            CONSTANT.RESPONSEERROR,
-                            Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getBaseContext(),
+//                            CONSTANT.RESPONSEERROR,
+//                            Toast.LENGTH_LONG).show();
+                    try {
+                        Preferences.setPreference(EmpProfileActivity.this, CONSTANT.USER_IMAGE,
+                                IMAGE_URL_TEMP + strEmpCode + ".jpg");
+                        image_profile = Preferences.getPreference(getApplicationContext(), CONSTANT.USER_IMAGE);
+                        Log.e("TEST",image_profile);
+                        try {
+                            Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE)
+                                    .networkPolicy(NetworkPolicy.NO_CACHE).into(userImageView);
+                            imageFlagFunction();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 } else if (error instanceof AuthFailureError) {
                 } else if (error instanceof ParseError) {
                 } else if (error instanceof TimeoutError) {
@@ -250,7 +302,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
                             CONSTANT.TIMEOUT_ERROR,
                             Toast.LENGTH_LONG).show();
                 }
-                Log.e("ERROR",error+"ERROR");
+                Log.e("ERROR", error + "ERROR");
 
                 progressDialog.dismiss();
             }
@@ -260,10 +312,10 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("method",method);
+                params.put("method", method);
                 params.put("key", key);
                 params.put("emplid", strEmpCode);
-                Log.e("method",method);
+                Log.e("method", method);
                 Log.e("key", key);
                 Log.e("emplid", strEmpCode);
                 return params;
@@ -273,9 +325,8 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
 
-                if (hasImage){
-                    params.put("image", new DataPart(strEmpCode+".jpg", image, "image/jpeg"));
-                    Log.e("image", String.valueOf(hasImage));
+                if (hasImage) {
+                    params.put("image", new DataPart(strEmpCode + ".jpg", image, "image/jpeg"));
                 }
                 return params;
             }
@@ -286,6 +337,10 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         VolleySingleton.getInstance(EmpProfileActivity.this).addToRequestQueue(multipartRequest);
 
 
+    }
+
+    public boolean imageFlagFunction() {
+        return true;
     }
 
     public String getStringImage(Bitmap bmp) {
@@ -315,7 +370,7 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } finally {
             try {
                 fos.close();
@@ -439,10 +494,10 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
             } else {
                 txt_bank_name_update_status.setVisibility(View.INVISIBLE);
             }
-            if (jObj.getString("ban_acc_status").equals("Pending") ||
-                    jObj.getString("ban_acc_status").equals("Approved") ||
-                    jObj.getString("ban_acc_status").equals("Unapproved")) {
-                txt_bank_account_update_status.setText(jObj.getString("ban_acc_status"));
+            if (jObj.getString("bank_name_status").equals("Pending") ||
+                    jObj.getString("bank_acc_status").equals("Approved") ||
+                    jObj.getString("bank_acc_status").equals("Unapproved")) {
+                txt_bank_account_update_status.setText(jObj.getString("bank_acc_status"));
                 txt_bank_account_update_status.setVisibility(View.VISIBLE);
             } else {
                 txt_bank_account_update_status.setVisibility(View.INVISIBLE);
@@ -498,15 +553,15 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         strBOP = jObj.optString("employee_birth_state");
         strDOJ = jObj.optString("employee_doj");
         strQulification = jObj.optString("employee_qualification");
-        strAdharCard = jObj.optString("employee_aadharno");
+        strAdharCard = jObj.optString("employee_adhaarno");
         strAddress = jObj.optString("employee_address");
         //get employee bank/imp info..
         strPAN = jObj.optString("employee_panno");
         strUAN = jObj.optString("employee_uanno");
         strESI = jObj.optString("employee_esicno");
-        strBankAccount = jObj.optString("employee_bankacc");
+        strBankAccount = jObj.optString("employee_bankac");
         strBankName = jObj.optString("employee_bankname");
-        strBankIFSC = jObj.optString("employee_ifsc");
+        strBankIFSC = jObj.optString("employee_ifsccode");
     }
 
     private void setView() {
@@ -615,7 +670,6 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
         image_view.getMaxHeight();
         dialog.show();
     }
-
 
 
     public void showChangeProfileDialog(String title, final String field_detail, final String method) {
@@ -740,4 +794,4 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     private void refresh() {
         employee_profileApi();
     }
-    }
+}

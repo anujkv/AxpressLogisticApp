@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL_D;
 
 public class MainHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
@@ -71,7 +72,7 @@ public class MainHomeActivity extends AppCompatActivity
             R.drawable.icon_tickets
     };
     //    String USER_URL = URL + "HRMS/app_user";
-    String USER_URL = DEVELOPMENT_URL + "HRMS/app_user";
+    String USER_URL = DEVELOPMENT_URL_D + "HRMS/app_role";
     byte[] image = null;
     GridView gridView;
     Toolbar toolbar;
@@ -123,7 +124,7 @@ public class MainHomeActivity extends AppCompatActivity
                 switch (position) {
 
                     case 0:
-                        check("Operations");
+                        check("operations");
 //                        if(list.contains("Operations")){
 //                            startActivity(new Intent(getApplicationContext(),OperationActivity.class));
 //                        }else{
@@ -183,12 +184,22 @@ public class MainHomeActivity extends AppCompatActivity
     private void check(String call) {
         if (list.contains(call)) {
 
-                if (call.equals("Operations")) {
-                startActivity(new Intent(getApplicationContext(), OperationActivity.class));
+                if (call.equals("operations")) {
+                    Intent intent = new Intent(getApplicationContext(), OperationActivity.class);
+                    intent.putExtra("list",list);
+                    startActivity(intent);
+//                startActivity(new Intent(getApplicationContext(), OperationActivity.class));
+
             } else if (call.equals("hrms")) {
+//                    Intent intent = new Intent(getApplicationContext(), HrmsActivity.class);
+//                    intent.putExtra("list",list);
+//                    startActivity(intent);
                 startActivity(new Intent(getApplicationContext(), HrmsActivity.class));
             } else if (call.equals("crm")) {
-                startActivity(new Intent(getApplicationContext(), CRMActivity.class));
+                    Intent intent = new Intent(getApplicationContext(), CRMActivity.class);
+                    intent.putExtra("list",list);
+                    startActivity(intent);
+//                startActivity(new Intent(getApplicationContext(), CRMActivity.class));
             }
         } else {
             Toast.makeText(getApplicationContext(), "Sorry, you don't have permission!,contact with IT Department.",
@@ -196,14 +207,13 @@ public class MainHomeActivity extends AppCompatActivity
         }
     }
 
-    private void user() {
-    }
+
 
     private void user_permission_checks() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         final ApiKey apiKey = new ApiKey();
         final String key = apiKey.saltStr();
-        final String method = CONSTANT.APP_USER;
+        final String method = CONSTANT.APP_ROLE;
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
@@ -211,6 +221,7 @@ public class MainHomeActivity extends AppCompatActivity
             @Override
             public void onResponse(String response) {
 
+                Log.e("Module : ", response);
                 try {
                     JSONObject object = new JSONObject(response);
                     String status = object.optString("status");
@@ -225,11 +236,11 @@ public class MainHomeActivity extends AppCompatActivity
                     if (status.equals(CONSTANT.TRUE) && apiResponse.equals(key)) {
                         progressDialog.dismiss();
 
-                        JSONArray array = object.getJSONArray("Module");
+                        JSONArray array = object.getJSONArray("module");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject jsonObject = array.getJSONObject(i);
-                            String operation = jsonObject.getString("module");
-                            list.add(operation);
+                            String operation = jsonObject.getString("form_name");
+                            list.add(operation.toLowerCase());
                         }
                         Log.e("list: ", list.toString());
                     } else {
@@ -279,7 +290,7 @@ public class MainHomeActivity extends AppCompatActivity
 //                params.put(CONSTANT.EMPID, "1257");
                 Log.e("method : ", "app_user");
                 Log.e("key : ", "dfgsdfsadfsdfs");
-//                Log.e("EMPID : ", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
+                Log.e("EMPID : ", Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID));
 
                 return params;
             }
@@ -377,5 +388,17 @@ public class MainHomeActivity extends AppCompatActivity
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        image_profile = Preferences.getPreference(getApplicationContext(), CONSTANT.USER_IMAGE);
+        try{
+            Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE )
+                    .networkPolicy(NetworkPolicy.NO_CACHE).into(empImage);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

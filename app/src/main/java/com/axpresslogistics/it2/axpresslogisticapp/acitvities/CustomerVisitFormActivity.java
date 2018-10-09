@@ -51,12 +51,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class CustomerVisitFormActivity extends AppCompatActivity implements View.OnClickListener {
-    String URL_ADD_NEW = URL + "Operations/customer_visit";
-    String URL_FOLLOW = URL +"Operations/customer_search";
-    String VISIT_HISTORY_URL = URL+ "Operations/show_history";
+    String URL_ADD_NEW = DEVELOPMENT_URL + "Operations/customer_visit";
+    String URL_FOLLOW = DEVELOPMENT_URL +"Operations/customer_search";
+    String VISIT_HISTORY_URL = DEVELOPMENT_URL+ "Operations/show_history";
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_customer_name, edt_visitdate, edtContactPerson, edtContactNo, edtEmail, edtAddress,
             edt_product_name, edtRemark, edt_other_employee_name;
@@ -69,7 +70,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     String saved = "Saved", notSaved = "Data Not Saved", dataNotFatched = "Data Not Found", method,
             input, NO_HISTORY_AVAILABLE = "No History Available";
     String businessType, compVisitID, methodF;
-    int NEW_FLAG =1, FOLLOW_FLAG = 2,SET_FLAG;
     Intent intent;
     Boolean FLAG = false;
     LinearLayout linearLayout;
@@ -401,11 +401,9 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                                 JSONObject object = new JSONObject(response);
                                 String status = object.optString("status");
                                 String apiKeyResponse = object.optString("key");
-                                Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
                                 Log.e("Response Follow :", response);
 
                                 if (status.equals("true") && apiKeyResponse.equals(apikey)) {
-                                    Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
                                     setData(object);
                                     progressDialog.dismiss();
                                     savebtn_toolbar.setOnClickListener(new View.OnClickListener() {
@@ -421,7 +419,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), "<<<<<" + e.toString(), Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
                             }
                         } else {

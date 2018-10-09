@@ -25,7 +25,6 @@ import java.util.List;
 public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAdaptor.AdaptorHolder> {
     Context context;
     List<BrokerApprovalModel> approvalModels;
-    Boolean FLAG = false;
     int item_position, selection_code;
     String broker_code, broker_name, broker_rate, approved_status;
     int selected_position = -1;
@@ -52,7 +51,6 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
     @Override
     public void onBindViewHolder(@NonNull final AdaptorHolder holder, final int position) {
         int i = 1 + position;
-//        notifyDataSetChanged();
         final BrokerApprovalModel model = approvalModels.get(position);
         holder.logged_in_status.setText(model.getLoggedin_member());
 
@@ -86,19 +84,6 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
                     approvedBtnClickedL(holder, model);
                 } else {
                     approved_status = "BApproval";
-//                    approvedBtnClickedB(holder,model,position);
-//                    if (selected_position == position) {
-//                        holder.approved_btn.setTextColor(Color.GREEN);
-//                        holder.approved_btn.setText(CONSTANT.APPROVED);
-//                        holder.broker_code.setText(model.getBroker_code());
-//                        Log.e("APPROVEDposition", String.valueOf(position));
-//                    }
-//
-//                    if (selected_position != position) {
-//                        holder.approved_btn.setTextColor(Color.RED);
-//                        holder.approved_btn.setText(CONSTANT.REJECT);
-//                        Log.e("REJECTposition", String.valueOf(position));
-//                    }
                 }
                 notifyDataSetChanged();
 
@@ -153,10 +138,6 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
         holder.btn_broker_selectionReject.setText(CONSTANT.REJECT);
         holder.broker_code.setText(model.getBroker_code());
         selection_code = -1;
-    }
-
-    private void approvedBtnClickedB(AdaptorHolder holder, BrokerApprovalModel model, int position) {
-
     }
 
     private void approvedBtnClickedL(AdaptorHolder holder, BrokerApprovalModel model) {

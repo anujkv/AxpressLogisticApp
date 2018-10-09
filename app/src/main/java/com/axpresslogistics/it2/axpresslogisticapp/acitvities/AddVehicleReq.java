@@ -60,8 +60,6 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
     String method,emp_id,branch_code,broker_code1= null,broker_code2= null,broker_code3= null;
     String str_contact_no1 = "",str_contact_no2= "",str_contact_no3="";
     CardView broker1_rate_details,broker2_rate_details,broker3_rate_details;
-    Boolean FLAG_DROP_DOWN = false, FLAG_DROP_DOWN2 = false, FLAG_DROP_DOWN3 = false;
-    TextView show_more_click_link,show_more_click_link2,show_more_click_link3;
     String CALL_BROKER_LIST = CONSTANT.DEVELOPMENT_URL + "Operations/brokercalllist";
     RecyclerView recyclerView;
     JSONArray array;
@@ -488,8 +486,6 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
             case R.id.mapbtn_toolbar:
                 getdata();
                 mandatoryCheck();
-//                save();
-//                add_function_api_call();
                 break;
         }
     }

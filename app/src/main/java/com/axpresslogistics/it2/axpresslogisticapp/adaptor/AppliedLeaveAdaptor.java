@@ -120,8 +120,6 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
                         @Override
                         public void onClick(View v) {
                             Context context = v.getContext();
-//                            ApplyLeaveActivity leaveActivityInstance = new ApplyLeaveActivity();
-//                            leaveActivityInstance.createDialogBox();
                             Intent intent = new Intent(context, ApplyLeaveActivity.class);
                             intent.putExtra("id", appliedLeaveModel.getId());
                             intent.putExtra("from", appliedLeaveModel.getFrom());
@@ -147,8 +145,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     }
 
     private String dateConversion(String date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date fromDate = null;
         Date toDate = null;
         try {

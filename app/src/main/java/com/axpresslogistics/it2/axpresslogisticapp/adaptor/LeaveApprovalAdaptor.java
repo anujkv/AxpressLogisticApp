@@ -77,6 +77,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.pushback.setTextColor(Color.WHITE);
                 approval_status = "approved";
                 push_data(holder,model,approval_status);
+                holder.cardView.removeAllViews();
 
             }
         });
@@ -89,6 +90,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.pushback.setTextColor(Color.WHITE);
                 approval_status = "unapproved";
                 push_data(holder,model,approval_status);
+                holder.cardView.removeAllViews();
             }
         });
         holder.pushback.setOnClickListener(new View.OnClickListener() {

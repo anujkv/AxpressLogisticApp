@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
@@ -18,6 +19,8 @@ import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class HrmsActivity extends AppCompatActivity {
 
@@ -50,6 +53,7 @@ public class HrmsActivity extends AppCompatActivity {
     JSONObject jObj;
     Intent intent;
     GridViewHrms gridViewHrms;
+    ArrayList<String> list = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,8 @@ public class HrmsActivity extends AppCompatActivity {
         });
         gridView = findViewById(R.id.gridhrms);
         String id = Preferences.getPreference(HrmsActivity.this,CONSTANT.EMPID);
-        if(id.equals("1561")){
+        String supervisior_id = Preferences.getPreference(HrmsActivity.this,CONSTANT.SUPERVISER_ID);
+        if(id.equals("1561")  ){
             Log.e("emplid : ",Preferences.getPreference(HrmsActivity.this,CONSTANT.EMPID));
             gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewMgrStrings, gridViewMgrIcons);
         }else{
@@ -77,6 +82,8 @@ public class HrmsActivity extends AppCompatActivity {
         gridView.getColumnWidth();
         gridView.getVerticalSpacing();
         gridView.setAdapter(gridViewHrms);
+//        Intent intent = getIntent();
+//        list = intent.getStringArrayListExtra("list");
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,7 +91,14 @@ public class HrmsActivity extends AppCompatActivity {
 
                 switch (position) {
                     case 0:
-                        startActivity(new Intent(HrmsActivity.this, MarkAttendanceActivity.class));
+                        if(CONSTANT.EMPLOYEE_BRANCH.toUpperCase().equals("CR") ||
+                                CONSTANT.EMPLOYEE_DEPT.toUpperCase().equals("MK")){
+                            startActivity(new Intent(HrmsActivity.this, MarkAttendanceActivity.class));
+
+                        }else{
+                            Toast.makeText(getApplicationContext(),CONSTANT.CONDITIONS_MARK_ATTENDANCE,
+                                    Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 1:
                         startActivity(new Intent(HrmsActivity.this, ApplyLeaveActivity.class));

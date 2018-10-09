@@ -26,8 +26,9 @@ public class CONSTANT {
 
     //API's URLS:
     public static final String URL = "http://webapi.axpresslogistics.com/api/";
-    public static final String DEVELOPMENT_URL = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
-//    public static final String URL = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
+    public static final String DEVELOPMENT_URL_D = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
+    public static final String DEVELOPMENT_URL = "http://webapi.axpresslogistics.com/api/";
+    public static final String IMAGE_URL_TEMP = "http://webapi.axpresslogistics.com/image/";
 
 
     //STRINGS
@@ -87,6 +88,7 @@ public class CONSTANT {
     public static final String INFO_NO = "1962";
 
     public static final String APP_USER = "app_user";
+    public static final String APP_ROLE = "app_role";
     public static final String IMAGE_UPLOADED_SUCCESSFULLY = "image uploaded,successfully!";
     public static final String IMAGE_UPLOADED_UNSUCCESSFULL = "image uploaded unsuccessful!";
     public static final String ADD_BROKER = "Add Broker";
@@ -121,6 +123,10 @@ public class CONSTANT {
     public static final String SEVER_NOT_RECHABLE = "Server not reachable!";
     public static final String SHARE_IT_MSG = "Check out Axp App, I use it for organization work & get information about related work, Get it for free at https://play.google.com/store/apps/details?id=com.axpresslogistics.it2.axpresslogisticapp";
     public static final String APPROVEAL = "Approval";
+    public static final String SUPERVISER_ID = "supervisior_id";
+    public static final String CONDITIONS_MARK_ATTENDANCE = "Sorry this option Only for CRM Team and Marketing Team";
+    public static final String LOCATION_NOT_GETTING = "Location Not Getting, Kindly Try Again!";
+    public static final String GETTING_LOCATION = "Getting Location, wait for while";
     public static String already_exist = "already_exist";
     public static final String ENTER_THE_CONTACT_NO = "Enter the contact no";
     public static final String ENTER_THE_CORRECT_CONTACT_NO = "Enter the correct contact no";

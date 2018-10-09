@@ -67,7 +67,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     String leave_info_url = DEVELOPMENT_URL + "HRMS/leave_search";
 
     Intent intent;
-    String formattedDate;
+    String formattedDate,formattedDateFORCallback;
     CalendarView calendarView, calendarView1;
     String date2, date, fromDate, toDate, leaveReason, strleave_type, strPin_no, leaveType,ID = null,
             METHOD,KEY,EMPLID;
@@ -78,6 +78,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     AlertDialog.Builder builderfrom, builderto;
     Spinner spinner_apply_leave;
     int daysDifference = 0;
+    SimpleDateFormat dffcb;
     AlertDialog dialog;
     String notApplied = "Leave Not Applied", applied = "Leave Applied",LEAVE_DAYS = null;
     RecyclerView recyclerView;
@@ -115,6 +116,10 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         uploadleavelist();
         Intent intent = getIntent();
         ID= intent.getStringExtra("id");
+        c = Calendar.getInstance().getTime();
+        dffcb = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+        formattedDateFORCallback = dffcb.format(c);
+        Log.e("DATEEEEEEE",formattedDateFORCallback);
         try{
             if(ID != null){
                 Toast.makeText(getApplicationContext(),"ID " + ID,Toast.LENGTH_SHORT).show();
@@ -124,6 +129,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, final int dayOfMonth) {
+
                         c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
                         formattedDate = df.format(c);
@@ -161,7 +167,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             METHOD = intent.getStringExtra("method");
             KEY = intent.getStringExtra("key");
             EMPLID = intent.getStringExtra("emplid");
-            Log.e("ID",ID);
             createDialogBox();
         }catch(Exception e) {
             e.printStackTrace();
@@ -196,10 +201,10 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         });
 
         if(fromDate!=null){
-            input_leave_from.setText(fromDate);
-            input_leave_to.setText(toDate);
-            total_leave_days.setText(LEAVE_DAYS);
-            editTextReason_of_leave.setText(leaveReason);
+            input_leave_from.setText("");
+            input_leave_to.setText("");
+            total_leave_days.setText("");
+            editTextReason_of_leave.setText("");
         }
         else{
             input_leave_from.setText(date);
@@ -250,7 +255,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
 
                 try{
                     Log.e("selectedDatefrom", String.valueOf(selectedDatefrom));
-                    if(String.valueOf(selectedDatefrom)!=null){
+                    if(String.valueOf(selectedDatefrom)!=null && !String.valueOf(selectedDatefrom).equals("null") ){
                         calendarView1.setMinDate(selectedDatefrom.getTime());
                         Log.e("setMinDate", String.valueOf(selectedDatefrom));
                     }else{
@@ -363,24 +368,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     private void mapLeaveCode(String strleave_type) {
         String type = strleave_type;
         switch (type) {
-            case "Casual Leave":
-                leaveType = "CL";
-                strPin_no = "901";
-                break;
-
-            case "Sick Leave":
-                leaveType = "SL";
-                strPin_no = "902";
-                break;
-
             case "Earned Leave":
                 leaveType = "EL";
                 strPin_no = "903";
-                break;
-
-            case "Loss of Pay":
-                leaveType = "LP";
-                strPin_no = "904";
                 break;
 
             case "On Duty":
@@ -388,21 +378,11 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 strPin_no = "905";
                 break;
 
-            case "Maternity Leave":
-                leaveType = "ML";
-                strPin_no = "906";
-                break;
-
-
             case "Compensatory Off":
                 leaveType = "CO";
                 strPin_no = "907";
                 break;
 
-            case "Credit Off":
-                leaveType = "CR";
-                strPin_no = "908";
-                break;
             default:
                 leaveType = "Select";
                 strPin_no = "000";
@@ -410,18 +390,13 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void checkEmptyFields() {
-//        input_leave_to.setText("");
         input_leave_to.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                if(count>0){
-//                    okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-//                    validation(inputDateCount, inputResonCount, selectorInputCount);
                 Log.e("charSBEFORE", String.valueOf(s));
                 Log.e("startBEFORE", String.valueOf(start));
                 Log.e("countBEFORE", String.valueOf(count));
                 Log.e("afterBEFORE", String.valueOf(after));
-//                }
             }
 
             @Override
@@ -433,14 +408,10 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 Log.e("charSTextChanged", String.valueOf(s));
                 Log.e("startTextChanged", String.valueOf(start));
                 Log.e("countTextChanged", String.valueOf(count));
-//                Log.e("afterBEFORE", String.valueOf(after));
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-//                okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-//                validation(inputDateCount, inputResonCount, selectorInputCount);
-//
                 Log.e("charSAfter", String.valueOf(s));   }
         });
 
@@ -538,9 +509,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
 
                         if (status.equals("true") && apiKeyResponse.equals(apikey)) {
                             refreshAppliedList();
-                            uploadleavelist();
                             Toast.makeText(getApplicationContext(), applied, Toast.LENGTH_SHORT).show();
                             if(method.equals("edit_leave")){
+                                refreshAppliedList();
                                 finish();
                             }
                         } else {
@@ -588,6 +559,9 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 Log.e("reason", leaveReason);
                 Log.e("type", leaveType);
                 Log.e("pin_no", strPin_no);
+//                Log.e("formattedDate", formattedDate);
+
+//                Log.e("ID>>",ID);
                 if(method.equals("apply_leave")){
                     params.put("method", method);
                     params.put("key", apikey);
@@ -603,7 +577,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 }
                 else {
                     params.put("id",ID);
-                    params.put("method", METHOD);
+                    params.put("method", "edit_leave");
                     params.put("key", apikey);
                     params.put("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
                     params.put("pin_no", strPin_no);
@@ -613,7 +587,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     params.put("days", String.valueOf(daysDifference));
                     params.put("reason", leaveReason);
                     params.put("approval_flag","pushback");
-//                    params.put("applied_date", formattedDate);
+                    params.put("applied_date", dffcb.format(c));
                     return params;
                 }
 
@@ -653,7 +627,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
-
+                        Log.e("LeaveResponse", response);
                         try {
                             JSONObject object = new JSONObject(response);
                             String status = object.optString("status");

@@ -9,9 +9,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
+
+import java.util.ArrayList;
 
 
 public class OperationActivity extends AppCompatActivity {
@@ -31,6 +34,7 @@ public class OperationActivity extends AppCompatActivity {
     };
     GridView gridView;
     Toolbar toolbar;
+    ArrayList<String> list = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,9 @@ public class OperationActivity extends AppCompatActivity {
         });
         gridView = findViewById(R.id.gridhrms);
         gridView = findViewById(R.id.gridhrms);
+        Intent intent = getIntent();
+        list = intent.getStringArrayListExtra("list");
+
 
 
         GridViewHrms gridViewHrms = new GridViewHrms(OperationActivity.this, gridViewStrings, gridViewIcons);
@@ -61,22 +68,47 @@ public class OperationActivity extends AppCompatActivity {
                 switch (position) {
 
                     case 0:
-                        startActivity(new Intent(getApplicationContext(), DocketEnquiry.class));
+                        check("docket/invoice enquiry");
                         break;
                     case 1:
-                        startActivity(new Intent(getApplicationContext(), BrokerList.class));
+                        check("add broker");
                         break;
                     case 2:
-                        startActivity(new Intent(getApplicationContext(), AddVehicleReq.class));
+                        check("add vehicle request");
                         break;
                     case 3:
-                        startActivity(new Intent(getApplicationContext(), MarketVehicleRequest.class));
+                        check("vehicle approval");
                         break;
                     case 4:
-                        startActivity(new Intent(getApplicationContext(), VehicletrackingMap.class));
+                        check("vehicle tracking map");
                         break;
                 }
             }
         });
+    }
+
+    private void check(String call) {
+        if (list.contains(call)) {
+
+            if (call.equals("docket/invoice enquiry")) {
+                startActivity(new Intent(getApplicationContext(), DocketEnquiry.class));
+
+            } else if (call.equals("add broker")) {
+                startActivity(new Intent(getApplicationContext(), BrokerList.class));
+
+            } else if (call.equals("add vehicle request")) {
+                startActivity(new Intent(getApplicationContext(), AddVehicleReq.class));
+
+            } else if (call.equals("vehicle approval")) {
+                startActivity(new Intent(getApplicationContext(), MarketVehicleRequest.class));
+
+            } else if (call.equals("vehicle tracking map")) {
+                startActivity(new Intent(getApplicationContext(), VehicletrackingMap.class));
+            }
+        }
+//        else {
+//            Toast.makeText(getApplicationContext(), "Sorry, you don't have permission!,contact with IT Department.",
+//                    Toast.LENGTH_SHORT).show();
+//        }
     }
 }
