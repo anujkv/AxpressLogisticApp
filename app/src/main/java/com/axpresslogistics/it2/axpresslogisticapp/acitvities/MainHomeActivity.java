@@ -3,6 +3,7 @@ package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,6 +15,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,10 +37,12 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.axpresslogistics.it2.axpresslogisticapp.BuildConfig;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
+import com.axpresslogistics.it2.axpresslogisticapp.Version;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -51,7 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL_D;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class MainHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
@@ -72,7 +77,7 @@ public class MainHomeActivity extends AppCompatActivity
             R.drawable.icon_tickets
     };
     //    String USER_URL = URL + "HRMS/app_user";
-    String USER_URL = DEVELOPMENT_URL_D + "HRMS/app_role";
+    String USER_URL = URL + "HRMS/app_role";
     byte[] image = null;
     GridView gridView;
     Toolbar toolbar;
@@ -80,6 +85,7 @@ public class MainHomeActivity extends AppCompatActivity
     ImageView empImage;
     String employeeID, employeeNAME, empEmail, image_profile;
     Intent intent;
+    String appVersion;
     LocationManager locationManager;
     double lat, lon;
     ArrayList<String> list = new ArrayList<String>();
@@ -94,6 +100,9 @@ public class MainHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
+        appVersion = BuildConfig.VERSION_NAME;
+        Log.e("VERSION",appVersion);
+
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10,
@@ -166,6 +175,7 @@ public class MainHomeActivity extends AppCompatActivity
         View navView = navigationView.getHeaderView(0);
         //reference to views
 
+        MenuItem item;
         empEmailId = navView.findViewById(R.id.user_email);
         empName = navView.findViewById(R.id.user_name);
         empImage = navView.findViewById(R.id.user_imageView);
@@ -174,7 +184,6 @@ public class MainHomeActivity extends AppCompatActivity
         //set views
         empName.setText(employeeNAME);
         empEmailId.setText(empEmail);
-
 
         Log.e("image_profile", image_profile);
         navigationView.setNavigationItemSelectedListener(this);
@@ -191,10 +200,10 @@ public class MainHomeActivity extends AppCompatActivity
 //                startActivity(new Intent(getApplicationContext(), OperationActivity.class));
 
             } else if (call.equals("hrms")) {
-//                    Intent intent = new Intent(getApplicationContext(), HrmsActivity.class);
-//                    intent.putExtra("list",list);
-//                    startActivity(intent);
-                startActivity(new Intent(getApplicationContext(), HrmsActivity.class));
+                    Intent intent = new Intent(getApplicationContext(), HrmsActivity.class);
+                    intent.putExtra("list",list);
+                    startActivity(intent);
+//                startActivity(new Intent(getApplicationContext(), HrmsActivity.class));
             } else if (call.equals("crm")) {
                     Intent intent = new Intent(getApplicationContext(), CRMActivity.class);
                     intent.putExtra("list",list);
@@ -343,6 +352,8 @@ public class MainHomeActivity extends AppCompatActivity
             share_it();
         } else if (id == R.id.nav_send) {
 
+        }else if (id == R.id.nav_info) {
+            startActivity(new Intent(getApplicationContext(),Version.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -400,5 +411,14 @@ public class MainHomeActivity extends AppCompatActivity
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main_home_drawer, menu);
+        MenuItem itemInfo = menu.findItem(R.id.nav_info);
+        itemInfo.setTitle("Version "+appVersion);
+        return true;
     }
 }

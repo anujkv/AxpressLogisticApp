@@ -26,7 +26,7 @@ public class CONSTANT {
 
     //API's URLS:
     public static final String URL = "http://webapi.axpresslogistics.com/api/";
-    public static final String DEVELOPMENT_URL_D = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
+//    public static final String DEVELOPMENT_URL_D = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
     public static final String DEVELOPMENT_URL = "http://webapi.axpresslogistics.com/api/";
     public static final String IMAGE_URL_TEMP = "http://webapi.axpresslogistics.com/image/";
 
@@ -127,6 +127,7 @@ public class CONSTANT {
     public static final String CONDITIONS_MARK_ATTENDANCE = "Sorry this option Only for CRM Team and Marketing Team";
     public static final String LOCATION_NOT_GETTING = "Location Not Getting, Kindly Try Again!";
     public static final String GETTING_LOCATION = "Getting Location, wait for while";
+    public static final String INFORMATION = "Information";
     public static String already_exist = "already_exist";
     public static final String ENTER_THE_CONTACT_NO = "Enter the contact no";
     public static final String ENTER_THE_CORRECT_CONTACT_NO = "Enter the correct contact no";

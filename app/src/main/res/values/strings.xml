@@ -271,4 +271,7 @@
     <string name="approve_status">Approval Status</string>
     <string name="pushback">Push Back</string>
     <string name="edit">Edit</string>
+    <string name="app_version">app_version</string>
+    <string name="app_publish">Powered by Axpress Logistics India Pvt Ltd</string>
+    <string name="app_all_rights">All rights reserved.</string>
 </resources>

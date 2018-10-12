@@ -73,7 +73,9 @@ public class HrmsActivity extends AppCompatActivity {
         gridView = findViewById(R.id.gridhrms);
         String id = Preferences.getPreference(HrmsActivity.this,CONSTANT.EMPID);
         String supervisior_id = Preferences.getPreference(HrmsActivity.this,CONSTANT.SUPERVISER_ID);
-        if(id.equals("1561")  ){
+        Intent intent = getIntent();
+        list = intent.getStringArrayListExtra("list");
+        if(list.contains("employee leave request")){
             Log.e("emplid : ",Preferences.getPreference(HrmsActivity.this,CONSTANT.EMPID));
             gridViewHrms = new GridViewHrms(HrmsActivity.this, gridViewMgrStrings, gridViewMgrIcons);
         }else{
@@ -82,8 +84,6 @@ public class HrmsActivity extends AppCompatActivity {
         gridView.getColumnWidth();
         gridView.getVerticalSpacing();
         gridView.setAdapter(gridViewHrms);
-//        Intent intent = getIntent();
-//        list = intent.getStringArrayListExtra("list");
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

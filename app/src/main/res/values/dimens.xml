@@ -34,6 +34,8 @@
     <dimen name="margin12dp">12dp</dimen>
     <dimen name="margin12sp">12sp</dimen>
     <dimen name="margin13sp">13sp</dimen>
+    <dimen name="text18sp">18sp</dimen>
+    <dimen name="text20sp">20sp</dimen>
     <integer name="max_width_short_month_label_dp">240</integer>
     <integer name="max_height_mini_view_dp">180</integer>
     <integer name="max_height_mini_view_1_row_dp">120</integer>

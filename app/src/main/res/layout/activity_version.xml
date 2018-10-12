@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/colorPrimary"
+    android:padding="24dp"
+    android:gravity="center"
+    tools:context=".Version">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/application_name"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="@dimen/text20sp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/application_version"
+        android:text="@string/app_version"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/text18sp"
+        android:gravity="center"/>
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/ic_launcher24s"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/application_publish"
+        android:text="@string/app_publish"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text16sp"
+        android:gravity="center"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_all_rights"
+        android:text="@string/app_all_rights"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text16sp"
+        android:gravity="center"/>
+
+</LinearLayout>

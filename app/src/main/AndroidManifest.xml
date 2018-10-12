@@ -156,6 +156,11 @@
             android:name=".acitvities.VehicletrackingMap"
             android:label="@string/title_vehicle_tracking"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".Version"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

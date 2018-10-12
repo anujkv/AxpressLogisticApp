@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -47,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,7 +58,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 
 public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClickListener {
@@ -67,7 +66,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     String leave_info_url = DEVELOPMENT_URL + "HRMS/leave_search";
 
     Intent intent;
-    String formattedDate,formattedDateFORCallback;
+    String formattedDate,formattedYearTime;
     CalendarView calendarView, calendarView1;
     String date2, date, fromDate, toDate, leaveReason, strleave_type, strPin_no, leaveType,ID = null,
             METHOD,KEY,EMPLID;
@@ -78,17 +77,19 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     AlertDialog.Builder builderfrom, builderto;
     Spinner spinner_apply_leave;
     int daysDifference = 0;
-    SimpleDateFormat dffcb;
+    SimpleDateFormat df,dy;
     AlertDialog dialog;
     String notApplied = "Leave Not Applied", applied = "Leave Applied",LEAVE_DAYS = null;
     RecyclerView recyclerView;
     List<AppliedLeaveModel> appliedLeaveModelList;
     AppliedLeaveAdaptor leaveAdaptor;
-    Date selectedDatefrom,selectedDateto,c;
+    Date selectedDatefrom,selectedDateto,currentDate;
+    DateFormat formatter;
     Button okButton;
     int inputResonCount = 0;
     int inputDateCount = 0;
     int selectorInputCount = 0;
+    Timestamp timestamp = null;
     AppliedLeaveModel appliedLeaveModel;
 
     @Override
@@ -105,9 +106,10 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         backbtn_toolbar.setOnClickListener(this);
         savebtn_toolbar.setOnClickListener(this);
         savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_refresh));
+        currentDateFormate();
 
         calendarView = findViewById(R.id.calendarView);
-        calendarView.setMinDate(System.currentTimeMillis());
+//        calendarView.setMinDate(System.currentTimeMillis());
         txt_datanotfound =findViewById(R.id.txt_nofounddata);
         recyclerView = findViewById(R.id.leaveAppliedRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -116,10 +118,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         uploadleavelist();
         Intent intent = getIntent();
         ID= intent.getStringExtra("id");
-        c = Calendar.getInstance().getTime();
-        dffcb = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
-        formattedDateFORCallback = dffcb.format(c);
-        Log.e("DATEEEEEEE",formattedDateFORCallback);
         try{
             if(ID != null){
                 Toast.makeText(getApplicationContext(),"ID " + ID,Toast.LENGTH_SHORT).show();
@@ -130,14 +128,10 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, final int dayOfMonth) {
 
-                        c = Calendar.getInstance().getTime();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
-                        formattedDate = df.format(c);
                         dayfrom = dayOfMonth;
                         monthfrom = month + 1;
                         yearfrom = year;
                         date = dayOfMonth + "-" + monthfrom + "-" + year;
-                        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                         try {
                             selectedDatefrom = formatter.parse(date);
                             System.out.println("Today is " + selectedDatefrom.getTime());
@@ -150,6 +144,34 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             }
         }catch (NullPointerException e){
             e.printStackTrace();
+        }
+
+    }
+
+    private void currentDateFormate() {
+        currentDate = Calendar.getInstance().getTime();
+        int last2month = currentDate.getMonth()-1;
+
+        df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        dy = new SimpleDateFormat("yyyy hh:mm:ss");
+        formatter = new SimpleDateFormat("dd-MM-yyyy");
+        formattedDate = df.format(currentDate);
+        formattedYearTime = dy.format(currentDate);
+        String previous2month = "01" +"-"+ last2month+"-"+formattedYearTime;
+        Log.e("fDATE",formattedDate);
+        Log.e("fDATE",previous2month);
+        Log.e("current>>", String.valueOf(System.currentTimeMillis()));
+        DateFormat dfp = new SimpleDateFormat("MM-dd-yyyy");
+        try {
+            DateFormat formatter;
+            formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = (Date) formatter.parse(previous2month);
+            java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
+            Log.e("fDATE>>", String.valueOf(timeStampDate.getTime()));
+
+
+        } catch (ParseException e) {
+            System.out.println("Exception :" + e);
         }
 
     }
@@ -561,7 +583,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 Log.e("pin_no", strPin_no);
 //                Log.e("formattedDate", formattedDate);
 
-//                Log.e("ID>>",ID);
+                Log.e("ID>>",ID);
                 if(method.equals("apply_leave")){
                     params.put("method", method);
                     params.put("key", apikey);
@@ -587,7 +609,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     params.put("days", String.valueOf(daysDifference));
                     params.put("reason", leaveReason);
                     params.put("approval_flag","pushback");
-                    params.put("applied_date", dffcb.format(c));
+                    params.put("applied_date", df.format(currentDate));
                     return params;
                 }
 
