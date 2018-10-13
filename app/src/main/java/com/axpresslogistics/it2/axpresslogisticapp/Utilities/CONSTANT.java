@@ -27,7 +27,7 @@ public class CONSTANT {
     //API's URLS:
     public static final String URL = "http://webapi.axpresslogistics.com/api/";
 //    public static final String DEVELOPMENT_URL_D = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
-    public static final String DEVELOPMENT_URL = "http://webapi.axpresslogistics.com/api/";
+    public static final String DEVELOPMENT_URL = "http://192.168.1.7/webapi.axpresslogistics.com/api/";
     public static final String IMAGE_URL_TEMP = "http://webapi.axpresslogistics.com/image/";
 
 

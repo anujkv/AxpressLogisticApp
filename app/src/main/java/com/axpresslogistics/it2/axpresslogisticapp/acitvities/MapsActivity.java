@@ -36,12 +36,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.TIMEOUT_ERROR;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,View.OnClickListener {
 //    private String url = CONSTANT.URL + "Operations/map";
-    private String url = DEVELOPMENT_URL + "Operations/map";
+    private String url = URL + "Operations/map";
 
     private GoogleMap mMap;
     ImageButton backbtn_toolbar,mapbtn_toolbar;

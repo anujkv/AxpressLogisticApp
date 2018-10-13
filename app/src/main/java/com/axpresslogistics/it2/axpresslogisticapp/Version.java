@@ -26,7 +26,7 @@ public class Version extends AppCompatActivity {
         version_name.setText("Version "+appVersion);
         application_publish = findViewById(R.id.application_publish);
         publisher = BuildConfig.APPLICATION_ID;
-        application_publish.setText(publisher);
+//        application_publish.setText(publisher);
 //        publisher = BuildConfig.APPLICATION_ID;
 
     }

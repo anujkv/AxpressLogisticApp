@@ -58,12 +58,15 @@ import java.util.List;
 import java.util.Map;
 
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 
 public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClickListener {
-    String applied_url = DEVELOPMENT_URL + "HRMS/leave_entry";
-//    String leave_info_url = URL + "HRMS/leave_search";
-    String leave_info_url = DEVELOPMENT_URL + "HRMS/leave_search";
+    String applied_url = URL + "HRMS/leave_entry";
+    String leave_info_url = URL + "HRMS/leave_search";
+
+//    String applied_url = DEVELOPMENT_URL + "HRMS/leave_entry";
+//    String leave_info_url = DEVELOPMENT_URL + "HRMS/leave_search";
 
     Intent intent;
     String formattedDate,formattedYearTime;
@@ -152,7 +155,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         currentDate = Calendar.getInstance().getTime();
         int last2month = currentDate.getMonth()-1;
 
-        df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
         dy = new SimpleDateFormat("yyyy hh:mm:ss");
         formatter = new SimpleDateFormat("dd-MM-yyyy");
         formattedDate = df.format(currentDate);
@@ -168,6 +171,8 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             Date date = (Date) formatter.parse(previous2month);
             java.sql.Timestamp timeStampDate = new Timestamp(date.getTime());
             Log.e("fDATE>>", String.valueOf(timeStampDate.getTime()));
+
+
 
 
         } catch (ParseException e) {
@@ -252,8 +257,12 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onClick(final DialogInterface dialog, int which) {
-                applied();
-                refreshAppliedList();
+                try {
+                    applied();
+                    refreshAppliedList();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -310,7 +319,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
 
@@ -342,7 +350,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     LayoutInflater inflater = getLayoutInflater();
                     final View alertLayout = inflater.inflate(R.layout.calendar_view, null);
                     calendarView = alertLayout.findViewById(R.id.calendarViewdatePicker);
-                    calendarView.setMinDate(selectedDate.getTime());
+//                    calendarView.setMinDate(selectedDate.getTime());
                     Log.e("MIN TIME", String.valueOf(selectedDate.getTime()));
                     System.out.println(calendarView.getDate() + "  Current Time");
                     builderto = new AlertDialog.Builder(alertLayout.getContext());
@@ -575,15 +583,15 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                 Log.e("method", method);
                 Log.e("key", apikey);
                 Log.e("emplid", Preferences.getPreference(getApplicationContext(),CONSTANT.EMPID));
-                Log.e("from", input_leave_from.getText().toString().trim());
+                Log.e("from", fromDate);
                 Log.e("to", toDate);
                 Log.e("days", String.valueOf(daysDifference));
                 Log.e("reason", leaveReason);
                 Log.e("type", leaveType);
                 Log.e("pin_no", strPin_no);
-//                Log.e("formattedDate", formattedDate);
+                Log.e("applied_date", formattedDate);
 
-                Log.e("ID>>",ID);
+//                Log.e("ID>>",ID);
                 if(method.equals("apply_leave")){
                     params.put("method", method);
                     params.put("key", apikey);
@@ -598,6 +606,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     return params;
                 }
                 else {
+                    Log.e("ID>>",ID);
                     params.put("id",ID);
                     params.put("method", "edit_leave");
                     params.put("key", apikey);
@@ -609,7 +618,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                     params.put("days", String.valueOf(daysDifference));
                     params.put("reason", leaveReason);
                     params.put("approval_flag","pushback");
-                    params.put("applied_date", df.format(currentDate));
+//                    params.put("applied_date", formattedDate);
                     return params;
                 }
 
@@ -628,7 +637,11 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         try {
             if(appliedLeaveModelList.size()>0){
                 appliedLeaveModelList.clear();
-                uploadleavelist();
+                try{
+                    uploadleavelist();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -637,6 +650,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void uploadleavelist() {
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         ApiKey apiKey = new ApiKey();
         final String method = "leave_info";

@@ -62,8 +62,8 @@ public class MarketVehicleRequest extends AppCompatActivity implements View.OnCl
     List<VehicleListModel> modelList;
     VehicleListAdaptor vehicleListAdaptor;
     String employee_id;
-    String VEHICLE_LIST_URL = CONSTANT.DEVELOPMENT_URL + "Operations/market_vehicle_saved_list";
-    String SEARCH_VEHICLE_URL = CONSTANT.DEVELOPMENT_URL + "Operations/search_vehicle";
+    String VEHICLE_LIST_URL = CONSTANT.URL + "Operations/market_vehicle_saved_list";
+    String SEARCH_VEHICLE_URL = CONSTANT.URL + "Operations/search_vehicle";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

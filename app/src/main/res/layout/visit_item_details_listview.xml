@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingBottom="24dp"
+                android:paddingBottom="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp">
@@ -250,6 +250,7 @@
                         android:layout_weight=".7"
                         android:editable="false"
                         android:maxLines="1"
+                        android:inputType="textMultiLine"
                         android:textColor="@color/primaryTextColor"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -338,7 +339,7 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight=".5"
                         android:text="@string/other_employee_name"
                         android:textColor="@color/primaryTextColor"

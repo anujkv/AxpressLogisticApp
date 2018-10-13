@@ -27,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdaptor.AppliedLeaveHolder> {
     Context context;
     List<AppliedLeaveModel> appliedLeaveModelList;
@@ -56,15 +58,20 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
         holder.type.setText(appliedLeaveModel.getType());
         if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pending")) {
             holder.type.setBackgroundColor(Color.YELLOW);
+            holder.leaveStatusIndicator.setCircleBackgroundColor(Color.YELLOW);
         } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("approved")) {
             holder.type.setBackgroundColor(Color.GREEN);
+            holder.leaveStatusIndicator.setCircleBackgroundColor(Color.GREEN);
         } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("pushback")) {
             holder.type.setBackgroundColor(Color.DKGRAY);
+            holder.leaveStatusIndicator.setCircleBackgroundColor(Color.DKGRAY);
         } else if (appliedLeaveModel.getLeave_status().toLowerCase().equals("unapproved") ||
                 appliedLeaveModel.getLeave_status().toLowerCase().equals("rejected")) {
             holder.type.setBackgroundColor(Color.RED);
+            holder.leaveStatusIndicator.setCircleBackgroundColor(Color.RED);
         } else {
             holder.type.setBackgroundColor(Color.WHITE);
+            holder.leaveStatusIndicator.setCircleBackgroundColor(Color.WHITE);
         }
 
         String to = dateConversion(appliedLeaveModel.getTo());
@@ -168,6 +175,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
     public class AppliedLeaveHolder extends RecyclerView.ViewHolder {
         TextView id,from, to, reason, type, pin_no, day, applied_date, leave_status;
         CardView cardView;
+        CircleImageView leaveStatusIndicator;
 
         public AppliedLeaveHolder(View itemView) {
             super(itemView);
@@ -181,6 +189,7 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
             applied_date = itemView.findViewById(R.id.txtappliedDate);
             leave_status = itemView.findViewById(R.id.txtleave_status);
             cardView = itemView.findViewById(R.id.leaveAppliedCardView);
+            leaveStatusIndicator = itemView.findViewById(R.id.leaveStatusIndicator);
         }
     }
 }

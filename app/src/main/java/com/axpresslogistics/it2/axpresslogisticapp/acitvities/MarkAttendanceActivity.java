@@ -57,7 +57,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class MarkAttendanceActivity extends AppCompatActivity implements LocationListener {
@@ -76,7 +76,7 @@ public class MarkAttendanceActivity extends AppCompatActivity implements Locatio
     byte[] image = null;
     //Longitude and latitude Information...\
     double lat= 0.0, lon =0.0,latitude,longitude;
-    private String MARK_URl = DEVELOPMENT_URL + "HRMS/Attendance";
+    private String MARK_URl = URL + "HRMS/Attendance";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

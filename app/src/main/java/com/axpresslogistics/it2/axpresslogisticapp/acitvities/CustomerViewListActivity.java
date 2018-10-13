@@ -333,4 +333,10 @@ public class CustomerViewListActivity extends AppCompatActivity implements View.
             showVisitFormList();
         }
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        refresh();
+    }
 }

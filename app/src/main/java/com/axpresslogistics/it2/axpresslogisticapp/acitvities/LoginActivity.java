@@ -44,7 +44,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     LocationManager locationManager;
     double lat, lon;
 //    private String url = URL + "HRMS/Get_Login";
-    private String url = DEVELOPMENT_URL + "HRMS/Get_Login";
+    private String url = URL + "HRMS/Get_Login";
 
 
     @Override

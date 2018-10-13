@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Map;
 
 public class EmployeeLeaveRequestActivity extends AppCompatActivity implements View.OnClickListener{
-    String APPROVAL_LEAVE_SHOW = CONSTANT.DEVELOPMENT_URL + "HRMS/approve_leave_show";
-    String APPROVAL_LEAVE_UPDATE = CONSTANT.DEVELOPMENT_URL + "HRMS/approve_leave_update";
+    String APPROVAL_LEAVE_SHOW = CONSTANT.URL + "HRMS/approve_leave_show";
+    String APPROVAL_LEAVE_UPDATE = CONSTANT.URL + "HRMS/approve_leave_update";
     String supervisior_id;
     ConstraintLayout no_data_availableLayout;
     LeaveApprovalAdaptor adaptor;

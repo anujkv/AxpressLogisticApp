@@ -24,11 +24,11 @@ public class CRMActivity extends AppCompatActivity {
 
     public static String[] gridViewStrings = {
             "Visit Form",
-//            "Business Card"
+            "Business Card"
     };
     public static int[] gridViewIcons = {
             R.drawable.icon_visit,
-//            R.drawable.icon_business_card
+            R.drawable.icon_business_card
     };
     GridView gridView;
     Toolbar toolbar;
@@ -64,10 +64,10 @@ public class CRMActivity extends AppCompatActivity {
                     case 0:
                         check("visit form");
                         break;
-//                    case 1:
-//                        startActivity(new Intent(CRMActivity.this,
-//                                BusinessCard.class));
-//                        break;
+                    case 1:
+                        startActivity(new Intent(CRMActivity.this,
+                                BusinessCard.class));
+                        break;
                 }
             }
         });

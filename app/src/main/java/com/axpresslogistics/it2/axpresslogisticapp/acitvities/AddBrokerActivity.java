@@ -59,8 +59,8 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
     int MAX_LENGTH = 10;
 
     String ADD_NEW_BROKER_URL = URL+ "Operations/broker_add";
-    String FETCH_BROKER_DETAILS_URL = CONSTANT.DEVELOPMENT_URL+"Operations/broker_fetch";
-    String UPDATE_BROKER_DETAILS_URL = CONSTANT.DEVELOPMENT_URL+"Operations/brokerupdate";
+    String FETCH_BROKER_DETAILS_URL = CONSTANT.URL+"Operations/broker_fetch";
+    String UPDATE_BROKER_DETAILS_URL = CONSTANT.URL+"Operations/brokerupdate";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +76,12 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
         savebtn_toolbar.setOnClickListener(this);
         savebtn_toolbar.setImageDrawable(getResources().getDrawable(R.drawable.icon_save));
         init();
-        Log.e(">>>>>","Addbroker");
         Intent intent = getIntent();
         broker_code_from_broker_list = intent.getStringExtra("broker_code");
         function_method = intent.getStringExtra("method");
         if(function_method==(null)){
             function_method = "";
         }
-        Log.e("FUNCTION: ",function_method);
 
         if(broker_code_from_broker_list!=null && !broker_code_from_broker_list.equals(CONSTANT.BLANK)){
             fetch_broker_details(broker_code_from_broker_list);
@@ -103,7 +101,6 @@ public class AddBrokerActivity extends AppCompatActivity implements View.OnClick
         strBankIFSC = edtBankIFSC.getText().toString().trim();
         strCreatedBy = Preferences.getPreference(getApplicationContext(), CONSTANT.EMPID);
         strCreatedOn = currentDate();
-        Log.e("current time :", strCreatedOn);
     }
 
     public String currentDate() {

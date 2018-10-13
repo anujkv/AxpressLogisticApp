@@ -45,7 +45,7 @@ public class InvoiceDocketActivityList extends AppCompatActivity {
     RecyclerView recyclerView;
     InvoiceDocketAdaptor invoiceDocketAdaptor;
     List<InvoiceDocketModel> invoiceDocketModelList;
-    String DOCKET_LIST_URL = CONSTANT.DEVELOPMENT_URL+"Operations/invoice_details";
+    String DOCKET_LIST_URL = CONSTANT.URL+"Operations/invoice_details";
     String invoice_no;
 
     @Override

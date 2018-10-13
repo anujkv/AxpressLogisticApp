@@ -48,8 +48,8 @@ public class VehicalApproval extends AppCompatActivity implements View.OnClickLi
     CardView broker1_rate_details,broker2_rate_details,broker3_rate_details;
     String method,str_empid,methodAPI,vehicle_req_code,broker_status,BROKER_RATE= "0",BROKER_NAME = "",
             BROKER_CODE,SELECTION_STATUS;
-    String APPROVED_URL = CONSTANT.DEVELOPMENT_URL + "Operations/approval_method";
-    String FETCH_APPROVAL_URL = CONSTANT.DEVELOPMENT_URL + "Operations/saved_vehicle_list_for_approval";
+    String APPROVED_URL = CONSTANT.URL + "Operations/approval_method";
+    String FETCH_APPROVAL_URL = CONSTANT.URL + "Operations/saved_vehicle_list_for_approval";
     String str_vehicle_req_code,str_request_date,str_from_branch,str_to_branch,str_loading_point,
             str_unloading_point,str_req_type,str_goods_type,str_act_wt_of_goods,
             str_vehicle_type,str_approved_status;

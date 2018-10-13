@@ -64,8 +64,8 @@ public class BrokerList extends AppCompatActivity implements View.OnClickListene
     List<BrokerModel> brokerModelList;
     BrokerAdaptor brokerAdaptor;
     String employee_id;
-    String BROKER_LIST_URL = CONSTANT.DEVELOPMENT_URL +  "Operations/broker";
-    String SEARCH_BROKER_URL = CONSTANT.DEVELOPMENT_URL + "Operations/searchbroker";
+    String BROKER_LIST_URL = CONSTANT.URL +  "Operations/broker";
+    String SEARCH_BROKER_URL = CONSTANT.URL + "Operations/searchbroker";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +100,7 @@ public class BrokerList extends AppCompatActivity implements View.OnClickListene
         if(brokerModelList.size()>0){
             brokerModelList.clear();
         }else{
-            showBrokerList();
+            refresh_page();
         }
     }
 

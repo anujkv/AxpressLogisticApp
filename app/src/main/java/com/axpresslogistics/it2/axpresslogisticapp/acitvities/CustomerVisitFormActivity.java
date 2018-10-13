@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
@@ -51,13 +52,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class CustomerVisitFormActivity extends AppCompatActivity implements View.OnClickListener {
-    String URL_ADD_NEW = DEVELOPMENT_URL + "Operations/customer_visit";
-    String URL_FOLLOW = DEVELOPMENT_URL +"Operations/customer_search";
-    String VISIT_HISTORY_URL = DEVELOPMENT_URL+ "Operations/show_history";
+    String URL_ADD_NEW = URL + "Operations/customer_visit";
+    String URL_FOLLOW = URL + "Operations/customer_search";
+    String VISIT_HISTORY_URL = URL + "Operations/show_history";
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_customer_name, edt_visitdate, edtContactPerson, edtContactNo, edtEmail, edtAddress,
             edt_product_name, edtRemark, edt_other_employee_name;
@@ -69,7 +69,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     Spinner spinner_visit_for, spinner_visit_type, spinner_scope, spinner_status;
     String saved = "Saved", notSaved = "Data Not Saved", dataNotFatched = "Data Not Found", method,
             input, NO_HISTORY_AVAILABLE = "No History Available";
-    String businessType, compVisitID, methodF;
+    String businessType, compVisitID, methodF, s;
     Intent intent;
     Boolean FLAG = false;
     LinearLayout linearLayout;
@@ -84,7 +84,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_visit_form);
-        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.app_bar);
+        Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
         lable.setText("Customer Visit Form");
@@ -104,7 +104,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             pushonDBFollow(companyUniqueIDF, businessType, input);
 
         } else {
-            businessType ="customer_visit_add";
+            businessType = "customer_visit_add";
             txt_show_history.setVisibility(View.GONE);
         }
         visitHistoryrecyclerview = findViewById(R.id.historyRecyclerView);
@@ -235,7 +235,15 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         method = businessType;
         this.compVisitID = compVisitID;
         str_customer_name = edt_customer_name.getText().toString().trim();
-        str_visitdate = edt_visitdate.getText().toString().trim();
+        try {
+            Date now = new Date();
+            DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String s = df.format(now);
+            str_visitdate = s.trim().replace("/","-");
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            str_visitdate = edt_visitdate.getText().toString().trim().replace("/","-");
+        }
         str_visit_for = spinner_visit_for.getSelectedItem().toString();
         str_visit_type = spinner_visit_type.getSelectedItem().toString();
         strContactPerson = edtContactPerson.getText().toString().trim();
@@ -267,7 +275,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         str_visit_for = parent.getItemAtPosition(position).toString();
-                        if(position>0){
+                        if (position > 0) {
                             spinner_visit_for.setBackgroundColor(Color.WHITE);
                         }
                     }
@@ -282,7 +290,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         str_visit_type = parent.getItemAtPosition(position).toString();
-                        if(position>0){
+                        if (position > 0) {
                             spinner_visit_for.setBackgroundColor(Color.WHITE);
                         }
                     }
@@ -333,53 +341,57 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void callDateDialogBox() {
         edt_visitdate = findViewById(R.id.edtVisitDate);
         Date now = new Date();
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        String s = df.format(now);
+        s = df.format(now);
         showDate(s);
-        Log.e("DATE : ",s);
+        Log.e("DATE : ", s);
     }
 
     private void showDate(String formattedDate) {
         edt_visitdate.setText(formattedDate);
-        Log.e("Date : ",formattedDate);
+        Log.e("Date : ", formattedDate);
     }
 
     private void save() {
-            getdata(compVisitID, this.businessType);
-            validation();
-
+        getdata(compVisitID, this.businessType);
+        validation();
     }
 
     private void validation() {
-        if(str_customer_name == null || str_customer_name.equals(CONSTANT.BLANK)){
+        if (str_customer_name == null || str_customer_name.equals(CONSTANT.BLANK)) {
             edt_customer_name.setHint(CONSTANT.MANDATORY);
             edt_customer_name.setHintTextColor(Color.RED);
         }
-        if(str_visitdate == null || str_visitdate.equals(CONSTANT.BLANK)){
+        if (str_visitdate == null || str_visitdate.equals(CONSTANT.BLANK)) {
             edt_visitdate.setHint(CONSTANT.MANDATORY);
             edt_visitdate.setHintTextColor(Color.RED);
-        }if(str_visit_for == null || str_visit_for.equals("Select")){
+        }
+        if (str_visit_for == null || str_visit_for.equals("Select")) {
             spinner_visit_for.setBackgroundColor(Color.RED);
-        }if(str_visit_type == null || str_visit_type.equals("Select")){
+        }
+        if (str_visit_type == null || str_visit_type.equals("Select")) {
             spinner_visit_type.setBackgroundColor(Color.RED);
-        }if(strContactPerson == null || strContactPerson.equals(CONSTANT.BLANK)){
+        }
+        if (strContactPerson == null || strContactPerson.equals(CONSTANT.BLANK)) {
             edtContactPerson.setHint(CONSTANT.MANDATORY);
             edtContactPerson.setHintTextColor(Color.RED);
-        }if(strContactNo == null || strContactNo.equals(CONSTANT.BLANK)){
+        }
+        if (strContactNo == null || strContactNo.equals(CONSTANT.BLANK)) {
             edtContactNo.setHint(CONSTANT.MANDATORY);
             edtContactNo.setHintTextColor(Color.RED);
-        }if(str_product_name == null || strContactNo.equals(CONSTANT.BLANK)){
+        }
+        if (str_product_name == null || strContactNo.equals(CONSTANT.BLANK)) {
             edt_product_name.setHint(CONSTANT.MANDATORY);
             edt_product_name.setHintTextColor(Color.RED);
-        }if(strRemark == null || strRemark.equals("")){
+        }
+        if (strRemark == null || strRemark.equals("")) {
             edtRemark.setHint(CONSTANT.MANDATORY);
             edtRemark.setHintTextColor(Color.RED);
-        }else{
-            pushonDBNew(businessType,companyUniqueIDF);
+        } else {
+            pushonDBNew(businessType, companyUniqueIDF);
         }
     }
 
@@ -409,8 +421,13 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                                     savebtn_toolbar.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            getdata(compVisitID, businessType);
-                                            validation();
+                                            try{
+                                                getdata(compVisitID, businessType);
+                                                validation();
+                                            }catch (Exception e){
+                                                e.printStackTrace();
+                                            }
+
 //                                            pushonDBNew(businessType, companyUniqueIDF);
                                         }
                                     });
@@ -531,8 +548,11 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 getdata(compVisitID, businessType);
-                if(companyUniqueIDF != null){
+                if (companyUniqueIDF != null) {
                     getdata(compVisitID, businessType);
+
+                    Log.e("str_visitdate", str_visitdate.trim());
+
 //                if (businessType.equals("customer_visit_search") && companyUniqueIDF != null)  {
                     params.put("ref_no", companyUniqueIDF);
                     params.put("method", "customer_visit_update");
@@ -553,19 +573,19 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
                     params.put("other_employee_name", str_other_employee_name);
                     return params;
                 } else {
-                    Log.e("method",businessType);
-                    Log.e("str_customer_name",str_customer_name);
-                    Log.e("str_visitdate",str_visitdate.trim());
-                    Log.e("str_visit_for",str_visit_for);
-                    Log.e("str_visit_type",str_visit_type);
-                    Log.e("strContactPerson",strContactPerson);
-                    Log.e("strContactNo",strContactNo);
-                    Log.e("strEmail",strEmail);
-                    Log.e("strAddress",strAddress);
-                    Log.e("strStatus",strStatus);
-                    Log.e("str_scope",str_scope);
-                    Log.e("strRemark",strRemark);
-                    Log.e("str_other_employee_name",str_other_employee_name);
+                    Log.e("method", businessType);
+                    Log.e("str_customer_name", str_customer_name);
+                    Log.e("str_visitdate", str_visitdate.trim());
+                    Log.e("str_visit_for", str_visit_for);
+                    Log.e("str_visit_type", str_visit_type);
+                    Log.e("strContactPerson", strContactPerson);
+                    Log.e("strContactNo", strContactNo);
+                    Log.e("strEmail", strEmail);
+                    Log.e("strAddress", strAddress);
+                    Log.e("strStatus", strStatus);
+                    Log.e("str_scope", str_scope);
+                    Log.e("strRemark", strRemark);
+                    Log.e("str_other_employee_name", str_other_employee_name);
 
                     params.put("method", businessType);
                     params.put("key", apikey);

@@ -69,7 +69,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.DEVELOPMENT_URL;
+import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.IMAGE_URL_TEMP;
 
 public class EmpProfileActivity extends AppCompatActivity implements View.OnClickListener {
@@ -80,12 +80,9 @@ public class EmpProfileActivity extends AppCompatActivity implements View.OnClic
     public static final int MEDIA_TYPE_IMAGE = 1;
     private static int PICK_IMAGE_REQUEST = 1;
     private static String imageStoragePath;
-    //    String PROFILE_IMAGE_UPLOAD_URL = URL + "HRMS/profile_image_upload";
-//    String UPDATE_URL = URL + "HRMS/hr_approval";
-//    String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
-    String UPDATE_URL = DEVELOPMENT_URL + "HRMS/hr_approval";
-    String EMPLOYEE_PROFILE_URL = DEVELOPMENT_URL + "HRMS/employee_info";
-    String PROFILE_IMAGE_UPLOAD_URL = DEVELOPMENT_URL + "HRMS/image";
+    String UPDATE_URL = URL + "HRMS/hr_approval";
+    String EMPLOYEE_PROFILE_URL = URL + "HRMS/employee_info";
+    String PROFILE_IMAGE_UPLOAD_URL = URL + "HRMS/image";
     Boolean FLAG = false;
     EditText edtName, edtEmpCode, edtContactNo, edtContactAltNo, edtDesignation, edtDept, edtBranch,
             edtBranchCode,
