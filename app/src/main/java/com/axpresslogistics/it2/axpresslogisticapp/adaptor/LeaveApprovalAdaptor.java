@@ -1,8 +1,12 @@
 package com.axpresslogistics.it2.axpresslogisticapp.adaptor;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,6 +32,7 @@ import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
+import com.axpresslogistics.it2.axpresslogisticapp.acitvities.ApplyLeaveActivity;
 import com.axpresslogistics.it2.axpresslogisticapp.model.LeaveApprovalModel;
 
 import org.json.JSONException;
@@ -55,6 +60,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final LeaveApprovalModel model = approvalModels.get(position);
@@ -77,6 +83,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.pushback.setTextColor(Color.WHITE);
                 approval_status = "approved";
                 push_data(holder,model,approval_status);
+                addNotification(approval_status,model.getFrom_date(),model.getEmplid());
                 holder.cardView.removeAllViews();
 
             }
@@ -90,6 +97,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.pushback.setTextColor(Color.WHITE);
                 approval_status = "unapproved";
                 push_data(holder,model,approval_status);
+                addNotification(approval_status,model.getFrom_date(),model.getEmplid());
                 holder.cardView.removeAllViews();
             }
         });
@@ -101,10 +109,38 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.denied.setTextColor(Color.WHITE);
                 approval_status = "pushback";
                 push_data(holder,model,approval_status);
+                addNotification(approval_status,model.getFrom_date(),model.getEmplid());
                 holder.cardView.removeAllViews();
             }
         });
     }
+
+    private void addNotification(String approval_status, String from_date, String emplid) {
+        if(approval_status.equals("unapproved")){
+            approval_status = "Denied";
+        }else if(approval_status.equals("approved")){
+            approval_status = "Approved";
+        }else if(approval_status.equals("pushback")){
+            approval_status = "Pushback";
+        }
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setContentTitle("Notifications Example")
+                        .setContentText("Leave notification "+ from_date + " has been " + approval_status)
+                        .setAutoCancel(true);
+
+        Intent notificationIntent = new Intent(context, ApplyLeaveActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -166,8 +202,6 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                                     leaved_status = "Leave PushBack";
                                     Toast.makeText(context,model.getId()+ " - " + leaved_status,Toast.LENGTH_SHORT).show();
                                 }
-
-                            } else {
 
                             }
                         } catch (JSONException e) {

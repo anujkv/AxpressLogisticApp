@@ -48,6 +48,7 @@ import java.util.regex.Pattern;
 public class AddVehicleReq extends AppCompatActivity implements View.OnClickListener {
     String ADD_VEHICLE_URL = CONSTANT.URL + "Operations/market_vehicle_entry";
     String BRANCH_LIST_URL = CONSTANT.URL + "Operations/branch";
+    String CALL_BROKER_LIST = CONSTANT.URL + "Operations/brokercalllist";
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_from_branch, edt_loading_point, edt_unloading_point, edt_actual_wt_of_goods,
             edt_vehicle_capacity,edt_broker_rate1,edt_broker_rate2,edt_broker_rate3,edt_advance1,edt_advance2,
@@ -60,7 +61,6 @@ public class AddVehicleReq extends AppCompatActivity implements View.OnClickList
     String method,emp_id,branch_code,broker_code1= null,broker_code2= null,broker_code3= null;
     String str_contact_no1 = "",str_contact_no2= "",str_contact_no3="";
     CardView broker1_rate_details,broker2_rate_details,broker3_rate_details;
-    String CALL_BROKER_LIST = CONSTANT.URL + "Operations/brokercalllist";
     RecyclerView recyclerView;
     JSONArray array;
     List<String> list;

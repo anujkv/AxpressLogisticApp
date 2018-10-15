@@ -143,9 +143,15 @@ public class AppliedLeaveAdaptor extends RecyclerView.Adapter<AppliedLeaveAdapto
                         }
                     });
                 }
-                txt_totalDays.setText(appliedLeaveModel.getDays() + " Day");
-                txt_appliedDate.setText(appliedLeaveModel.getApplied_date().substring(0, 11));
-                txt_leaveType.setText(appliedLeaveModel.getType().trim());
+                try{
+                    txt_totalDays.setText(appliedLeaveModel.getDays() + " Day");
+                    txt_appliedDate.setText(appliedLeaveModel.getApplied_date().substring(0, 11));
+                    txt_leaveType.setText(appliedLeaveModel.getType().trim());
+                }catch (Exception e){
+                    txt_totalDays.setText(appliedLeaveModel.getDays() + " Day");
+                    txt_appliedDate.setText(appliedLeaveModel.getApplied_date().trim());
+                    txt_leaveType.setText(appliedLeaveModel.getType().trim());
+                }
                 dialog.show();
             }
         });

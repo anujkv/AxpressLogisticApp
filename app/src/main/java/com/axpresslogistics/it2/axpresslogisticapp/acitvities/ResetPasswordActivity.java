@@ -3,8 +3,10 @@ package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +48,17 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+        Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        TextView lable = findViewById(R.id.title_toolbar);
+        lable.setText(CONSTANT.HRMS);
+        ImageButton backbtn_toolbar = findViewById(R.id.backbtn_toolbar);
+        backbtn_toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         editTextResetEmail = findViewById(R.id.editTextResetEmail);
         editTextResetID = findViewById(R.id.editTextResetID);
 //        editTextDOBID = findViewById(R.id.editTextDOBID);

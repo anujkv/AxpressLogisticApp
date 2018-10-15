@@ -470,11 +470,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                Log.e("ref_no", companyUniqueIDF);
-                Log.e("method", businessType);
-                Log.e("key", apikey);
-                Log.e("input", input);
-
                 params.put("method", businessType);
                 params.put("key", apikey);
                 params.put("ref_no", compvisitID);

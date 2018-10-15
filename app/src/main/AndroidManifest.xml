@@ -66,7 +66,9 @@
             android:name=".acitvities.EmpProfileActivity"
             android:label="@string/editprofile"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".acitvities.ResetPasswordActivity" />
+        <activity android:name=".acitvities.ResetPasswordActivity"
+            android:label="@string/reset_password"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.DocketTracking"
             android:label="@string/docket_tracking"
