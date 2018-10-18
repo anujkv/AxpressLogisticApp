@@ -87,9 +87,9 @@ public class BrokerApprovalAdaptor extends RecyclerView.Adapter<BrokerApprovalAd
                 }
                 notifyDataSetChanged();
 
-                Toast.makeText(context.getApplicationContext(),
-                        "Selected Broker code "+ model.getBroker_code() ,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context.getApplicationContext(),
+//                        "Selected Broker code "+ model.getBroker_code() ,
+//                        Toast.LENGTH_SHORT).show();
 
                 clicked_details();
             }

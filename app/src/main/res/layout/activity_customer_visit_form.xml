@@ -111,6 +111,14 @@
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
 
+                        <EditText
+                            android:id="@+id/edt_visit_for"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:textSize="12sp"
+                            android:visibility="gone"/>
+
                         <Spinner
                             android:id="@+id/spinner_visit_for"
                             android:layout_width="0dp"

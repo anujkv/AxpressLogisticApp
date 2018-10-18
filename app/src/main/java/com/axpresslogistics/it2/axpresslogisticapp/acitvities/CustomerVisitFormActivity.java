@@ -60,7 +60,7 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
     String VISIT_HISTORY_URL = URL + "Operations/show_history";
     ImageButton backbtn_toolbar, savebtn_toolbar;
     EditText edt_customer_name, edt_visitdate, edtContactPerson, edtContactNo, edtEmail, edtAddress,
-            edt_product_name, edtRemark, edt_other_employee_name;
+            edt_product_name, edtRemark, edt_other_employee_name,edt_visit_for;
     String str_search, str_customer_name, str_visitdate, strContactPerson, strContactNo, strEmail, strAddress,
             str_product_name, strStatus, strRemark, str_other_employee_name, str_visit_for,
             str_visit_type, str_scope;
@@ -660,14 +660,17 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
 
     private void setData(JSONObject jsonObject) {
         str_visit_for = jsonObject.optString("visit_for");
+        spinner_visit_for.setPrompt(str_visit_for);
         str_visit_type = jsonObject.optString("visit_type");
+        spinner_visit_type.setPrompt(str_visit_type);
         strStatus = jsonObject.optString("status");
+        spinner_status.setPrompt(strStatus);
         str_scope = jsonObject.optString("scope");
+        spinner_scope.setPrompt(str_scope);
+        Log.e("str_visit_type",str_visit_type);
         //============================================
         edt_customer_name.setText(jsonObject.optString("customer"));
         edt_visitdate.setText(jsonObject.optString("visit_date"));
-//        spinner_visit_for.setSelection(Integer.parseInt(jsonObject.optString("visit_for")));
-//        spinner_visit_type.setSelection(Integer.parseInt(jsonObject.optString("visit_type")));
 
         edtContactPerson.setText(jsonObject.optString("contact_person"));
         edtContactNo.setText(jsonObject.optString("contact"));
@@ -675,8 +678,6 @@ public class CustomerVisitFormActivity extends AppCompatActivity implements View
         edtAddress.setText(jsonObject.optString("address"));
         edt_product_name.setText(jsonObject.optString("product"));
 
-//        spinner_status.setSelection(Integer.parseInt(jsonObject.optString("followup_status")));
-//        spinner_scope.setSelection(Integer.parseInt(jsonObject.optString("scope")));
         edtRemark.setText(jsonObject.optString("remark"));
         edt_other_employee_name.setText(jsonObject.optString("other_employee_name"));
     }

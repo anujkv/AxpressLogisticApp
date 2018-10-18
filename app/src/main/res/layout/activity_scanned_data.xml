@@ -354,8 +354,7 @@
                             <ImageView
                                 android:id="@+id/imageViewFront"
                                 android:layout_width="400dp"
-                                android:layout_height="200dp"
-                                android:src="@drawable/greenleafsview" />
+                                android:layout_height="200dp" />
 
                             <ImageButton
                                 android:id="@+id/icon_rotate_rightFront"
@@ -397,8 +396,7 @@
                             <ImageView
                                 android:id="@+id/imageViewBack"
                                 android:layout_width="400dp"
-                                android:layout_height="200dp"
-                                android:src="@drawable/greenleafsview" />
+                                android:layout_height="200dp" />
 
                             <ImageButton
                                 android:id="@+id/icon_rotate_right"

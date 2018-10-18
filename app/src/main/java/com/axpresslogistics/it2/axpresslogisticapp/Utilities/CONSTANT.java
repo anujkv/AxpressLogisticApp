@@ -128,6 +128,9 @@ public class CONSTANT {
     public static final String LOCATION_NOT_GETTING = "Location Not Getting, Kindly Try Again!";
     public static final String GETTING_LOCATION = "Getting Location, wait for while";
     public static final String INFORMATION = "Information";
+    public static final String ACTIVITIES = "Activities";
+    public static final String DAILY_SHEET = "Daily Sheet";
+    public static final String TO_DO_LIST = "To Do List";
     public static String already_exist = "already_exist";
     public static final String ENTER_THE_CONTACT_NO = "Enter the contact no";
     public static final String ENTER_THE_CORRECT_CONTACT_NO = "Enter the correct contact no";

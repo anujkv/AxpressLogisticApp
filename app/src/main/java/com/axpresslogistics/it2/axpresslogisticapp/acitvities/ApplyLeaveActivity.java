@@ -368,6 +368,11 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             date = dayOfMonth + "-" + monthfrom + "-" + year;
                             Log.e("FROM:",date);
                             input_leave_from.setText(date);
+                            try {
+                                selectedDatefrom = formatter.parse(date);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -541,7 +546,6 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             refreshAppliedList();
                             Toast.makeText(getApplicationContext(), applied, Toast.LENGTH_SHORT).show();
                             if(method.equals("edit_leave")){
-                                refreshAppliedList();
                                 finish();
                             }
                         } else {
@@ -650,19 +654,18 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void uploadleavelist() {
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+        final ProgressDialog progressDialogU = new ProgressDialog(this);
         ApiKey apiKey = new ApiKey();
         final String method = "leave_info";
         final String apikey1 = apiKey.saltStr();
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+        progressDialogU.setMessage("Loading...");
+        progressDialogU.show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, leave_info_url, new
                 Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressDialog.dismiss();
+                        progressDialogU.dismiss();
                         Log.e("LeaveResponse", response);
                         try {
                             JSONObject object = new JSONObject(response);
@@ -698,7 +701,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            progressDialog.dismiss();
+                            progressDialogU.dismiss();
                             recyclerView.setVisibility(View.GONE);
                             txt_datanotfound.setVisibility(View.VISIBLE);
                         }
@@ -707,7 +710,7 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
-                progressDialog.dismiss();
+                progressDialogU.dismiss();
                 recyclerView.setVisibility(View.GONE);
                 txt_datanotfound.setVisibility(View.VISIBLE);
                 if (error instanceof NetworkError) {
@@ -752,4 +755,5 @@ public class ApplyLeaveActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    
 }

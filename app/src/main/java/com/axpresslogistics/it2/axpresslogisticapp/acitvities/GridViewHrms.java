@@ -15,7 +15,7 @@ public class GridViewHrms extends BaseAdapter {
     private final String[] string;
     private final int[] Iconid;
 
-    GridViewHrms(Context mContext, String[] string, int[] iconid) {
+    public GridViewHrms(Context mContext, String[] string, int[] iconid) {
         this.mContext = mContext;
         this.string = string;
         Iconid = iconid;

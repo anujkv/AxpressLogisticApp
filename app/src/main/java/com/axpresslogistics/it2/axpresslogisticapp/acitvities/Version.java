@@ -1,4 +1,4 @@
-package com.axpresslogistics.it2.axpresslogisticapp;
+package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.axpresslogistics.it2.axpresslogisticapp.BuildConfig;
+import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 
 public class Version extends AppCompatActivity {
@@ -26,8 +28,6 @@ public class Version extends AppCompatActivity {
         version_name.setText("Version "+appVersion);
         application_publish = findViewById(R.id.application_publish);
         publisher = BuildConfig.APPLICATION_ID;
-//        application_publish.setText(publisher);
-//        publisher = BuildConfig.APPLICATION_ID;
 
     }
 }

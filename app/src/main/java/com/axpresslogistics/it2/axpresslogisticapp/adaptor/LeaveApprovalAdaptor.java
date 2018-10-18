@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
 import com.axpresslogistics.it2.axpresslogisticapp.acitvities.ApplyLeaveActivity;
+import com.axpresslogistics.it2.axpresslogisticapp.acitvities.EmployeeLeaveRequestActivity;
 import com.axpresslogistics.it2.axpresslogisticapp.model.LeaveApprovalModel;
 
 import org.json.JSONException;
@@ -46,6 +48,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
     Context context;
     List<LeaveApprovalModel> approvalModels;
     String leaved_status,approval_status;
+    EmployeeLeaveRequestActivity requestActivityInstance;
 
     public LeaveApprovalAdaptor(Context context, List<LeaveApprovalModel> approvalModels) {
         this.context = context;
@@ -64,6 +67,9 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final LeaveApprovalModel model = approvalModels.get(position);
+        requestActivityInstance = new EmployeeLeaveRequestActivity();
+        final int position1 = holder.getAdapterPosition();
+        final int item = holder.getAdapterPosition();
         holder.id.setText(model.getId());
         holder.emplid.setText(model.getEmplid());
         holder.applier_name.setText(model.getApplier_name());
@@ -83,6 +89,7 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.pushback.setTextColor(Color.WHITE);
                 approval_status = "approved";
                 push_data(holder,model,approval_status);
+//                requestActivityInstance.Snackbar(model.getFrom_date(),approval_status,position1);
                 addNotification(approval_status,model.getFrom_date(),model.getEmplid());
                 holder.cardView.removeAllViews();
 
@@ -97,6 +104,8 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.pushback.setTextColor(Color.WHITE);
                 approval_status = "unapproved";
                 push_data(holder,model,approval_status);
+//                requestActivityInstance.Snackbar(model.getFrom_date(),approval_status,position1);
+
                 addNotification(approval_status,model.getFrom_date(),model.getEmplid());
                 holder.cardView.removeAllViews();
             }
@@ -109,11 +118,15 @@ public class LeaveApprovalAdaptor extends RecyclerView.Adapter<LeaveApprovalAdap
                 holder.denied.setTextColor(Color.WHITE);
                 approval_status = "pushback";
                 push_data(holder,model,approval_status);
+//                requestActivityInstance.Snackbar(model.getFrom_date(),approval_status,position1);
+
                 addNotification(approval_status,model.getFrom_date(),model.getEmplid());
                 holder.cardView.removeAllViews();
             }
         });
     }
+
+
 
     private void addNotification(String approval_status, String from_date, String emplid) {
         if(approval_status.equals("unapproved")){

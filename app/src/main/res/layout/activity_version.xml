@@ -9,7 +9,7 @@
     android:background="@color/colorPrimary"
     android:padding="24dp"
     android:gravity="center"
-    tools:context=".Version">
+    tools:context=".acitvities.Version">
 
     <TextView
         android:layout_width="match_parent"

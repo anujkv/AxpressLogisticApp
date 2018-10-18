@@ -2,16 +2,23 @@ package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,12 +44,12 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.axpresslogistics.it2.axpresslogisticapp.Activities;
 import com.axpresslogistics.it2.axpresslogisticapp.BuildConfig;
 import com.axpresslogistics.it2.axpresslogisticapp.R;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.ApiKey;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT;
 import com.axpresslogistics.it2.axpresslogisticapp.Utilities.Preferences;
-import com.axpresslogistics.it2.axpresslogisticapp.Version;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -55,7 +62,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 import static com.axpresslogistics.it2.axpresslogisticapp.Utilities.CONSTANT.URL;
 
 public class MainHomeActivity extends AppCompatActivity
@@ -76,7 +82,6 @@ public class MainHomeActivity extends AppCompatActivity
             R.drawable.icon_financial,
             R.drawable.icon_tickets
     };
-    //    String USER_URL = URL + "HRMS/app_user";
     String USER_URL = URL + "HRMS/app_role";
     byte[] image = null;
     GridView gridView;
@@ -89,6 +94,9 @@ public class MainHomeActivity extends AppCompatActivity
     LocationManager locationManager;
     double lat, lon;
     ArrayList<String> list = new ArrayList<String>();
+    String currentVersion;
+    boolean connected = false;
+    CoordinatorLayout coordinatorLayout;
 
 
     @Override
@@ -100,8 +108,11 @@ public class MainHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
+        coordinatorLayout = findViewById(R.id.android_coordinator_layoutId);
         appVersion = BuildConfig.VERSION_NAME;
-        Log.e("VERSION",appVersion);
+        Log.e("VERSION", appVersion);
+        // get version................................
+        checkNetworkconnection();
 
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -112,10 +123,16 @@ public class MainHomeActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        employeeNAME = Preferences.getPreference(MainHomeActivity.this, CONSTANT.USER_NAME);
-        empEmail = Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMAIL);
-        employeeID = Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMPID);
-        image_profile = Preferences.getPreference(MainHomeActivity.this, CONSTANT.USER_IMAGE);
+        try{
+            employeeNAME = Preferences.getPreference(MainHomeActivity.this, CONSTANT.USER_NAME);
+            empEmail = Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMAIL);
+            employeeID = Preferences.getPreference(MainHomeActivity.this, CONSTANT.EMPID);
+            image_profile = Preferences.getPreference(MainHomeActivity.this, CONSTANT.USER_IMAGE);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            logout();
+        }
+
         Log.e("URL : ", image_profile);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -150,6 +167,8 @@ public class MainHomeActivity extends AppCompatActivity
                     case 3:
                         Toast.makeText(getApplicationContext(), "Activities",
                                 Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), Activities.class));
+
                         break;
                     case 4:
                         Toast.makeText(getApplicationContext(), "Financial",
@@ -179,8 +198,15 @@ public class MainHomeActivity extends AppCompatActivity
         empEmailId = navView.findViewById(R.id.user_email);
         empName = navView.findViewById(R.id.user_name);
         empImage = navView.findViewById(R.id.user_imageView);
-        Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE )
-                .networkPolicy(NetworkPolicy.NO_CACHE).into(empImage);
+        try{
+            Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).into(empImage);
+        } catch (Exception e){
+            e.printStackTrace();
+            Picasso.get().load("http://webapi.axpresslogistics.com/image/avatar.png").memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).into(empImage);
+        }
+
         //set views
         empName.setText(employeeNAME);
         empEmailId.setText(empEmail);
@@ -190,24 +216,86 @@ public class MainHomeActivity extends AppCompatActivity
 
     }
 
+    private boolean checkNetworkconnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+            getVersion();
+
+        } else{
+            connected = false;
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkNetworkconnection();
+                        }
+                    });
+
+            // Changing message text color
+            snackbar.setActionTextColor(Color.RED);
+
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+
+            snackbar.show();
+        }
+        return connected;
+    }
+
+
+    private void networkConnectionAlertBox() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("No Internet Connection");
+        builder.setCancelable(true);
+
+        builder.setPositiveButton(
+
+                "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void getVersion() {
+        try {
+            currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        new GetVersionCode().execute();
+//...............................................
+    }
+
     private void check(String call) {
         if (list.contains(call)) {
 
-                if (call.equals("operations")) {
-                    Intent intent = new Intent(getApplicationContext(), OperationActivity.class);
-                    intent.putExtra("list",list);
-                    startActivity(intent);
+            if (call.equals("operations")) {
+                Intent intent = new Intent(getApplicationContext(), OperationActivity.class);
+                intent.putExtra("list", list);
+                startActivity(intent);
 //                startActivity(new Intent(getApplicationContext(), OperationActivity.class));
 
             } else if (call.equals("hrms")) {
-                    Intent intent = new Intent(getApplicationContext(), HrmsActivity.class);
-                    intent.putExtra("list",list);
-                    startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), HrmsActivity.class);
+                intent.putExtra("list", list);
+                startActivity(intent);
 //                startActivity(new Intent(getApplicationContext(), HrmsActivity.class));
             } else if (call.equals("crm")) {
-                    Intent intent = new Intent(getApplicationContext(), CRMActivity.class);
-                    intent.putExtra("list",list);
-                    startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), CRMActivity.class);
+                intent.putExtra("list", list);
+                startActivity(intent);
 //                startActivity(new Intent(getApplicationContext(), CRMActivity.class));
             }
         } else {
@@ -215,7 +303,6 @@ public class MainHomeActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
     private void user_permission_checks() {
@@ -254,8 +341,6 @@ public class MainHomeActivity extends AppCompatActivity
                         Log.e("list: ", list.toString());
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "credinital not found", Toast.LENGTH_SHORT).show();
-//                        list.add("Operations");list.add("hrms");
 
                     }
                 } catch (JSONException e) {
@@ -352,8 +437,8 @@ public class MainHomeActivity extends AppCompatActivity
             share_it();
         } else if (id == R.id.nav_send) {
 
-        }else if (id == R.id.nav_info) {
-            startActivity(new Intent(getApplicationContext(),Version.class));
+        } else if (id == R.id.nav_info) {
+            startActivity(new Intent(getApplicationContext(), Version.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -404,11 +489,12 @@ public class MainHomeActivity extends AppCompatActivity
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        checkNetworkconnection();
         image_profile = Preferences.getPreference(getApplicationContext(), CONSTANT.USER_IMAGE);
-        try{
-            Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE )
+        try {
+            Picasso.get().load(image_profile).memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE).into(empImage);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -418,7 +504,7 @@ public class MainHomeActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_home_drawer, menu);
         MenuItem itemInfo = menu.findItem(R.id.nav_info);
-        itemInfo.setTitle("Version "+appVersion);
+        itemInfo.setTitle("Version " + appVersion);
         return true;
     }
 }

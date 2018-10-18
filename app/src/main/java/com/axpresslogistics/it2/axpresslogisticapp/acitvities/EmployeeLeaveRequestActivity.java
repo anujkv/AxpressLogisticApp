@@ -1,8 +1,11 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +53,7 @@ public class EmployeeLeaveRequestActivity extends AppCompatActivity implements V
     RecyclerView recyclerView;
     ImageView refresh_image;
     ImageButton backbtn_toolbar;
+    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class EmployeeLeaveRequestActivity extends AppCompatActivity implements V
     }
 
     private void init() {
+        coordinatorLayout = findViewById(R.id.req_leave_coordinate_layout);
         refresh_image = findViewById(R.id.refresh_image);
         refresh_image.setOnClickListener(this);
         no_data_availableLayout = findViewById(R.id.no_data_availableLayout);
@@ -168,5 +173,21 @@ public class EmployeeLeaveRequestActivity extends AppCompatActivity implements V
                 leave_show_method();
                 break;
         }
+    }
+
+    public void Snackbar(String from_date,String approval_status,int position){
+        Snackbar snackbar = Snackbar.make(coordinatorLayout,
+                "Leave notification "+ from_date + " has been " + approval_status,Snackbar.LENGTH_SHORT)
+                .setAction("Undo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+
+        snackbar.setActionTextColor(Color.RED);
+        View view = snackbar.getView();
+        TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.YELLOW);
+        snackbar.show();
     }
 }

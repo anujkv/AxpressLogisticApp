@@ -2,7 +2,12 @@ package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,11 +59,14 @@ public class HrmsActivity extends AppCompatActivity {
     Intent intent;
     GridViewHrms gridViewHrms;
     ArrayList<String> list = new ArrayList<String>();
+    Boolean connected = false;
+    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hrms);
+        coordinatorLayout = findViewById(R.id.android_coordinator_layoutId);
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
@@ -70,6 +78,7 @@ public class HrmsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        checkNetworkconnection();
         gridView = findViewById(R.id.gridhrms);
         String id = Preferences.getPreference(HrmsActivity.this,CONSTANT.EMPID);
         String supervisior_id = Preferences.getPreference(HrmsActivity.this,CONSTANT.SUPERVISER_ID);
@@ -112,5 +121,42 @@ public class HrmsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean checkNetworkconnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+
+        } else{
+            connected = false;
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkNetworkconnection();
+                        }
+                    });
+
+            // Changing message text color
+            snackbar.setActionTextColor(Color.RED);
+
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+
+            snackbar.show();
+        }
+        return connected;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        checkNetworkconnection();
     }
 }

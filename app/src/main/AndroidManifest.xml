@@ -66,7 +66,8 @@
             android:name=".acitvities.EmpProfileActivity"
             android:label="@string/editprofile"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".acitvities.ResetPasswordActivity"
+        <activity
+            android:name=".acitvities.ResetPasswordActivity"
             android:label="@string/reset_password"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -145,25 +146,27 @@
         <activity
             android:name=".acitvities.AddVehicleReq"
             android:label="@string/title_activity_add_vehicle_request"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.VehicalApproval"
             android:label="@string/title_vehicle_approval"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".acitvities.VehicletrackingMap"
             android:label="@string/title_vehicle_tracking"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".Version"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".acitvities.Version"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities"
+            android:label="@string/activities"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ToDoList"
+            android:label="@string/title_activity_to_do_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".NewToDo"></activity>
     </application>
 
 </manifest>

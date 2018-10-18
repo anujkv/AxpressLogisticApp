@@ -275,4 +275,9 @@
     <string name="app_publish">Powered by Axpress Logistics India Pvt Ltd</string>
     <string name="app_all_rights">All rights reserved.</string>
     <string name="reset_password">Reset Password</string>
+    <string name="activities">Activities</string>
+    <string name="title_activity_activities">Activities</string>
+    <string name="title_activity_to_do_list">ToDoList</string>
+    <string name="to_do_list">To do</string>
+    <string name="reminder_date">Reminder Date</string>
 </resources>

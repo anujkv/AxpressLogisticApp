@@ -1,8 +1,14 @@
 package com.axpresslogistics.it2.axpresslogisticapp.acitvities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,10 +24,6 @@ import java.util.ArrayList;
 
 public class CRMActivity extends AppCompatActivity {
 
-    private String jsonString;
-    JSONObject jObj;
-    Intent intent;
-
     public static String[] gridViewStrings = {
             "Visit Form",
             "Business Card"
@@ -30,15 +32,19 @@ public class CRMActivity extends AppCompatActivity {
             R.drawable.icon_visit,
             R.drawable.icon_business_card
     };
+    Intent intent;
     GridView gridView;
     Toolbar toolbar;
     ArrayList<String> list = new ArrayList<String>();
+    Boolean connected = false;
+    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crm);
-        Toolbar toolbar =  findViewById(R.id.app_bar);
+        coordinatorLayout = findViewById(R.id.android_coordinator_layoutId);
+        Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         TextView lable = findViewById(R.id.title_toolbar);
         lable.setText("CRM");
@@ -49,7 +55,7 @@ public class CRMActivity extends AppCompatActivity {
                 finish();
             }
         });
-        gridView = findViewById(R.id.gridhrms);
+        checkNetworkconnection();
         gridView = findViewById(R.id.gridhrms);
         GridViewHrms gridViewHrms = new GridViewHrms(CRMActivity.this, gridViewStrings, gridViewIcons);
         gridView.setAdapter(gridViewHrms);
@@ -78,8 +84,45 @@ public class CRMActivity extends AppCompatActivity {
 
             if (call.equals("visit form")) {
                 startActivity(new Intent(CRMActivity.this,
-                                CustomerViewListActivity.class));
+                        CustomerViewListActivity.class));
             }
         }
+    }
+
+    private boolean checkNetworkconnection() {
+        Snackbar snackbar = null;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+        } else {
+            connected = false;
+            snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            checkNetworkconnection();
+                        }
+                    });
+
+            // Changing message text color
+            snackbar.setActionTextColor(Color.RED);
+
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+
+            snackbar.show();
+        }
+        return connected;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        checkNetworkconnection();
     }
 }

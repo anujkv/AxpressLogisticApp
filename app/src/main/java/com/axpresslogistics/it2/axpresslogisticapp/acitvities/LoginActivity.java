@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -58,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     double lat, lon;
 //    private String url = URL + "HRMS/Get_Login";
     private String url = URL + "HRMS/Get_Login";
+    boolean connected = false;
+
 
 
     @Override
@@ -74,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //clickable events...
         login_button.setOnClickListener(this);
         forgetPassword.setOnClickListener(this);
+        checkNetworkconnection();
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10,
@@ -88,6 +93,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));
         }
+    }
+
+    private void checkNetworkconnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+        }
+        else
+            connected = false;
     }
 
     private void getLocationPermissionCheck() {
@@ -115,7 +131,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(getApplicationContext(), CONSTANT.ENTER_PASSWORD,
                             Toast.LENGTH_LONG).show();
                 } else {
-                    login();
+                    checkNetworkconnection();
+                    if(connected){
+                        login();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"No Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             //set click event on forget link for redirection on forget page activity...
@@ -167,24 +189,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(getApplicationContext(), CONSTANT.WRONG_CREDENTIAL,
                                 Toast.LENGTH_LONG).show();
                         invisibleProgressbar();
-//                        TESST
-//                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_NAME,
-//                                "1257");
-//                        Preferences.setPreference(LoginActivity.this,  CONSTANT.EMPLOYEE_BRANCH,
-//                                "GGN");
-//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPID,
-//                                "1257");
-//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMAIL,
-//                                "1257@gmail.com");
-//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DESIGNATION,
-//                                "BRANCH");
-//                        Preferences.setPreference(LoginActivity.this, CONSTANT.EMPLOYEE_DEPT,
-//                                "DEPT");
-//                        Preferences.setPreference(LoginActivity.this, CONSTANT.USER_IMAGE,
-//                                "http://192.168.1.7/webapi.axpresslogistics.com/api/HRMS/anuj.jp");
-//                        Toast.makeText(getApplicationContext(), CONSTANT.WELCOME + username,
-//                                LENGTH_SHORT).show();
-//                        startActivity(new Intent(getApplicationContext(), MainHomeActivity.class));
                     }
 
                 } catch (JSONException e) {
@@ -218,11 +222,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 params.put("pwd", password.getText().toString().trim());
                 params.put(CONSTANT.METHOD, method);
                 params.put(CONSTANT.KEY, apikey.trim());
-
-                Log.e("username",employee_code.getText().toString().trim());
-                Log.e("pwd", password.getText().toString().trim());
-                Log.e(CONSTANT.METHOD, method);
-                Log.e(CONSTANT.KEY, apikey.trim());
                 return params;
             }
         };
