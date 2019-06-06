@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "431349085650-jabmp7rro4njbptqls4d5jbh1sbgptpv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.axpresslogistics.it2.axpresslogisticapp",
+            "certificate_hash": "cb2a71559548eb0b7c5f5abaf13ce71763d6c29e"
+          }
+        },
+        {
           "client_id": "431349085650-p2b4v4r4norfurhuddjdb1mvhhul40qm.apps.googleusercontent.com",
           "client_type": 3
         }

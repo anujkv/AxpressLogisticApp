@@ -100,7 +100,6 @@
             android:textColor="@color/primaryTextColor" />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/altContactLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"

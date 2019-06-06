@@ -1,35 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.axpresslogistics.it2.axpresslogisticapp">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_DOCUMENTS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <uses-permission-sdk-23 android:name="android.permission.READ_CALENDAR" />
+    <uses-permission-sdk-23 android:name="android.permission.WRITE_CALENDAR" />
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.USB_PERMISSION" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
 
     <application
+        android:name=".activities.basic_module.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher24s"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher24s_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".acitvities.SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="m">
+        <activity android:name=".activities.Operations.VehicleApproval.VehicleSavedList"></activity>
+        <activity android:name=".activities.basic_module.Profile" />
+        <activity android:name=".activities.CRM.BusinessCard.BusinessCardDetails" />
+        <activity android:name=".activities.CRM.VisitForm.NewVisitForm" />
+        <activity android:name=".activities.CRM.BusinessCard.BusinessCardList" />
+        <activity android:name=".activities.Operations.PODScan.PODScanner" />
+        <activity android:name=".activities.Operations.DocketEnquiry.InvoiceList" />
+        <activity android:name=".activities.HRMS.UploadDocumentation" />
+        <activity android:name=".activities.Operations.VendorApprovalActivity" />
+        <activity android:name=".activities.Operations.VendorListActivity" />
+
+        <service android:name=".RefreshService" />
+        <service
+            android:name=".services.GetShareLocationService"
+            android:enabled="true"
+            android:exported="true" />
+        <service android:name=".MyFirebaseMessagingService.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".MyFirebaseInstanceServices.MyFirebaseInstanceServices">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <activity android:name=".activities.basic_module.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,136 +94,99 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".acitvities.LoginActivity"
+            android:name=".activities.basic_module.LoginActivity"
             android:label="@string/loginPage" />
         <activity
-            android:name=".acitvities.OperationActivity"
-            android:label="@string/operations"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.activities_module.ActivitiesActivity" />
         <activity
-            android:name=".acitvities.MainHomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.activities_module.ToDoList" />
         <activity
-            android:name=".acitvities.DocketEnquiry"
-            android:label="@string/docket_enquiry"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.activities_module.NewToDo" />
         <activity
-            android:name=".acitvities.HrmsActivity"
-            android:label="@string/hrms"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.OperationActivity"
+            android:label="@string/operations" />
         <activity
-            android:name=".acitvities.MarkAttendanceActivity"
-            android:label="@string/mark_attendance"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.AddBroker.BrokerList"
+            android:label="@string/broker_list" />
         <activity
-            android:name=".acitvities.AttendanceSummaryActivity"
-            android:label="@string/attendance_summary"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.AddBroker.AddBroker"
+            android:label="@string/add_broker" />
+        <activity android:name=".activities.basic_module.MainHomeActivity" />
         <activity
-            android:name=".acitvities.EmpProfileActivity"
-            android:label="@string/editprofile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.DocketEnquiry.DocketEnquiry"
+            android:label="@string/docket_enquiry" />
         <activity
-            android:name=".acitvities.ResetPasswordActivity"
-            android:label="@string/reset_password"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.HRMS.HrmsActivity"
+            android:label="@string/hrms" />
         <activity
-            android:name=".acitvities.DocketTracking"
-            android:label="@string/docket_tracking"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
+            android:name=".activities.HRMS.MarkAttendanceActivity"
+            android:label="@string/mark_attendance" />
+        <activity
+            android:name=".activities.HRMS.AttendanceSummaryActivity"
+            android:label="@string/attendance_summary" />
+        <activity
+            android:name=".activities.basic_module.EmpProfileActivity"
+            android:label="@string/editprofile" />
+        <activity
+            android:name=".activities.basic_module.ResetPasswordActivity"
+            android:label="@string/reset_password" />
+        <activity
+            android:name=".activities.Operations.DocketEnquiry.DocketTracking"
+            android:label="@string/docket_tracking" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_keyReleased" />
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="ocr" />
 
         <activity
-            android:name=".acitvities.MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path" />
-        </provider>
-
-        <activity
-            android:name=".acitvities.CRMActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".activities.CRM.CRMActivity" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="ocr" />
 
+        <activity android:name=".activities.CRM.VisitForm.CustomerViewListActivity" />
+        <activity android:name=".activities.HRMS.ApplyLeaveActivity" />
         <activity
-            android:name=".acitvities.CustomerVisitFormActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.HRMS.EmployeeLeaveRequestActivity"
+            android:label="@string/approve_leave" />
+
         <activity
-            android:name=".acitvities.CustomerViewListActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.AddVehicle.AddVehicleReq"
+            android:label="@string/title_activity_add_vehicle_request" />
         <activity
-            android:name=".acitvities.ApplyLeaveActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.VehicleApproval.VehicalApproval"
+            android:label="@string/title_vehicle_approval" />
         <activity
-            android:name=".acitvities.InvoiceDocketActivityList"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".activities.Operations.VehicleTrackingMap.VehicletrackingMap"
+            android:label="@string/title_vehicle_tracking" />
+        <activity android:name=".activities.basic_module.Version" />
+
+        <activity android:name=".activities.Operations.ChallanReceiver.ChallanReciver" />
+
+        <receiver
+            android:name=".activities.activities_module.AlarmReceiver"
+            android:process=":remote" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.axpresslogistics.it2.axpresslogisticapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity android:name=".activities.basic_module.DBDialog" />
         <activity
-            android:name=".acitvities.BusinessCardView"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.BusinessCard"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.EmployeeLeaveRequestActivity"
-            android:label="@string/approve_leave"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.AddBrokerActivity"
-            android:label="@string/add_broker"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.BrokerList"
-            android:label="@string/broker_list"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.MarketVehicleRequest"
-            android:label="@string/title_activity_market_vehicle_request"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.AddVehicleReq"
-            android:label="@string/title_activity_add_vehicle_request"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.VehicalApproval"
-            android:label="@string/title_vehicle_approval"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.VehicletrackingMap"
-            android:label="@string/title_vehicle_tracking"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".acitvities.Version"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activities"
-            android:label="@string/activities"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ToDoList"
-            android:label="@string/title_activity_to_do_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".NewToDo"></activity>
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>

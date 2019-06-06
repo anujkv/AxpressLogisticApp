@@ -4,32 +4,13 @@
     android:id="@+id/android_coordinator_layoutId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/white">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:background="@color/colorPrimaryDark"
-        android:gravity="center"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_launcher24s" />
-
-    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
+
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -42,14 +23,14 @@
                 <GridView
                     android:id="@+id/grid"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:columnWidth="100dp"
-                    android:divider="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"
+
+                    android:divider="@color/white"
                     android:dividerHeight="1dip"
-                    android:gravity="center"
+
                     android:horizontalSpacing="-10dp"
                     android:listSelector="#00000000"
-                    android:numColumns="3"
+                    android:numColumns="2"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="-10dip" />
         </LinearLayout>

@@ -4,9 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewToDo">
+    android:layout_gravity="center"
+    tools:context=".activities.NewToDo">
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
@@ -15,12 +19,14 @@
         android:orientation="vertical"
         android:padding="@dimen/margin10dp">
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/close_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin10dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
             android:src="@drawable/ic_cancel_black_24dp" />
 
 
@@ -32,22 +38,26 @@
             android:gravity="center_vertical">
 
             <EditText
+                android:id="@+id/to_do_add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text20dp"
                 android:hint="@string/to_do_list"
+                android:focusedByDefault="false"
                 android:inputType="textMultiLine" />
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="335dp"
+        android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
-        android:padding="@dimen/margin10dp"
+        android:paddingLeft="@dimen/margin10dp"
+        android:paddingRight="@dimen/margin10dp"
+        android:paddingTop="@dimen/margin10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +66,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/text30dp"
-            android:gravity="center">
+            android:paddingTop="@dimen/margin10dp">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,34 +79,156 @@
                 android:src="@drawable/ic_alarm_add_black_24dp" />
 
             <Switch
-                android:id="@+id/switch1"
-                android:layout_marginLeft="@dimen/text20dp"
-                android:layout_width="wrap_content"
+                android:id="@+id/switch_reminder"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/text20dp"
                 android:text="Reminder" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reminder_date_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin10dp"
+            android:layout_marginRight="@dimen/margin10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="@dimen/margin5dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight=".4"
+                android:gravity="center"
+                android:paddingLeft="@dimen/margin10dp">
+
+                <EditText
+                    android:id="@+id/edittext_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/margin5dp"
+                    android:layout_marginTop="@dimen/text20dp"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:focusedByDefault="false"
+                    android:hint="Date"
+                    android:paddingLeft="@dimen/margin10dp"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/text15sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/on_alarm"
+                android:layout_width="@dimen/margin25dp"
+                android:layout_height="@dimen/margin25dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/margin15dp"
+                android:layout_marginLeft="@dimen/margin5dp"
+                android:layout_marginRight="@dimen/margin5dp"
+                android:src="@drawable/ic_alarm_black_24dp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/off_alarm"
+                android:layout_width="@dimen/margin25dp"
+                android:layout_height="@dimen/margin25dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/margin15dp"
+                android:layout_marginLeft="@dimen/margin5dp"
+                android:layout_marginRight="@dimen/margin5dp"
+                android:src="@drawable/ic_alarm_gray_24dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="@dimen/margin20dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight=".3">
+
+                <EditText
+                    android:id="@+id/edittext_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/text20dp"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:focusable="false"
+                    android:hint=" Time"
+                    android:focusedByDefault="false"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/text15sp" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin10dp">
+
+            <TextView
+                android:id="@+id/reminder_text_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/text20dp"
+                    android:layout_marginStart="@dimen/margin10dp"
+                    android:gravity="center"
+                    android:text="@string/contacts"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/addContact_btn"
+                    android:layout_width="@dimen/text25dp"
+                    android:layout_height="@dimen/text25dp"
+                    android:background="@drawable/circle_shape"
+                    android:backgroundTint="@color/light_gray"
+                    android:clickable="false"
+                    android:src="@drawable/icon_add" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/contact_members_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/text20dp"
+                android:layout_marginTop="@dimen/margin5dp">
+
+            </android.support.v7.widget.RecyclerView>
 
 
         </LinearLayout>
 
-
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/text20dp"
-                android:hint="@string/reminder_date" />
-        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
-    <ImageView
+</LinearLayout>
+
+    <ImageButton
+        android:id="@+id/save"
         android:layout_width="@dimen/text60dp"
         android:layout_height="@dimen/text60dp"
         android:layout_marginEnd="20dp"

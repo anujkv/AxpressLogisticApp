@@ -16,14 +16,12 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/addVehicleLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardview_vehicle_detailsId"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="1dp"
@@ -108,6 +106,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".7"
+                            android:inputType="textCapCharacters"
                             android:textColor="@color/primaryTextColor"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -295,7 +294,6 @@
 
 
             <android.support.v7.widget.CardView
-                android:id="@+id/broker_selection1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="1dp"
@@ -344,7 +342,6 @@
                         android:visibility="gone">
 
                         <LinearLayout
-                            android:id="@+id/broker_list1_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
@@ -465,7 +462,6 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/broker_selection2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="1dp"
@@ -634,7 +630,6 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/broker_selection3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="1dp"

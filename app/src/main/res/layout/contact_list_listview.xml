@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin1dp"
+    android:padding="@dimen/text10sp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="@dimen/margin0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin10dp"
+            android:layout_marginTop="@dimen/margin10dp"
+            android:layout_marginBottom="@dimen/margin10dp">
+
+            <LinearLayout
+                android:id="@+id/emplid_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".1"
+                    android:text="@string/employee_id"
+                    android:textSize="@dimen/text12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin10dp"
+                    android:textSize="@dimen/text12sp"
+                    android:text="@string/colon"/>
+
+                <TextView
+                    android:id="@+id/emplid_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text12sp"
+                    android:layout_weight=".2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".1"
+                    android:textSize="@dimen/text12sp"
+                    android:text="@string/name"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin10dp"
+                    android:textSize="@dimen/text12sp"
+                    android:text="@string/colon"/>
+
+                <TextView
+                    android:id="@+id/name_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text12sp"
+                    android:layout_weight=".2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contact_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".1"
+                    android:textSize="@dimen/text12sp"
+                    android:text="@string/contact"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin10dp"
+                    android:textSize="@dimen/text12sp"
+                    android:text="@string/colon"/>
+
+                <TextView
+                    android:id="@+id/contact_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text12sp"
+                    android:layout_weight=".2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".1"
+                    android:textSize="@dimen/text12sp"
+                    android:text="@string/email_id"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/margin10dp"
+                    android:text="@string/colon"/>
+
+                <TextView
+                    android:id="@+id/email_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text12sp"
+                    android:layout_weight=".2"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/dept_code_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text12sp"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/branch_code_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text12sp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/margin0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkbox_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

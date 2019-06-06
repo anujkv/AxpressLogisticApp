@@ -5,31 +5,20 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="app_bar_height">256dp</dimen>
-    <dimen name="expanded_toolbar_title_margin_start">64dp</dimen>
-    <dimen name="layout_width_height_100dp">100dp</dimen>
     <!-- Text Size. -->
-    <dimen name="text08sp">8sp</dimen>
-    <dimen name="text09sp">9sp</dimen>
     <dimen name="text10sp">10sp</dimen>
-    <dimen name="text11sp">11sp</dimen>
     <dimen name="text12sp">12sp</dimen>
-    <dimen name="text13sp">13sp</dimen>
     <dimen name="text14sp">14sp</dimen>
     <dimen name="text15sp">15sp</dimen>
     <dimen name="text16sp">16sp</dimen>
     <dimen name="text20dp">20sp</dimen>
     <dimen name="text30dp">30sp</dimen>
-    <dimen name="text40dp">40sp</dimen>
     <dimen name="text50dp">50sp</dimen>
-    <dimen name="text100dp">100sp</dimen>
 
     <dimen name="primary_button_width">250dp</dimen>
-    <dimen name="profilesize">150dp</dimen>
     <dimen name="margin5dp">5dp</dimen>
     <dimen name="margin10dp">10dp</dimen>
     <dimen name="margin16dp">16dp</dimen>
-    <dimen name="margin8dp">8dp</dimen>
     <dimen name="margin2dp">2dp</dimen>
     <dimen name="margin12dp">12dp</dimen>
     <dimen name="margin12sp">12sp</dimen>
@@ -37,8 +26,17 @@
     <dimen name="text18sp">18sp</dimen>
     <dimen name="text20sp">20sp</dimen>
     <dimen name="text60dp">60dp</dimen>
-    <integer name="max_width_short_month_label_dp">240</integer>
-    <integer name="max_height_mini_view_dp">180</integer>
-    <integer name="max_height_mini_view_1_row_dp">120</integer>
+    <dimen name="margin0dp">0dp</dimen>
+    <dimen name="margin20dp">20dp</dimen>
+    <dimen name="margin25dp">25dp</dimen>
+    <dimen name="margin15dp">15dp</dimen>
+    <dimen name="margin1dp">1dp</dimen>
+    <dimen name="margin18dp">18dp</dimen>
+    <dimen name="text25dp">25dp</dimen>
+    <dimen name="margin14sp">14sp</dimen>
+    <dimen name="margin70dp">70dp</dimen>
+    <dimen name="margin40dp">40dp</dimen>
+    <dimen name="margin8dp">8dp</dimen>
+    <dimen name="margin50dp">50dp</dimen>
 
 </resources>

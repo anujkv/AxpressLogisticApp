@@ -165,7 +165,7 @@
             android:id="@+id/edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/text30dp"
-            android:background="@color/DKGRAY"
+            android:background="@color/dkGRAY"
             android:text="@string/edit"
             android:textSize="@dimen/margin10dp"
             android:textColor="@color/white"

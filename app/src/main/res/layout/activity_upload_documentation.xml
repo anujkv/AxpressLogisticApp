@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/android_coordinator_layoutId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center|top"
+    android:background="@color/white_smoke">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/aadharcardCardView"
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_margin="@dimen/margin5dp"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/margin10dp"
+            app:cardCornerRadius="@dimen/margin10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/aadharcardImage"
+                    android:padding="@dimen/margin20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_cloud_upload_red_24dp"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBarAdharcard"
+                    android:paddingLeft="@dimen/margin5dp"
+                    android:paddingRight="@dimen/margin5dp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/margin5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/aadharcard"/>
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/pancardCardView"
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_margin="@dimen/margin5dp"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/margin10dp"
+            app:cardCornerRadius="@dimen/margin10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/pancardImage"
+                    android:padding="@dimen/margin20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_cloud_upload_red_24dp"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBarPancard"
+                    android:paddingLeft="@dimen/margin5dp"
+                    android:paddingRight="@dimen/margin5dp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/margin5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pancard"/>
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/photographyCardView"
+            android:layout_width="0dp"
+            android:layout_weight=".3"
+            android:layout_margin="@dimen/margin5dp"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/margin10dp"
+            app:cardCornerRadius="@dimen/margin10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/photographImage"
+                    android:padding="@dimen/margin20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_cloud_upload_red_24dp"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBarPhotogarph"
+                    android:paddingLeft="@dimen/margin5dp"
+                    android:paddingRight="@dimen/margin5dp"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/margin5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/photograph"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_marginTop="@dimen/margin20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_shape"
+        android:text="@string/submit"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".acitvities.BrokerList">
+    tools:context=".activities.Operations.AddBroker.BrokerList">
 
     <include
         android:id="@+id/app_bar"
@@ -58,6 +58,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
 
 </LinearLayout>

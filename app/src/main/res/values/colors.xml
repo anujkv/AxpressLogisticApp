@@ -2,30 +2,27 @@
 <resources>
     <color name="colorPrimary">#F44336</color>
     <color name="colorPrimaryDark">#D32F2F</color>
-    <color name="lightPrimaryColor">#FFCDD2</color>
     <color name="colorAccent">#03A9F4</color>
     <color name="error_color">#B00020</color>
 
     <color name="primaryTextColor">#212121</color>
     <color name="secondaryTextColor">#757575</color>
     <color name="dividerColor">#BDBDBD</color>
-    <color name="text_iconColor">#FFFFFF</color>
     <color name="editTextColor">#eceff1</color>
 
-    <color name="btn_pressedColor">#536DFE</color>
     <color name="btn_enabledColor">#2196f3</color>
-    <color name="currentDateColor">#2196f3</color>
-
-    <color name="foreground_full">#fff</color>
-    <color name="foreground_semi">#4fff</color>
-    <color name="foreground_today">#111</color>
-    <color name="background_today">#fff</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="white_smoke">#F5F5F5</color>
     <color name="black">#000000</color>
     <color name="gray">#757575</color>
-    <color name="red">#FFFF0000</color>FF444444
-    <color name="DKGRAY">#FF444444</color>
-    <color name = "GreenShade4DD">#9ccc65</color>
+    <color name="light_gray">#FF888888</color>
+    <color name="red">#FFFF0000</color>
+    <color name="dkGRAY">#FF444444</color>
+
+    <color name="transparent_color">#20000000</color>
+
+    <color name="colorDarkGrap_1e1e23">#1e1e23</color>
+    <color name="colorDarkGrap_151518">#151518</color>
 
 </resources><!--<resources>--><!--<color name="colorPrimary">#3F51B5</color>--><!--<color name="colorPrimaryDark">#303F9F</color>--><!--<color name="colorAccent">#FF4081</color>--><!--</resources>-->

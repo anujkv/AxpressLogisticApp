@@ -5,16 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="center"
     android:background="@color/colorPrimary"
-    android:padding="24dp"
-    android:gravity="center"
-    tools:context=".acitvities.Version">
+    tools:context=".activities.basic_module.Version">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_weight="9"
+        android:background="@color/colorPrimary"
+        android:paddingRight="24dp"
+        android:paddingLeft="24dp"
+        android:paddingTop="24dp"
+        android:gravity="center">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/application_name"
         android:text="@string/app_name"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -34,7 +42,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="10dp"
-        android:src="@mipmap/ic_launcher24s"/>
+        android:src="@mipmap/ic_launcher"/>
     <TextView
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
@@ -48,10 +56,21 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/app_all_rights"
         android:text="@string/app_all_rights"
         android:textColor="@color/white"
         android:textSize="@dimen/text16sp"
         android:gravity="center"/>
 
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/check_update_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/check_update"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text16sp"
+        android:paddingBottom="@dimen/margin10dp"/>
 </LinearLayout>

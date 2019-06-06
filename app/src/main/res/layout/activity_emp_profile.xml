@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".acitvities.EmpProfileActivity"
+    tools:context=".activities.basic_module.EmpProfileActivity"
     tools:layout_editor_absoluteY="81dp">
     <include
         android:id="@+id/app_bar"
@@ -22,7 +22,6 @@
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/proflie_cover_page_layoutId"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:background="@drawable/bluedesignbg"
@@ -33,7 +32,7 @@
                     android:id="@+id/user_imageId"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@mipmap/ic_android_launcher_round_round"
+                    android:src="@mipmap/ic_launcher_round"
                     app:civ_border_width="2dp"
                     app:civ_border_color="#FF000000"
                     android:layout_marginEnd="8dp"
@@ -94,7 +93,6 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardview_profile_detailsId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -192,7 +190,6 @@
                             android:textColor="@color/primaryTextColor" />
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/altContactLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
@@ -341,7 +338,6 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardview_profile_personalInfoId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -515,7 +511,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/txtAddress"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".3"
@@ -559,7 +554,6 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardview_profile_bankinfoId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -662,7 +656,6 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/txt_bankaccount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".3"

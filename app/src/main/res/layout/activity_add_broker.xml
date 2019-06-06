@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".acitvities.AddBrokerActivity">
+    tools:context=".activities.Operations.AddBrokerActivity">
 
     <include
         android:id="@+id/app_bar"
@@ -16,13 +16,11 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/add_BrokerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             android:orientation="vertical">
     <android.support.v7.widget.CardView
-        android:id="@+id/cardview_profile_detailsId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
@@ -187,7 +185,6 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
-        android:id="@+id/cardview_broker_bankDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
@@ -372,7 +369,6 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:id="@+id/cardview_broker_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
@@ -416,8 +412,6 @@
                     </RadioGroup>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
-
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

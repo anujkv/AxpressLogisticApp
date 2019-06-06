@@ -17,7 +17,7 @@
         android:id="@+id/user_imageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@mipmap/ic_android_launcher_round_round"
+        android:src="@mipmap/ic_launcher_round"
         app:civ_border_width="2dp"
         app:civ_border_color="#FFFFFF"
         android:layout_marginEnd="8dp"

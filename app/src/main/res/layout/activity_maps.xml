@@ -14,7 +14,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".acitvities.MapsActivity"
+        tools:context=".activities.Operations.MapsActivity"
         map:cameraTargetLat="20.5937"
         map:cameraTargetLng="78.9629"
         map:cameraZoom="4"/>

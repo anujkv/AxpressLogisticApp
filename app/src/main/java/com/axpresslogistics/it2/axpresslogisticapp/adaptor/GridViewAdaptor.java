@@ -1,0 +1,65 @@
+package com.axpresslogistics.it2.axpresslogisticapp.adaptor;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.axpresslogistics.it2.axpresslogisticapp.R;
+
+/**
+ * Created by IT2 on 5/25/2018.
+ */
+
+public class GridViewAdaptor extends BaseAdapter {
+    private Context mContext;
+    private final String[] string;
+    private final int[] Iconid;
+
+    public GridViewAdaptor(Context mContext, String[] string, int[] iconid) {
+        this.mContext = mContext;
+        this.string = string;
+        Iconid = iconid;
+    }
+
+
+    @Override
+    public int getCount() {
+        return string.length;
+    }
+
+    @Override
+    public Object getItem(int i) { return null; }
+
+    @Override
+    public long getItemId(int i) {
+
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        View grid;
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (view == null) {
+            grid = new View(mContext);
+            grid = inflater.inflate(R.layout.homepage_grid_item, null);
+            TextView textView = grid.findViewById(R.id.grid_item_textviewId);
+            ImageView imageView = grid.findViewById(R.id.grid_item_iconId);
+            textView.setText(string[i]);
+            imageView.setImageResource(Iconid[i]);
+        } else {
+            grid = view;
+        }
+        return grid;
+    }
+
+   public interface onClick{
+        public void Click(int position);
+   }
+
+
+}

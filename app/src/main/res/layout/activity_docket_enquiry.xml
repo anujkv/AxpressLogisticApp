@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/docketEnquirylayout"
-    tools:context="com.axpresslogistics.it2.axpresslogisticapp.acitvities.DocketEnquiry">
+    tools:context="com.axpresslogistics.it2.axpresslogisticapp.activities.Operations.DocketEnquiry.DocketEnquiry">
 
     <include
         android:id="@+id/app_bar"
@@ -19,15 +18,32 @@
         android:paddingRight="24dp">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_company"
+            android:textColor="@color/black"
+            android:layout_marginLeft="@dimen/margin10dp"
+            android:layout_marginTop="@dimen/margin20dp"
+            android:textSize="@dimen/margin18dp"/>
+
+        <Spinner
+            android:id="@+id/company_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="90dp"
             android:text="@string/searchbytype"
             android:textSize="18sp" />
 
-    <LinearLayout
+
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -40,7 +56,7 @@
             android:layout_gravity="center_horizontal">
 
             <RadioButton
-                android:id="@+id/radiobtn_docket_id"
+                android:id="@+id/docketRB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
@@ -48,7 +64,7 @@
                 android:text="@string/docket" />
 
             <RadioButton
-                android:id="@+id/radiobtn_invoice_id"
+                android:id="@+id/invoiceRB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invoice" />
@@ -69,9 +85,12 @@
                 android:background="@drawable/edittext_shape"
                 android:drawableRight="@android:drawable/ic_menu_search"
                 android:hint="Enter docket/invoice no."
-                android:inputType="number"
                 android:shadowRadius="50"
                 android:textAlignment="gravity"
+                android:autoText="true"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:lines="1"
                 android:textSize="@dimen/text12sp"
                 app:layout_constraintBottom_toTopOf="@+id/progressBar"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -100,4 +119,8 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
     </LinearLayout>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

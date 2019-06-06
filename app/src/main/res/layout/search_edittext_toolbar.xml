@@ -59,7 +59,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:background="@color/editTextColor"
-            android:src="@drawable/ic_send_black_24dp"
+            android:src="@drawable/ic_send_red_24dp"
             app:layout_constraintBottom_toBottomOf="@+id/searchedt_toolbar"
             app:layout_constraintEnd_toEndOf="@+id/searchedt_toolbar"
             app:layout_constraintTop_toTopOf="@+id/searchedt_toolbar" />

@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activities.basic_module.Profile"
+    tools:layout_editor_absoluteY="81dp">
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/mapapp_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/bluedesignbg"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/user_imageId"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@mipmap/ic_launcher_round"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/useredit_imageId"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="5dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_mode_edit_black_24dp"
+                    android:background="@drawable/circular_shape"
+                    app:layout_constraintBottom_toTopOf="@+id/user_nameId"
+                    app:layout_constraintStart_toStartOf="@+id/user_imageId"
+                    app:layout_constraintTop_toTopOf="@+id/user_imageId"
+                    app:layout_constraintVertical_bias="1.0"
+                    android:layout_marginLeft="64dp" />
+
+                <TextView
+                    android:id="@+id/user_nameId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Username"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_imageId" />
+
+                <TextView
+                    android:id="@+id/user_empcodeId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/employee_id"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/user_nameId" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="1dp"
+                android:divider="@color/colorPrimaryDark"
+                android:dividerHeight="5dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:paddingBottom="24dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Employee Info"
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Name"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtname"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Employee Code"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtEmpCode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Contact No."
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtContactNo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtContactAltNo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:text="9876543210"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Designation"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtDesignation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Department"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtDept"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Branch"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtBranch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:editable="false"
+                            android:textSize="14sp"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Branch Code"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtBranchCode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Email ID"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:background="@color/white"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:divider="@color/primaryTextColor"
+                android:dividerHeight="5dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:paddingBottom="24dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Employee Presonal Info."
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Father's Name"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtFatherName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="DOB"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtDOB"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Birth Place"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtBOP"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Date of Joining"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtDOJ"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Qualification"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtQulification"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Adhar Card No."
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtAdharCard"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".3"
+                            android:text="Address"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:editable="false"
+                            android:textSize="14sp"
+                            android:textColor="@color/primaryTextColor" />
+
+                        <ImageView
+                            android:id="@+id/edtImageButtonAddress"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_mode_edit_black_24dp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/txt_address_update_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="pending"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="12sp"
+                            android:gravity="right"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:divider="@color/primaryTextColor"
+                android:dividerHeight="5dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:paddingBottom="24dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Employee Bank/Imp. Info."
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="PAN No."
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtPAN"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="UAN No."
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtUAN"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="ESI No."
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtESI"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".3"
+                            android:text="Bank Account No."
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtBankAccount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:editable="false"
+                            android:textSize="14sp"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textColor="@color/primaryTextColor" />
+                        <ImageView
+                            android:id="@+id/edtImageButtonBankAccount"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_mode_edit_black_24dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/txt_bank_account_update_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="verifing to HR"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="12sp"
+                            android:gravity="right"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".3"
+                            android:text="Bank Name"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtBankName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:editable="false"
+                            android:textSize="14sp"
+                            android:textColor="@color/primaryTextColor" />
+                        <ImageView
+                            android:id="@+id/edtImageButtonbankName"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_mode_edit_black_24dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/txt_bank_name_update_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="verifing to HR"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="12sp"
+                            android:gravity="right"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".3"
+                            android:text="IFSC Code"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="14sp" />
+
+                        <EditText
+                            android:id="@+id/edtBankIFSC"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".4"
+                            android:autoSizeMaxTextSize="8dp"
+                            android:textSize="14sp"
+                            android:editable="false"
+                            android:textColor="@color/primaryTextColor" />
+                        <ImageView
+                            android:id="@+id/edtImageButtonBankIFSC"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_mode_edit_black_24dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/txt_bank_ifsc_update_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="verifing to HR"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="12sp"
+                            android:gravity="right"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

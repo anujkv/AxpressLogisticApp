@@ -1,27 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/android_coordinator_layoutId"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:orientation="vertical">
+    android:background="@color/white">
+    <include
+        layout="@layout/app_bar_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
+        android:weightSum="3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/app_bar"
-            layout="@layout/app_toolbar" />
-
-        <GridView
-            android:id="@+id/gridhrms"
+        <LinearLayout
+            android:weightSum="2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/colorPrimaryDark"
-            android:dividerHeight="1dip"
-            android:gravity="center"
-            android:numColumns="3" />
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:focusable="true">
+
+            <LinearLayout
+                android:id="@+id/to_do_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/todolist" />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="top|center"
+                    android:text="To Do List"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:visibility="gone"
+                android:layout_weight="1"
+                cardview:cardBackgroundColor="@color/white"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="100dp"
+                android:layout_height="160dp"
+                xmlns:cardview = "http://schemas.android.com/apk/res-auto"
+
+                cardview:cardCornerRadius="@dimen/margin5dp"
+                android:layout_margin="@dimen/margin10dp"
+                tools:targetApi="p"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:weightSum="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="130dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:paddingTop="40dp"
+                        android:layout_weight="1"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|center"
+                        android:textSize="13sp"
+                        android:text="HRMS"
+                        android:textColor="@color/black"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+    </ScrollView>
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+

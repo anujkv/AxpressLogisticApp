@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".acitvities.VehicletrackingMap">
+    tools:context=".activities.Operations.VehicleTrackingMap.VehicletrackingMap">
     <include
         android:id="@+id/app_bar"
         layout="@layout/search_edittext_toolbar"/>

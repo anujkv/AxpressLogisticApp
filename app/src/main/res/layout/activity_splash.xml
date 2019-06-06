@@ -3,26 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    tools:context="com.axpresslogistics.it2.axpresslogisticapp.acitvities.SplashActivity">
+    android:background="@drawable/splash_gradient"
+    tools:context="com.axpresslogistics.it2.axpresslogisticapp.activities.basic_module.SplashActivity">
 
     <ImageView
-        android:id="@+id/splashicon"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@mipmap/ic_launcher24s" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/splashicon"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:text="@string/app_name"
-        android:textColor="@color/text_iconColor"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        android:src="@drawable/logo_icon" />
 
 </RelativeLayout>

@@ -2,7 +2,15 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardViewVisitCard"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/margin10dp"
+    app:cardMaxElevation="@dimen/margin20dp"
+    android:layout_marginTop="@dimen/margin1dp"
+    android:layout_marginBottom="@dimen/margin1dp"
+    android:layout_marginLeft="@dimen/margin2dp"
+    android:layout_marginRight="@dimen/margin2dp"
     android:padding="24dp">
 
     <LinearLayout
@@ -21,11 +29,10 @@
             android:paddingTop="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/icon_userimage"
-                app:civ_border_color="#FF000000"
+                app:civ_border_color="@color/dkGRAY"
                 app:civ_border_width="2dp" />
         </LinearLayout>
 
@@ -50,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/company"
+                android:textColor="@color/dkGRAY"
                 android:textStyle="bold" />
 
             <TextView
@@ -57,6 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/name"
+                android:textColor="@color/dkGRAY"
                 android:textStyle="italic" />
 
             <TextView
@@ -64,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/mobile"
+                android:textColor="@color/dkGRAY"
                 android:textStyle="italic" />
 
         </LinearLayout>
@@ -75,7 +85,6 @@
             android:layout_weight=".1">
 
             <ImageButton
-                android:id="@+id/forward_imgbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@color/white"
@@ -83,9 +92,6 @@
         </LinearLayout>
 
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
+
 
 </android.support.v7.widget.CardView>

@@ -23,3 +23,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#-keepclassmembers class com.axpresslogistics.it2.axpresslogisticapp {
+#   public *;   }
+#
+#-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+#-optimizationpasses 5
+#-allowaccessmodification
